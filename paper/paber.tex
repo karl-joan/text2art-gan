@@ -11,14 +11,25 @@
     \maketitle
     \tableofcontents
 
+    \unsection{Definitsioonid}
+    \begin{description}
+		\let\originalitem\item
+		\renewcommand*{\item}[1][]{\originalitem[#1]\label{def:#1}}
+
+        \item{GAN} ing.k. \textit{generative adversarial network}
+    \end{description}
+
+	\newcommand*{\seedefinition}[1]{(\hyperref[def:#1]{vt~definitsiooni})}
+
     \unsection{Sissejuhatus}
     Uurimistöö eesmärk on luua mudel, mis on võimeline ise genereerima kunsti teksti põhjal, ja et autor selle juures laiendadaks ja kinnitadaks oma teadmisi sügavõppest.
 
-    Töö alguses annab autor ülevaate varasematest töödest selles valdkonnas ning tutvustab arenguid sügavõppes, mis on vajalikud töö mõistmiseks. See järel tutvustatakse erinevaid mudeleid, millele järgneb eksperimentaalne osa, kus analüüsitakse ning hinnatakse kvalitatiivselt erinevate mudelite sooritust. 
+    Töö alguses annab autor ülevaate varasematest töödest selles valdkonnas ning tutvustab arenguid sügavõppes, mis on vajalikud töö mõistmiseks. See järel tutvustatakse erinevaid mudeleid, millele järgneb eksperimentaalne osa, kus analüüsitakse ning hinnatakse empiiriliselt erinevate mudelite sooritust. 
     
     \section{Varasemad tööd}
 
-    \section{Mudel}
+    %  \section{Mudel}
+    \section{Tehnilised detailid}
 
     \section{Eksperimendid}
 
