@@ -7,6 +7,9 @@
 \instructor{õp Malle Eglit}
 \date{2019}
 
+
+\addbibresource{viited.bib}
+
 \begin{document}
     \maketitle
     \tableofcontents
@@ -41,13 +44,12 @@
     \section{Eksperimendid}
 
     \unsection{Kokkuvõte}
-
+    a
     \unsection{Summary}
+    asd \parencite{cyclegan}
 
-    sCycleGan \cite{cyclgan}
+    % The bibliography
+    \nocite{*} % List all entries, even when not cited
+    \printbibliography[title={Kasutatud allikad}]
 
-    \bibliographystyle{apalike}
-    \begin{thebibliography}
-        \bibitem[kass]{cyclegan} koer
-    \end{thebibliography}
 \end{document}
