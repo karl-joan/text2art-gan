@@ -104,76 +104,14 @@
 }
 
 %%% Bibliography related stuff
-%% Redefine thebibliography environment to have no numbering and sort entries lexicographically.
-%% See https://tex.stackexchange.com/a/114936/154729
-\RequirePackage{environ}
+%% Change the the look of the bibliography and citation
+\RequirePackage[citestyle=authoryear]{biblatex}
+\DefineBibliographyStrings{estonian}{andothers={jt\adddot}} % Replace et al with jt.
+\renewcommand*{\nameyeardelim}{\addcomma\space} % Add a comma between author and year
 
-% Errors
-\msg_new:nnn { vilgym } { junk-before } { Extra~'#3'~before~the~first~'#1'~in~environment~'#2'. }
-\msg_new:nnn { vilgym } { empty-thebibliography } { Empty~'thebibliography'~environment}
-
-% Variables
-\str_const:Nn \l_vilgym_bib_name {KASUTATUD~MATERJALID} % Bibliography title
-\seq_new:N \l_vilgym_bib_seq % Bibliography, split after the first \bibitem.
-\str_new:N \l_vilgym_sort_one
-\str_new:N \l_vilgym_sort_two
-\tl_new:N \l_vilgym_pre_tl % Part before the first \bibitem.
-
-% Lexicographic string comparison function
-\prg_new_conditional:Npnn \vilgym_str_compare:nNn #1#2#3 { TF }
-{
-	% Arguments are prefixed with the label, so we need to strip that.
-	\seq_set_split:Nnn \l_vilgym_sort_one { ~ } { #1 }
-	\seq_set_split:Nnn \l_vilgym_sort_two { ~ } { #3 }
-	\seq_pop_left:NN \l_vilgym_sort_one \l_tmpa_tl
-	\seq_pop_left:NN \l_vilgym_sort_two \l_tmpb_tl
-
-	% Comparing two entries in the bibliography is done using \strcmp, which compares strings in lexicographic order.
-	\if_int_compare:w \strcmp { \seq_use:Nn \l_vilgym_sort_one { ~ } } { \seq_use:Nn \l_vilgym_sort_two { ~ } } #2 \c_zero_int
-		\prg_return_true:
-	\else:
-		\prg_return_false:
-	\fi:
-}
-
-% TODO: Support \bibitem without labels
-\RenewEnviron{thebibliography}
-{
-	\unsection{\str_use:N \l_vilgym_bib_name}
-	\list{}{\leftmargin0pt\@openbib@code\usecounter{enumiv}}
-		% Split BODY at each \bibitem into a token list.
-		\seq_set_split:NnV \l_vilgym_bib_seq { \bibitem } \BODY
-		\seq_concat:NNN \l_vilgym_bib_seq \l_vilgym_bib_seq \l_vilgym_footnote_seq
-
-		% Pop the top tem of vilgym_bib_seq into vilgym_pre_tl
-		\seq_pop:NN \l_vilgym_bib_seq \l_vilgym_pre_tl
-
-		% Error checking: only \par and spaces before first \bibitem. Otherwise, complain about the tokens found before \bibitem.
-		\tl_remove_all:Nn \l_vilgym_pre_tl { \par }
-		\tl_remove_all:Nn \l_vilgym_pre_tl { ~ }
-		\tl_if_empty:NF \l_vilgym_pre_tl
-		{
-			\msg_error:nnxxx { vilgym } { junk-before }
-			{ \token_to_str:N \bibitem }
-			{ thebibliography }
-			{ \tl_to_str:N \l_vilgym_pre_tl }
-		}
-
-		% Sort vilgym_bib_seq using vilgym_str_compare.
-		\seq_sort:Nn \l_vilgym_bib_seq
-		{
-			\vilgym_str_compare:nNnTF {##1} > {##2}
-			{ \sort_return_swapped: }
-			{ \sort_return_same: }
-		}
-
-		% Create a bibliography item for each item in vilgym_bib_seq.
-		\seq_map_inline:Nn \l_vilgym_bib_seq { \bibitem ##1 }
-
-		% Define warning for when the list is empty.
-		\def\@noitemerr{\msg_warning:nn { vilgym } { empty-thebibliography }}
-	\endlist
-}
+% Removes the numbers before entries
+\DeclareFieldFormat{labelnumberwidth}{} % Doesn't print anything in the label
+\setlength{\biblabelsep}{0pt} % Eliminates the spacing before the entries
 
 % Title formatting
 \RequirePackage{titlesec}
