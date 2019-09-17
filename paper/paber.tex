@@ -23,6 +23,7 @@
     \end{description}
 
 	\newcommand*{\seedefinition}[1]{(\hyperref[def:#1]{vt~definitsiooni})}
+    \newcommand*{\ingk}[1]{(\textit{ing. k. #1})}
 
     \unsection{Sissejuhatus}
     
@@ -32,6 +33,12 @@
     Töö alguses annab autor ülevaate varasematest töödest selles valdkonnas ning tutvustab arenguid sügavõppes, mis on vajalikud töö mõistmiseks. See järel tutvustatakse erinevaid mudeleid, millele järgneb eksperimentaalne osa, kus analüüsitakse ning hinnatakse erinevate mudelite sooritust. 
     
     \section{Varasemad tööd}
+    Generatiivne adversatiivne võrk ehk GAN on sügavõppe mudel, mis koosneb kahest neruonvõrgust --- üks on diskrimineerija \ingk{discriminator} ja teine on generaator \ingk{generator}.  Generaatori ülesandeks on luua sisu, mis on sarnane kasutusel olevate andmete distributsiooniga. Diskrimineerija ülesandeks on määrata, kas talle näidatud sisu on võetud nende andmete hulgast või on loodud generaatori poolt.
+    
+    Generaatoril ja diskrimineerijal vastastikused ülesanded --- diskrimineerija proovib minimeerida viga, mis tehakse sisu klassifitseerimise käigus (kas on võetud päris andmete hulgast või loodud generaatori poolt), ja generaator proovib maksimeerida viga, mida diskrimineerija teeb klassifikatsiooni käigus. Kokkuvõtvalt need kaks võrku mängivad omavahel minimaksmängu \ingk{minimax}, mida võib võrrelda vägikaika veoga. Lõpuks jõutakse Nash tasakaalu \ingk{Nash equilibrium}, kus mängijatel ei ole enam midagi saada oma strateegia muutmisega \parencite{gametheory}. Ideaalis on sel juhul diskriminaatori poolt väljastatud tõenäosus  sõltumata sisendist $ 1/2 $.
+
+    Ilustavalt võib mõelda generaatorist kui võltsjate meeskonnast, kes proovivad luua võltsraha ja kasutada seda ilma jäljeta. Diskrimineerija aga käitub kui politsei, proovides tuvastada kas tegu on võltsinguga. Alguses on võltsjatel võltsingud kehvad ning politseil on raskusi tuvastusega, aga aja jooksul muutuvad osapooled paremaks omavahelise võistluse tõttu, kuni hetkeni mil võltsingud pole enam eristatavad päris valuutast.
+
     Uue materjali genereerimine on keeruline probleem. Kogu sügavõppes ajaloo vältelt on diskrimineerivad mudelid saavutanud paremaid tulemusi kui generatiivsed mudelid. Hiljuti on aga see muutunud GANide tekkega.
 
     GANid on saavutanud märkimisväärseid tulemusi pildi ja video generatsioonis ning ka super resolutsioonis. kunst
