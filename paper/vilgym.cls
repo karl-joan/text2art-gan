@@ -105,6 +105,7 @@
 
 %%% Bibliography related stuff
 %% Change the the look of the bibliography and citation
+% Maybe consider using uniquelist=false
 \RequirePackage[citestyle=authoryear,maxbibnames=99]{biblatex}
 \DefineBibliographyStrings{estonian}{andothers={jt\adddot}} % Replace et al with jt.
 \renewcommand*{\nameyeardelim}{\addcomma\space} % Add a comma between author and year
