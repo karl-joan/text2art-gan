@@ -11,3 +11,4 @@
 *.toc
 *.xdv
 .gitignoreCP
+*.gz
