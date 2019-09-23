@@ -1,12 +1,21 @@
 % !TeX program = xelatex
 \documentclass{vilgym}
 
+% For math
+\usepackage{mathtools}
+\usepackage{amsfonts}
+
+% For graphs
+\usepackage{graphicx}
+
 % General info
 \title{Kunsti genereerimine teksti põhjal}
 \authors{Karl-Joan Alesma, III MF}
 \instructor{õp Malle Eglit}
 \date{2019}
 
+% Define expected value operator
+\DeclareMathOperator{\EX}{\mathbb{E}}
 
 \addbibresource{viited.bib}
 
@@ -45,12 +54,28 @@
     %  \section{Mudel}
     \section{Tehnilised detailid}
     \subsection{GAN}
-    Generatiivne adversatiivne võrk ehk GAN on sügavõppe mudel, mis koosneb kahest neruonvõrgust --- üks on diskrimineerija \ingk{discriminator} ja teine on generaator \ingk{generator}.  Generaatori ülesandeks on luua sisu, mis on sarnane kasutusel olevate andmete distributsiooniga. Diskrimineerija ülesandeks on määrata, kas talle näidatud sisu on võetud nende andmete hulgast või on loodud generaatori poolt.
+    Generatiivne adversatiivne võrk ehk GAN \ingk{generative adversarial network} on sügavõppe mudel, mis koosneb kahest neruonvõrgust --- üks on diskrimineerija \ingk{discriminator} ja teine on generaator \ingk{generator}.  Generaatori ülesandeks on luua sisu, mis on sarnane kasutusel olevate andmete distributsiooniga. Diskrimineerija ülesandeks on määrata, kas talle näidatud sisu on võetud päris andmete hulgast või on loodud generaatori poolt.
     
     Generaatoril ja diskrimineerijal vastastikused ülesanded --- diskrimineerija proovib minimeerida viga, mis tehakse sisu klassifitseerimise käigus (kas on võetud päris andmete hulgast või loodud generaatori poolt), ja generaator proovib maksimeerida viga, mida diskrimineerija teeb klassifikatsiooni käigus. Kokkuvõtvalt need kaks võrku mängivad omavahel minimaksmängu \ingk{minimax}, mida võib võrrelda vägikaika veoga. Lõpuks jõutakse Nash tasakaalu \ingk{Nash equilibrium}, kus osalejatel ei ole enam midagi saada oma strateegia muutmisega \parencite{gametheory}. Ideaalis on sel juhul diskriminaatori poolt väljastatud tõenäosus  sõltumata sisendist $ 1/2 $.
 
     Ilustavalt võib mõelda generaatorist kui võltsjate meeskonnast, kes proovivad luua võltsraha ja kasutada seda ilma jäljeta. Diskrimineerija aga käitub kui politsei, proovides tuvastada kas tegu on võltsinguga. Alguses on võltsjatel võltsingud kehvad ning politseil on raskusi tuvastusega, aga aja jooksul muutuvad osapooled paremaks omavahelise võistluse tõttu, kuni hetkeni mil võltsingud pole enam eristatavad päris valuutast.
 
+    Treenimis protsetuuri saab võtta kokku järgimse funktsiooniga:
+
+    \begin{equation}
+        \operatorname*{min}_G \operatorname*{max}_D V(D,G) = \EX_{\boldsymbol{x}\sim p_{andmed}(\boldsymbol{x})}[\log D(\boldsymbol{x})] + \EX_{\boldsymbol{z}\sim p_{\boldsymbol{z}}(\boldsymbol{z})}[\log(1-D(G(\boldsymbol{z})))]
+    \end{equation}
+
+    kus $ \boldsymbol{z} $ on müravektor, mis on võetud distributsioonist $ p_{\boldsymbol{z}} $ (nt. ühtlane- või normaaljaotus), $ \boldsymbol{x} $ on päris pilt, mis on võetud distributsioonist $ p_{andmed} $, $ G $ on generaator funktsioon ja $ D $ on diskrimineerija funktsioon. Praktikas võib juhtuda, et võrrandis nr 1 ei teki piisavalt tugevaid gradiente, et treenida $ G $-d. Selle asemel, et minimeerida $ \log (1 - D(G(\boldsymbol{z}))) $, saame panna $ G $ maskimeerima $ \log D(G(\boldsymbol{z})) $, mis tekkitab tugevamaid gradiente. Treenides $ G $ ja $ D $ vaheldumisi, treenitakse GANi looma pilte, mis sarnanevad andmete distributsiooniga. \parencite{gan}
+
+    \subsection{CycleGAN}
+    \begin{figure}
+        \centering
+            \includegraphics[width=\linewidth]{images/cyclegan.jpg}
+            \caption{Pildi muundamine}
+            \label{fig:cyclegan}
+    \end{figure}
+    rong 
     \section{Eksperimendid}
 
     \unsection{Kokkuvõte}
