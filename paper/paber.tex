@@ -75,7 +75,18 @@
             \caption{Pildi muundamine}
             \label{fig:cyclegan}
     \end{figure}
-    CycleGAN on GAN, mis lahendab pildi pildiks teisendamise probleemi ehk teisendades pildi ühes stseeni representatsioonist $ x $ teise $ y $. Näiteks teisendades mustvalgepilt värviliseks pildiks või teisendades õhufoto kaardiks. Varasemad meetodid on ainult töödanud olukordades, kus on olemas pildi paarid $ \left\{x_i,y_i\right\}_{i=1}^N $. Pildipaaride kogumine on kallis ning keeruline, selle tõttu on valmis andmedkogumid pildipaaridest väiksed.
+    CycleGAN on GAN, mis lahendab pildi pildiks teisendamise probleemi ehk teisendades pildi ühes stseeni representatsioonist $ x $ teise $ y $. Näiteks teisendades mustvalgepilt värviliseks pildiks või teisendades õhufoto kaardiks. Varasemad meetodid on ainult töödanud olukordades, kus on olemas pildipaarid $ \left\{x_i,y_i\right\}_{i=1}^N $. Pildipaaride kogumine on aga kallis ning keeruline, selle tõttu on valmis andmekogumid pildi paaridest väikesed.
+
+    
+    CycleGANi on võimalik treenida teisendaa pilte erinevate domeenide vahel, kus puuduvad pildipaarid
+
+    Olgu meil pildikogum $ X $ ja teine kogum $ Y $. Me võime treenida seose $ G: X \rightarrow Y $ nii et väljund $ \hat{y} = G(x), x \in X $ eristamatu piltidest ja $ y \in Y $ kasutades vastast, mis on treenitud eristama $ \hat{y} y $-st.
+    Seega $ G $ teisendab domeeni $ X $ domeeni $ \hat{Y} $, mis on jaotatud samamoodi nagu $ Y $. See aga ei garanteeri, et sisend $ x $ ja väljund $ y $ on seotud paari tähendusrikkal viisil --- on olemas lõpmatult palju teisendusi, mis tekitavad sama jaotuse üle $ \hat{y} $.
+
+    Probleem lahendub kui lisada eesmrägile lisa tingimus, et teisendus peab olema tsükkliliselt järjepidev. Näiteks kui tõlkida lause eesti keelest inglise keelde, siis tagasi tõlkides peaks jõudma tagasi algse lauseni. Matemaatiliselt kui on teisendus $ G: X \rightarrow Y $ ja teine teisendus $F: Y \rightarrow X $, siis peaksid $ G $ ja $ F $ olema üksteise pöördfunktsioonid.
+    Seda saab rakendada treenides teisendusi G ja F samaaegselt ning lisades tsüklilise järjepidevus kao, mis motiveerib et $ F(G(x)) \approx x $ ja $ G(F(y)) \approx y $. Kombineerides selle kao koos vastandliku kaoga domeenides $ X $ ja $ Y $, annab täis eesmärgi mitte paaris piltite teisenduseks.
+
+
     \section{Eksperimendid}
 
     \unsection{Kokkuvõte}
