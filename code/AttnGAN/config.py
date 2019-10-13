@@ -1,6 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-
 import os.path as osp
 import numpy as np
 from easydict import EasyDict as edict
@@ -61,4 +58,3 @@ __C.TEXT = edict()
 __C.TEXT.CAPTIONS_PER_IMAGE = 10
 __C.TEXT.EMBEDDING_DIM = 256
 __C.TEXT.WORDS_NUM = 25
-

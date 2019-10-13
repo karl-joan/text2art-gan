@@ -11,7 +11,7 @@ import torch
 import torch.nn as nn
 from torch.autograd import Variable
 
-from miscc.config import cfg
+from config import cfg
 from model import RNN_ENCODER, G_NET
 
 def vectorize_caption(wordtoix, caption, copies=2):
