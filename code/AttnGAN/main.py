@@ -107,9 +107,7 @@ def models(word_len):
     netG.eval()
     return text_encoder, netG
 
-if __name__ == "__main__":
-    caption = "the bird has a yellow crown and a black eyering that is round"
-
+def main(caption):
     # load configuration
     #cfg_from_file('eval_bird.yml')
 
@@ -119,7 +117,9 @@ if __name__ == "__main__":
     # lead models
     text_encoder, netG = models(len(wordtoix))
 
-    t0 = time.time()
     urls = generate(caption, wordtoix, ixtoword, text_encoder, netG)
-    t1 = time.time()
-    print(t1-t0)
+
+
+if __name__ == "__main__":
+    caption = "the bird has a yellow crown and a black eyering that is round"
+    main(caption)
