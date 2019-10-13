@@ -40,17 +40,24 @@ class RNN_ENCODER(nn.Module):
     def define_module(self):
         self.encoder = nn.Embedding(self.ntoken, self.ninput)
         self.drop = nn.Dropout(self.drop_prob)
+
+        # If nlayers == 1, do not use dropout since it would do nothing
+        if self.nlayers == 1:
+            self.rnn_drop_prob = 0
+        else:
+            self.rnn_drop_prob = self.drop_prob
+
         if self.rnn_type == 'LSTM':
             # dropout: If non-zero, introduces a dropout layer on
             # the outputs of each RNN layer except the last layer
             self.rnn = nn.LSTM(self.ninput, self.nhidden,
                                self.nlayers, batch_first=True,
-                               dropout=self.drop_prob,
+                               dropout=self.rnn_drop_prob,
                                bidirectional=self.bidirectional)
         elif self.rnn_type == 'GRU':
             self.rnn = nn.GRU(self.ninput, self.nhidden,
                               self.nlayers, batch_first=True,
-                              dropout=self.drop_prob,
+                              dropout=self.rnn_drop_prob,
                               bidirectional=self.bidirectional)
         else:
             raise NotImplementedError
