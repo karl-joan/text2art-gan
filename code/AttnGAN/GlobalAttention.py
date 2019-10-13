@@ -73,7 +73,7 @@ class GlobalAttentionGeneral(nn.Module):
     def __init__(self, idf, cdf):
         super(GlobalAttentionGeneral, self).__init__()
         self.conv_context = conv1x1(cdf, idf)
-        self.sm = nn.Softmax()
+        self.sm = nn.Softmax(dim=1)
         self.mask = None
 
     def applyMask(self, mask):
