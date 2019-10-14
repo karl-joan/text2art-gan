@@ -11,8 +11,8 @@ import torch
 import torch.nn as nn
 from torch.autograd import Variable
 
-from config import cfg, cfg_from_file
-from model import RNN_ENCODER, G_NET
+from attngan.config import cfg, cfg_from_file
+from attngan.model import RNN_ENCODER, G_NET
 
 def vectorize_caption(wordtoix, caption, copies=2):
     # Create caption vector
@@ -106,24 +106,25 @@ def models(word_len):
     netG.eval()
     return text_encoder, netG
 
-def main(caption, dataset):
+def attngan(caption, dataset):
     # Choose the model
     if dataset == "birds":
         cfg_from_file("cfg/eval_bird.yml")
     else: # dataset == "coco"
         cfg_from_file("cfg/eval_coco.yml")
 
-    # load word dictionaries
+    # Load word dictionaries
     wordtoix, ixtoword = word_index()
 
-    # lead models
+    # Lead models
     text_encoder, netG = models(len(wordtoix))
 
-    urls = generate(caption, wordtoix, ixtoword, text_encoder, netG)
+    # Generate images
+    generate(caption, wordtoix, ixtoword, text_encoder, netG)
 
 
 if __name__ == "__main__":
     #caption = "the bird has a yellow crown and a black eyering that is round"
     #main(caption, "birds")
     caption = "a fruit stand display with bananas and kiwi"
-    main(caption, "coco")
+    attngan(caption, "coco")
