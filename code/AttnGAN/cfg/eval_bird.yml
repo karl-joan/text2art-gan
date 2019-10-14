@@ -1,0 +1,19 @@
+CONFIG_NAME: 'attn2'
+
+DATASET_NAME: 'birds'
+
+TRAIN:
+    NET_G: 'data/birds/bird_AttnGAN2.pth'
+    NET_E: 'data/birds/text_encoder200.pth'
+
+GAN:
+    DF_DIM: 64
+    GF_DIM: 32
+    Z_DIM: 100
+    R_NUM: 2
+
+TEXT:
+    EMBEDDING_DIM: 256
+    CAPTIONS_PER_IMAGE: 10
+    WORDS_NUM: 25
+    CAPTIONS: 'data/birds/captions.pickle'

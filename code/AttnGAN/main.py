@@ -11,7 +11,7 @@ import torch
 import torch.nn as nn
 from torch.autograd import Variable
 
-from config import cfg
+from config import cfg, cfg_from_file
 from model import RNN_ENCODER, G_NET
 
 def vectorize_caption(wordtoix, caption, copies=2):
@@ -81,7 +81,7 @@ def generate(caption, wordtoix, ixtoword, text_encoder, netG, copies=2):
 
 def word_index():
     # Load word to index dictionary
-    x = pickle.load(open('data/captions.pickle', 'rb'))
+    x = pickle.load(open(cfg.TEXT.CAPTIONS, 'rb'))
     ixtoword = x[2]
     wordtoix = x[3]
     del x
@@ -106,9 +106,12 @@ def models(word_len):
     netG.eval()
     return text_encoder, netG
 
-def main(caption):
-    # load configuration
-    #cfg_from_file('eval_bird.yml')
+def main(caption, dataset):
+    # Choose the model
+    if dataset == "birds":
+        cfg_from_file("cfg/eval_bird.yml")
+    else: # dataset == "coco"
+        cfg_from_file("cfg/eval_coco.yml")
 
     # load word dictionaries
     wordtoix, ixtoword = word_index()
@@ -120,5 +123,7 @@ def main(caption):
 
 
 if __name__ == "__main__":
-    caption = "the bird has a yellow crown and a black eyering that is round"
-    main(caption)
+    #caption = "the bird has a yellow crown and a black eyering that is round"
+    #main(caption, "birds")
+    caption = "a fruit stand display with bananas and kiwi"
+    main(caption, "coco")

@@ -1,0 +1,19 @@
+CONFIG_NAME: 'attn2'
+
+DATASET_NAME: 'coco'
+
+TRAIN:
+    NET_G: 'data/coco/coco_AttnGAN2.pth'
+    NET_E: 'data/coco/text_encoder100.pth'
+
+GAN:
+    DF_DIM: 96
+    GF_DIM: 48
+    Z_DIM: 100
+    R_NUM: 3
+
+TEXT:
+    EMBEDDING_DIM: 256
+    CAPTIONS_PER_IMAGE: 5
+    WORDS_NUM: 20
+    CAPTIONS: 'data/coco/captions.pickle'
