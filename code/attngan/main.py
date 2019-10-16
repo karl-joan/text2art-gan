@@ -64,12 +64,13 @@ def generate(caption, wordtoix, ixtoword, text_encoder, netG, dataset, copies=2)
     cap_lens_np = cap_lens.cpu().data.numpy()
 
     # Make a save directory and change the current direcoty to it
-    mydir = os.path.join("../results/", datetime.today().strftime("%Y-%m-%d_%H-%M-%S"))
+    mydir = os.path.join("../results/", datetime.today().strftime("%Y-%m-%d_%H-%M-%S/"))
     try:
         os.makedirs(mydir)
-        os.chdir(mydir)
+        prefix = mydir
     except:
-        print("Failed to create save directory")
+        prefix = ""
+        print("Failed to create a save directory")
 
     for j in range(batch_size):
         for k in range(len(fake_imgs)):
@@ -81,9 +82,9 @@ def generate(caption, wordtoix, ixtoword, text_encoder, netG, dataset, copies=2)
 
             if k != len(fake_imgs) - 1:
                 im = im.resize((256, 256), Image.BILINEAR)
-                im.save("{}{}_g{}.png".format(j, dataset, k))
+                im.save(prefix + "{}{}_g{}.png".format(j, dataset, k))
             else:
-                im.save("{}{}_g{}.png".format(j, dataset, k))
+                im.save(prefix + "{}{}_g{}.png".format(j, dataset, k))
 
 def word_index():
     # Load word to index dictionary
