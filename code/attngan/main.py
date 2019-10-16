@@ -31,7 +31,7 @@ def vectorize_caption(wordtoix, caption, copies=2):
 
     return captions.astype(int), cap_lens.astype(int)
 
-def generate(caption, wordtoix, ixtoword, text_encoder, netG, copies=2):
+def generate(caption, wordtoix, ixtoword, text_encoder, netG, dataset, copies=2):
 
     # Load word vector
     captions, cap_lens  = vectorize_caption(wordtoix, caption, copies)
@@ -50,9 +50,6 @@ def generate(caption, wordtoix, ixtoword, text_encoder, netG, copies=2):
         captions = captions.cuda()
         cap_lens = cap_lens.cuda()
         noise = noise.cuda()
-        print("Cuda is in")
-    else:
-        print("Cude a net")
 
     # (1) Extract text embeddings
     hidden = text_encoder.init_hidden(batch_size)
@@ -66,7 +63,14 @@ def generate(caption, wordtoix, ixtoword, text_encoder, netG, copies=2):
     # G attention
     cap_lens_np = cap_lens.cpu().data.numpy()
 
-    prefix = datetime.now().strftime('%Y/%B/%d/%H_%M_%S_%f')
+    # Make a save directory and change the current direcoty to it
+    mydir = os.path.join("../results/", datetime.today().strftime("%Y-%m-%d_%H-%M-%S"))
+    try:
+        os.makedirs(mydir)
+        os.chdir(mydir)
+    except:
+        print("Failed to create save directory")
+
     for j in range(batch_size):
         for k in range(len(fake_imgs)):
             im = fake_imgs[k][j].data.cpu().numpy()
@@ -76,11 +80,10 @@ def generate(caption, wordtoix, ixtoword, text_encoder, netG, copies=2):
             im = Image.fromarray(im)
 
             if k != len(fake_imgs) - 1:
-                im.save("{}org{}_g{}.png".format(j, "bird", k))
                 im = im.resize((256, 256), Image.BILINEAR)
-                im.save("{}bi{}_g{}.png".format(j, "bird", k))
+                im.save("{}{}_g{}.png".format(j, dataset, k))
             else:
-                im.save("{}{}_g{}.png".format(j, "bird", k))
+                im.save("{}{}_g{}.png".format(j, dataset, k))
 
 def word_index():
     # Load word to index dictionary
@@ -123,7 +126,7 @@ def attngan(caption, dataset):
     text_encoder, netG = models(len(wordtoix))
 
     # Generate images
-    generate(caption, wordtoix, ixtoword, text_encoder, netG)
+    generate(caption, wordtoix, ixtoword, text_encoder, netG, dataset)
 
 
 if __name__ == "__main__":
