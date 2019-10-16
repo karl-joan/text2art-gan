@@ -113,7 +113,7 @@ def models(word_len):
     netG.eval()
     return text_encoder, netG
 
-def attngan(caption, dataset):
+def attngan(caption, dataset, number):
     # Choose the model
     if dataset == "birds":
         cfg_from_file("attngan/cfg/eval_bird.yml")
@@ -127,7 +127,7 @@ def attngan(caption, dataset):
     text_encoder, netG = models(len(wordtoix))
 
     # Generate images
-    generate(caption, wordtoix, ixtoword, text_encoder, netG, dataset)
+    generate(caption, wordtoix, ixtoword, text_encoder, netG, dataset, number)
 
 
 if __name__ == "__main__":
