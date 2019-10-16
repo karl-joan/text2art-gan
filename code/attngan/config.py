@@ -2,7 +2,6 @@ import numpy as np
 from easydict import EasyDict as edict
 import yaml
 
-
 __C = edict()
 cfg = __C
 

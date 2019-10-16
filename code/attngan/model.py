@@ -8,8 +8,8 @@ import torch.nn.functional as F
 
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 
-from attngan.config import cfg
-from attngan.GlobalAttention import GlobalAttentionGeneral as ATT_NET
+from .config import cfg
+from .GlobalAttention import GlobalAttentionGeneral as ATT_NET
 
 
 # ############## Text2Image Encoder-Decoder #######
