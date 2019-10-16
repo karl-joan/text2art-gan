@@ -10,7 +10,7 @@ __C.DATASET_NAME = ''
 __C.CONFIG_NAME = 'attn2'
 __C.DATA_DIR = ''
 __C.GPU_ID = 0
-__C.CUDA = False
+__C.CUDA = True
 __C.WORKERS = 1
 
 __C.RNN_TYPE = 'LSTM'   # 'GRU'

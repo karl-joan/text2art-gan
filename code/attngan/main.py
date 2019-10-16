@@ -50,6 +50,9 @@ def generate(caption, wordtoix, ixtoword, text_encoder, netG, copies=2):
         captions = captions.cuda()
         cap_lens = cap_lens.cuda()
         noise = noise.cuda()
+        print("Cuda is in")
+    else:
+        print("Cude a net")
 
     # (1) Extract text embeddings
     hidden = text_encoder.init_hidden(batch_size)
