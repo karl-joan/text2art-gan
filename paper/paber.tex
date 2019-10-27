@@ -86,6 +86,10 @@
     Probleem lahendub kui lisada eesmrägile lisa tingimus, et teisendus peab olema tsükkliliselt järjepidev. Näiteks kui tõlkida lause eesti keelest inglise keelde, siis tagasi tõlkides peaks jõudma tagasi algse lauseni. Matemaatiliselt kui on teisendus $ G: X \rightarrow Y $ ja teine teisendus $F: Y \rightarrow X $, siis peaksid $ G $ ja $ F $ olema üksteise pöördfunktsioonid.
     Seda saab rakendada treenides teisendusi G ja F samaaegselt ning lisades tsüklilise järjepidevus kao, mis motiveerib et $ F(G(x)) \approx x $ ja $ G(F(y)) \approx y $. Kombineerides selle kao koos vastandliku kaoga domeenides $ X $ ja $ Y $, annab täis eesmärgi mitte paaris piltite teisenduseks.
 
+    \subsection{AttnGAN}
+    \subsection{Mudel}
+    Kasutades AttnGANi ja CycleGANi, on võimalik muuta tekst kunstiks --- sisendiks võetakse tekst, mis kirjeldab pildi sisu, ning lisaks number, mis ütleb, mis stiilis pilti genereerida. Tekst antakse sisendiks AttnGANile, mis muudab selle pildiks, ning seejärel valitakse stiilile vastav CycleGAN, mis muudab ennem loodud pildi kunstiteoseks.
+
 
     \section{Eksperimendid}
 
