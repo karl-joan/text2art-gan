@@ -2,10 +2,9 @@ import os
 from .models import create_model
 from .options.config import BaseOptions
 from .data import create_dataset
-from .util.visualizer import save_images
+from .util.util import save_images
 
 def img2art():
-    flag = True
     opt = BaseOptions().parse()  # get test options
     # hard-code some parameters for test
     opt.num_threads = 0   # test code only supports num_threads = 1
@@ -31,7 +30,4 @@ def img2art():
 
         if i % 5 == 0:  # save images to an HTML file
             print('processing (%04d)-th image... %s' % (i, img_path))
-        save_images(visuals, img_path, flag, aspect_ratio=opt.aspect_ratio, width=opt.display_winsize)
-
-        if flag == True:
-            flag = False
+        save_images(visuals, img_path, aspect_ratio=opt.aspect_ratio, width=opt.display_winsize)

@@ -44,24 +44,38 @@ def diagnose_network(net, name='network'):
     print(name)
     print(mean)
 
-
-def save_image(image_numpy, image_path, aspect_ratio=1.0):
-    """Save a numpy image to the disk
+def save_images(visuals, image_path, aspect_ratio=1.0, width=256):
+    """Save images to the disk.
 
     Parameters:
-        image_numpy (numpy array) -- input numpy array
-        image_path (str)          -- the path of the image
+        visuals (OrderedDict)    -- an ordered dictionary that stores (name, images (either tensor or numpy) ) pairs
+        image_path (str)         -- the string is used to create image paths
+        aspect_ratio (float)     -- the aspect ratio of saved images
+        width (int)              -- the images will be resized to width x width
+
+    This function will save images stored in 'visuals'.
     """
+    image_dir = "./temp/"
+    short_path = os.path.basename(image_path[0])
+    name = os.path.splitext(short_path)[0]
+    print(f"cwd: {os.getcwd()}")
+    print(f"image_dir: {image_dir}")
+    print(f"short_path: {short_path}")
+    print(f"name: {name}")
 
-    image_pil = Image.fromarray(image_numpy)
-    h, w, _ = image_numpy.shape
+    for label, im_data in visuals.items():
+        im = tensor2im(im_data) # Convert to numpy
+        image_name = '%s_%s.png' % (name, label)
+        save_path = os.path.join(image_dir, image_name)
 
-    if aspect_ratio > 1.0:
-        image_pil = image_pil.resize((h, int(w * aspect_ratio)), Image.BICUBIC)
-    if aspect_ratio < 1.0:
-        image_pil = image_pil.resize((int(h / aspect_ratio), w), Image.BICUBIC)
-    image_pil.save(image_path)
+        image_pil = Image.fromarray(im)
+        h, w, _ = im.shape
 
+        if aspect_ratio > 1.0:
+            image_pil = image_pil.resize((h, int(w * aspect_ratio)), Image.BICUBIC)
+        if aspect_ratio < 1.0:
+            image_pil = image_pil.resize((int(h / aspect_ratio), w), Image.BICUBIC)
+        image_pil.save(save_path)
 
 def print_numpy(x, val=True, shp=False):
     """Print the mean, min, max, median, std, and size of a numpy array
