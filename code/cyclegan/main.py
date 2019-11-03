@@ -4,10 +4,13 @@ from .options.config import BaseOptions
 from .data import create_dataset
 from .util.util import save_images
 
-def cyclegan(savepath, cpu=False):
+def cyclegan(savepath, use_cpu=False):
     opt = BaseOptions().parse() # Get options
     opt.dataroot = savepath
     opt.results_dir = savepath
+
+    if use_cpu:
+        opt.gpu_ids = "-1"
 
     dataset = create_dataset(opt)  # create a dataset given opt.dataset_mode and other options
     model = create_model(opt)      # create a model given opt.model and other options

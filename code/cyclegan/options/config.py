@@ -70,7 +70,7 @@ class BaseOptions():
         opt.aspect_ratio = 1.0
         opt.phase = "test"
         opt.eval = False
-        opt.num_test = 1 #Change later
+        opt.num_test = float("inf") #Change later
         opt.isTrain = False
 
         self.isTrain = False
