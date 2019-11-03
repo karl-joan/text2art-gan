@@ -26,7 +26,6 @@ def make_dataset(dir, max_dataset_size=float("inf")):
 
     for root, _, fnames in sorted(os.walk(dir)):
         for fname in fnames:
-            print(fname[-6:-4])
             if fname[-6:-4] == "g2":
                 path = os.path.join(root, fname)
                 images.append(path)

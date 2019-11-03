@@ -12,8 +12,8 @@ def cyclegan(savepath, cpu=False):
     dataset = create_dataset(opt)  # create a dataset given opt.dataset_mode and other options
     model = create_model(opt)      # create a model given opt.model and other options
     model.setup(opt)               # regular setup: load and print networks; create schedulers
-    # test with eval mode. This only affects layers like batchnorm and dropout.
 
+    # test with eval mode. This only affects layers like batchnorm and dropout.
     if opt.eval:
         model.eval()
 
@@ -25,6 +25,7 @@ def cyclegan(savepath, cpu=False):
         model.test()           # run inference
         visuals = model.get_current_visuals()  # get image results
         img_path = model.get_image_paths()     # get image paths
+        print(img_path)
 
         if i % 5 == 0:  # save images to an HTML file
             print('processing (%04d)-th image... %s' % (i, img_path))

@@ -55,17 +55,17 @@ def save_images(visuals, image_path, aspect_ratio=1.0, width=256):
 
     This function will save images stored in 'visuals'.
     """
-    image_dir = "./temp/"
-    short_path = os.path.basename(image_path[0])
+    #image_dir = "./temp/"
+    #image_dir, short_path = os.path.basename(image_path[0])
+    image_dir, short_path = os.path.split(image_path[0])
     name = os.path.splitext(short_path)[0]
-    print(f"cwd: {os.getcwd()}")
-    print(f"image_dir: {image_dir}")
-    print(f"short_path: {short_path}")
-    print(f"name: {name}")
 
     for label, im_data in visuals.items():
+        if label == "real":
+            pass
+
         im = tensor2im(im_data) # Convert to numpy
-        image_name = '%s_%s.png' % (name, label)
+        image_name = f"{name[:-2]}g3.png"
         save_path = os.path.join(image_dir, image_name)
 
         image_pil = Image.fromarray(im)
