@@ -14,9 +14,10 @@ def save_images(visuals, image_path, flag, aspect_ratio=1.0, width=256):
 
     This function will save images stored in 'visuals'.
     """
-    image_dir = "./test/"
+    image_dir = "./temp/"
     short_path = os.path.basename(image_path[0])
     name = os.path.splitext(short_path)[0]
+    print(f"cwd: {os.getcwd()}")
 
     if flag == True:
         print(f"image_dir: {image_dir}")

@@ -1,10 +1,12 @@
 from easydict import EasyDict as edict
 import argparse
 import os
-from util import util
+from ..util import util
 import torch
-import models
-import data
+import cyclegan.models as models
+import cyclegan.data as data
+
+print(__name__)
 
 
 class BaseOptions():
@@ -24,10 +26,10 @@ class BaseOptions():
         opt = edict()
 
         # Basic parameters
-        opt.dataroot = "datasets/horse2zebra/testA" # Change later
+        opt.dataroot = "cyclegan/datasets/horse2zebra/testA" # Change later
         opt.name = "horse2zebra_pretrained" # Change later
         opt.gpu_ids = "0" #Remove quotes
-        opt.checkpoints_dir = "./checkpoints"
+        opt.checkpoints_dir = "cyclegan/checkpoints"
 
         # Model parameters
         opt.model = "test" #Change later
@@ -64,11 +66,11 @@ class BaseOptions():
 
         # Test parameters
         opt.ntest = float("inf")
-        opt.results_dir = "./results/"
+        opt.results_dir = "cyclegan/results/"
         opt.aspect_ratio = 1.0
         opt.phase = "test"
         opt.eval = False
-        opt.num_test = 50 #Change later
+        opt.num_test = 1 #Change later
         opt.isTrain = False
 
         self.isTrain = False
