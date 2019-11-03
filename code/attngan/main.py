@@ -80,11 +80,14 @@ def generate(caption, wordtoix, ixtoword, text_encoder, netG, dataset, copies=2)
             im = np.transpose(im, (1, 2, 0))
             im = Image.fromarray(im)
 
+            name = prefix + f"{j}{dataset}_g{k}.png"
             if k != len(fake_imgs) - 1:
                 im = im.resize((256, 256), Image.BILINEAR)
-                im.save(prefix + "{}{}_g{}.png".format(j, dataset, k))
+                im.save(name)
             else:
-                im.save(prefix + "{}{}_g{}.png".format(j, dataset, k))
+                im.save(name)
+
+    return mydir
 
 def word_index():
     # Load word to index dictionary
@@ -127,7 +130,9 @@ def attngan(caption, dataset, number):
     text_encoder, netG = models(len(wordtoix))
 
     # Generate images
-    generate(caption, wordtoix, ixtoword, text_encoder, netG, dataset, number)
+    savepath = generate(caption, wordtoix, ixtoword, text_encoder, netG, dataset, number)
+
+    return savepath
 
 
 if __name__ == "__main__":
