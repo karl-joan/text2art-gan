@@ -48,8 +48,8 @@ class BaseOptions():
         # Dataset parameters
         opt.dataset_mode = "single" #CC
         opt.direction = "AtoB"
-        opt.serial_batches = False
-        opt.num_threads = 4
+        opt.serial_batches = True # Changed
+        opt.num_threads = 0 #Changed
         opt.batch_size = 1
         opt.load_size = 256
         opt.crop_size = 256
