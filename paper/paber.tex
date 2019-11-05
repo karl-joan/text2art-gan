@@ -39,21 +39,19 @@
 
     Üks uus mudel, mis on kiire kasvuga tekkinud, on GAN ehk generatiivne adverstiivne võrk. Antud võrku on võimalik treenida jäljendama erinevaid andme distributsioone. Kasutades treenimise käigus õpitud representatsioone, suudab too võrk genereerida uut materjali, mis on sarnane treenimisel kasutatud andmetega. \parencite{gan}
 
-    Uurimistöö eesmärk on luua mudel kasutades GANe, mis on ise võimeline genereerima kunsti teksti põhjal. Andes muldeli sisendiks kirjelduse, milline peab olema loodava kunstiteose sisu ja mis stiilis, genereerib mudel teose, mida tegelikkuses ei eksisteerigi. Lisaks saab autor selle protsessi käigus kinnitada ja laiendada oma teadmisi sügavõppest.
+    Uurimistöö eesmärk on luua mudel kasutades GANe, mis on ise võimeline genereerima kunsti teksti põhjal. Andes mudelile sisendiks kirjelduse, milline peab olema loodava kunstiteose sisu ja mis stiilis, genereerib mudel teose, mida tegelikkuses ei eksisteerigi. Lisaks saab autor selle protsessi käigus kinnitada ja laiendada oma teadmisi sügavõppest.
 
     Töö alguses annab autor ülevaate varasematest töödest selles valdkonnas ning tutvustab arenguid sügavõppes, mis on vajalikud töö mõistmiseks. See järel tutvustatakse erinevaid mudeleid, millele järgneb eksperimentaalne osa, kus analüüsitakse ning hinnatakse erinevate mudelite sooritust. 
     
     \section{Varasemad tööd}
 
-    Uue materjali genereerimine on keeruline probleem. Kogu sügavõppes ajaloo vältelt on diskrimineerivad mudelid saavutanud paremaid tulemusi kui generatiivsed mudelid. Hiljuti on aga see muutunud GANide tekkega.
-
-    GANid on saavutanud märkimisväärseid tulemusi pildi ja video generatsioonis ning ka super resolutsioonis. kunst
+    Uue materjali genereerimine on keeruline probleem. Kogu sügavõppes ajaloo vältelt on diskrimineerivad mudelid saavutanud paremaid tulemusi kui generatiivsed mudelid. Hiljuti on aga see muutunud GANide tekkega \parencite{gan}. GANid on saavutanud märkimisväärseid tulemusi pildi ja video generatsioonis ning ka super resolutsioonis. kunst. GANide edu põhjuseks on kahe närvivõrgu omavaheline võistlus, mille tulemusel on ideaalis näiteks genereeritud pildid eristamatu päris piltidest. 
 
     Pildi genereerimine tekstist on keeruline ja raske probleem, millest kasu pildi töötlusel ja Kasud (lisada erinevad kasud). Reed jt. kasutasid sisendist sõltuvat GANi \ingk{conditional GAN}, millele anti sisendiks tekstist extracted embeddingud (muuda sõna ära), et genereerida 64x64 suurusega pilte \parencite{reed}. Nende järgmine töö kasutas peale tekstisisendi ka objekti asukohta, mis parandas loodud piltide kvaliteeti \parencite{reed2}. 
 
     Zhang jt. kasutasid kahte GANi, et genereerida parema resolutsiooniga pilte. Esimene GAN genereerib ligikaudse visandi, millele teine GAN lisab detaile juurde ning suurendab resolutsiooni \parencite{stackgan}. Antud lähenemine lihtsustab probleemi keerukust. Nende järgmine töö kasutas kolme GANi, mis olid üksteise otsa pandud, et genereerida järjest suurema resulutsiooniga pilte. Esimene generaator genereeris pilte suurusega 64x64, teine 128x128 ja kolmas 256x256 \parencite{stackgan2}.
 
-    Zhangi jt. kõige hiljutisem töö kasutas samuti 3 GANist koosnevat struktuuri, aga millele on juurde lisatud tähelepanumehanism \parencite{attngan}. Tähelepanu võimaldab mudelil joonistada erinevaid alamregioone keskendudes sõnadele, mis on antud piirkonna jaoks kõige olulisemad. Kasutan oma mudelis Zhangi jt. mudelit AttnGAN, kuna antud mudeli tulemused on teiste omadest kõige paremad. 
+    Xu jt. mudel AttnGAN kasutab samuti 3 GANist koosnevat struktuuri, aga millele on juurde lisatud tähelepanumehanism \parencite{attngan}. Tähelepanu võimaldab mudelil joonistada erinevaid alamregioone keskendudes sõnadele, mis on antud piirkonna jaoks kõige olulisemad. Kasutan oma mudelis Xu jt. mudelit AttnGAN, kuna antud mudeli tulemused on teiste omadest paremad. 
 
     %  \section{Mudel}
     \section{Tehnilised detailid}
