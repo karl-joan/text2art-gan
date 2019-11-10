@@ -1,5 +1,6 @@
 import argparse
 from attngan import attngan, cfg
+from cyclegan import cyclegan
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Generate art from text")
@@ -16,4 +17,7 @@ args = parse_args()
 if args.cpu == True:
     cfg.CUDA = False
 
-attngan(args.caption, args.dataset, args.number)
+savepath = attngan(args.caption, args.dataset, args.number)
+#savepath = "../results/2019-10-17_19-46-20"
+
+cyclegan(savepath)
