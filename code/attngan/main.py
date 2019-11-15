@@ -116,12 +116,15 @@ def models(word_len):
     netG.eval()
     return text_encoder, netG
 
-def attngan(caption, dataset, number):
+def attngan(caption, dataset, number, use_cpu=False):
     # Choose the model
     if dataset == "birds":
         cfg_from_file("attngan/cfg/eval_bird.yml")
     else: # dataset == "coco"
         cfg_from_file("attngan/cfg/eval_coco.yml")
+
+    if use_cpu == True:
+        cfg.CUDA = False
 
     # Load word dictionaries
     wordtoix, ixtoword = word_index()

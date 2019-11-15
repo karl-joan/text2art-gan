@@ -1,5 +1,5 @@
 import argparse
-from attngan import attngan, cfg
+from attngan import attngan
 from cyclegan import cyclegan
 
 def parse_args():
@@ -14,10 +14,7 @@ def parse_args():
 
 args = parse_args()
 
-if args.cpu == True:
-    cfg.CUDA = False
-
-savepath = attngan(args.caption, args.dataset, args.number)
+savepath = attngan(args.caption, args.dataset, args.number, args.cpu)
 #savepath = "../results/2019-10-17_19-46-20"
 
-cyclegan(savepath)
+cyclegan(savepath, args.cpu)
