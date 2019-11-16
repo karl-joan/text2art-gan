@@ -1,4 +1,4 @@
-checkpoints/
+parameters/
 datasets/
 */__pycache__
 __pycache__

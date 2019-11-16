@@ -29,7 +29,7 @@ class BaseOptions():
         opt.dataroot = "cyclegan/datasets/horse2zebra/testA" # Change later
         opt.name = "horse2zebra_pretrained" # Change later
         opt.gpu_ids = "0" #Remove quotes
-        opt.checkpoints_dir = "cyclegan/checkpoints"
+        opt.checkpoints_dir = "cyclegan/parameters"
 
         # Model parameters
         opt.model = "test" #Change later
