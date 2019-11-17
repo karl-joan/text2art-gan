@@ -10,7 +10,9 @@ def cyclegan(savepath, style, dataset, use_cpu=False):
     opt.dataroot = savepath
     opt.results_dir = savepath
     if use_cpu:
-        opt.gpu_ids = ""
+        opt.gpu_ids = None
+    else:
+        torch.cuda.set_device(opt.gpu_id)
 
     if style == "abstract":
         if dataset == "birds":
