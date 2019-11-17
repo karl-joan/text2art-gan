@@ -1,4 +1,5 @@
 import os
+import torch
 from .models import create_model
 from .options.config import BaseOptions
 from .data import create_dataset
@@ -12,7 +13,7 @@ def cyclegan(savepath, style, dataset, use_cpu=False):
     if use_cpu:
         opt.gpu_ids = []
     else:
-        torch.cuda.set_device(opt.gpu_id)
+        torch.cuda.set_device(opt.gpu_ids[0])
 
     if style == "abstract":
         if dataset == "birds":
