@@ -53,8 +53,14 @@
 
 	Xu jt. mudel AttnGAN kasutab samuti 3 GANist koosnevat struktuuri, aga millele on juurde lisatud tähelepanumehanism \parencite{attngan}. Tähelepanu võimaldab mudelil joonistada erinevaid alamregioone keskendudes sõnadele, mis on antud piirkonna jaoks kõige olulisemad. Kasutan oma mudelis Xu jt. mudelit, et muuta tekst pildiks, kuna antud mudeli tulemused on teiste omadest paremad. 
 
+	Selleks, et muuta tavaline pilte kunstiteoseks, on kaks erinevat võimalust --- stiili ülekanne või CycleGAN. Stiili ülekanne võtab sisendiks sisupildi ja stiilipildi ning proovib seejärel genereerida pildi, mille sisu on sarnane sisupildiga ja mille stiil on sarnane stiilipildiga \parencite{styletransfer}.
+	Selleks kasutakse varem treenitud pildid klassifitseerija erinevaid ... 
 
+	CycleGAN võimaldab treenida see-eest GANi, mis teisendab sisendpildi ühest domeenist teise. Näiteks mustvalge pilt värviliseks või maastiku pilt maaliks \parencite{cyclegan}. Stiili ülekande puudujäägiks on tema võime ainult teisendada ühe pildi stiil teisele pildid, samas kui CycleGAN suudab teisendada terve piltide kollektsiooni stiili soovitud pildile. Zhu jt on ka leidnud, et Gatys jt meetodil ei õnnestu tihti luua fotorealistlikke pilte \parencite{cyclegan}.
 
+	Kunsti in proovitud genereerida ka teiste meetotidega nagu ArtGAN\parencite{artgan}, GANGough ja CAN\parencite{can}. Need mudelid kasutavad valdavalt ühte tingivat GANi ($ F(\boldsymbol{z}|\boldsymbol{\theta}) $), mis võimaldab genereerida erinevas stiilis ja sisuga teoseid. Sellise viisi puhul saab muuta loodavat sisu muutes vektorit $ \boldsymbol{\theta} $, kuid see muudab ainult loodava teose stiili ning ei võimalda täpselt määrata teose sisu. 
+
+	Antud töö autori viisiga on teoreetilselt võimalik kontrollida teose sisu ja stiili ning mille puhul on samast sisendist genereeritud teosed erinevad. Kuna puuduvad andmed kunstiteoste ja nende kirjelduste vahel, ei saa genereerida kunsti, mille sisu saab kirjeldusega määrata, ainult ühe GANiga. Autori mudel koosneb 2 GANist, täpsemalt omavahel aheldatud AttnGANist ja CycleGAnist, mida edaspidi nimetan text2art-ganiks.
 
 
 	%  \section{Mudel}
@@ -93,6 +99,15 @@
 	Seda saab rakendada treenides teisendusi G ja F samaaegselt ning lisades tsüklilise järjepidevus kao, mis motiveerib et $ F(G(x)) \approx x $ ja $ G(F(y)) \approx y $. Kombineerides selle kao koos vastandliku kaoga domeenides $ X $ ja $ Y $, annab täis eesmärgi mitte paaris piltite teisenduseks.
 
 	\subsection{AttnGAN}
+	AttnGAN on GAN, mis kasutab tähelepanu mehanisim, et genereerida pilte tekstist.
+	
+	Tähelepanu mehanism
+	
+	AttnGAN koosneb tegelikkuses 3 GANist, mis on üksteisega jadamisi ühendatud. Iga GAN genereerib järjest suuremaid pilte --- esimene genereerib 64x64, teine 128x128 ja kolmas 256x256. Antud struktuur võimaldab eespool olevatel GANidel genereerida üldis kujusid ja värve ning hilisematel GANidel juba täpsemaid detaile.
+	AttnGANil on ka teksti kodeerija, mis eraldab(extracts) sisendtekstist sõna- ja lausetunnused. AttnGAN kasutab lausetunnustest moodustatud vektoreid ja müravektorit sisendiks, et genereerida esialgne pilt. Edaspidi kasutab
+	
+	Et parandada tulemusi
+
 	\subsection{Mudel}
 	Kasutades AttnGANi ja CycleGANi, on võimalik muuta tekst kunstiks --- sisendiks võetakse tekst, mis kirjeldab pildi sisu, ning lisaks number, mis ütleb, mis stiilis pilti genereerida. Tekst antakse sisendiks AttnGANile, mis muudab selle pildiks, ning seejärel valitakse stiilile vastav CycleGAN, mis muudab ennem loodud pildi kunstiteoseks.
 
