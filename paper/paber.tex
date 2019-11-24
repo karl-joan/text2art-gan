@@ -17,7 +17,12 @@
 % Define expected value operator
 \DeclareMathOperator{\EX}{\mathbb{E}}
 
+
+%\DeclareNameAlias{sortname}{last-first}
 \addbibresource{viited.bib}
+%\DeclareNameAlias{sortname}{family-given}
+
+\ProvidesFile{biblatex.bbx}
 
 \begin{document}
 	\maketitle
@@ -41,26 +46,32 @@
 
 	Uurimistöö eesmärk on luua mudel kasutades GANe, mis on ise võimeline genereerima kunsti teksti põhjal. Andes mudelile sisendiks kirjelduse, milline peab olema loodava kunstiteose sisu ja mis stiilis, genereerib mudel teose, mida tegelikkuses ei eksisteerigi. Lisaks saab autor selle protsessi käigus kinnitada ja laiendada oma teadmisi sügavõppest.
 
+	Kuna puuduvad andmekogud, kus oleksid seotud kunstiteosed ja nende kirjeldused, ei ole võimalik treenida ühte GANi, mis suudaks teisendada sisu kirjelduse kunstiteoseks. Selleks kasutab autor kahte GANi --- esimene GAN teisendab sisu kirjelduse vastavaks pildiks (sisu\textrightarrow pilt), mis antakse järgmisele GANile, mis muudab loodud pildi kunstiteoseks soovitus stiilis (pilt\textrightarrow kunst).
+
+	Hüpotees on, et mudel, mis on treenitud genereerima ainult ühte kindlat objekti sisaldavaid teoseid (ehk mudel suudab luua teoseid, kus on näiteks ainult linnud), loob realistlikumaid teoseid kui mudel, mis on treenitud genereerima mitmeid erinevaid objekte sisaldavaid teoseid (ehk mudel suudab luua teoseid, kus on näiteks majad, metsad või muu selline).
+
 	Töö alguses annab autor ülevaate varasematest töödest selles valdkonnas ning tutvustab arenguid sügavõppes, mis on vajalikud töö mõistmiseks. See järel tutvustatakse erinevaid mudeleid, millele järgneb eksperimentaalne osa, kus analüüsitakse ning hinnatakse erinevate mudelite sooritust. 
 	
 	\section{Varasemad tööd}
 
 	Uue materjali genereerimine on keeruline probleem. Kogu sügavõppes ajaloo vältelt on diskrimineerivad mudelid saavutanud paremaid tulemusi kui generatiivsed mudelid. Hiljuti on aga see muutunud GANide tekkega \parencite{gan}. GANid on saavutanud märkimisväärseid tulemusi pildi \parencite{biggan} ja video generatsioonis \parencite{dvdgan} ning saanud hakkama ka pildi resolutsiooni suurendamise ehk super resolutsiooniga \parencite{srgan}. GANide edu põhjuseks on kahe närvivõrgu omavaheline võistlus, mille tulemusel genereeritud materjali kvaliteet paraneb ideaalis seni, kuni on eristamatu päris materjalist, mida GAN püüab järele aimata. GANi tööpõhimõttet tutvustatakse järgmises peatükkis.
 
-	Pildi genereerimine tekstist on huvitav probleem, mille arengus on hoogu andnud GANide kasutusele võtt. Reed jt. kasutasid sisendist sõltuvat GANi \ingk{conditional GAN}, millele anti sisendiks tekstist närvivõrguga eraldatud sisu, et genereerida 64x64 suurusega pilte \parencite{reed}. Nende järgmine töö kasutas peale tekstisisendi ka objekti asukohta, mis parandas loodud piltide kvaliteeti \parencite{reed2}. 
+	Pildi genereerimine tekstist on huvitav probleem, mille arengus on hoogu andnud GANide kasutusele võtt. Reed jt kasutasid sisendist sõltuvat GANi \ingk{conditional GAN}, millele anti sisendiks tekstist närvivõrguga eraldatud sisu, et genereerida 64x64 suurusega pilte \parencite{reed}. Nende järgmine töö kasutas peale tekstisisendi ka objekti asukohta, mis parandas loodud piltide kvaliteeti \parencite{reed2}. 
 
-	Zhang jt. kasutasid kahte GANi, et genereerida parema resolutsiooniga pilte. Esimene GAN genereerib ligikaudse visandi, millele teine GAN lisab detaile ning suurendab resolutsiooni \parencite{stackgan}. Antud lähenemine on lihtsam kui pildi genereerimine ühe GANiga. Nende järgmine töö kasutas kolme GANi, mis olid üksteise otsa pandud, et genereerida järjest suurema resulutsiooniga pilte. Esimene generaator genereeris pilte suurusega 64x64, teine 128x128 ja kolmas 256x256 \parencite{stackgan2}.
+	Zhang jt kasutasid kahte GANi, et genereerida parema resolutsiooniga pilte. Esimene GAN genereerib ligikaudse visandi, millele teine GAN lisab detaile ning suurendab resolutsiooni \parencite{stackgan}. Antud lähenemine on lihtsam kui pildi genereerimine ühe GANiga. Nende järgmine töö kasutas kolme GANi, mis olid üksteise otsa pandud, et genereerida järjest suurema resulutsiooniga pilte. Esimene generaator genereeris pilte suurusega 64x64, teine 128x128 ja kolmas 256x256 \parencite{stackgan2}.
 
-	Xu jt. mudel AttnGAN kasutab samuti 3 GANist koosnevat struktuuri, aga millele on juurde lisatud tähelepanumehanism \parencite{attngan}. Tähelepanu võimaldab mudelil joonistada erinevaid alamregioone keskendudes sõnadele, mis on antud piirkonna jaoks kõige olulisemad. Kasutan oma mudelis Xu jt. mudelit, et muuta tekst pildiks, kuna antud mudeli tulemused on teiste omadest paremad. 
+	Xu jt mudel AttnGAN kasutab samuti 3 GANist koosnevat struktuuri, aga millele on juurde lisatud tähelepanumehanism \parencite{attngan}. Tähelepanu võimaldab mudelil joonistada erinevaid alamregioone keskendudes sõnadele, mis on antud piirkonna jaoks kõige olulisemad. Kasutan oma mudelis Xu jt mudelit komponendina, mis muudab sisu kirjelduse pildiks (sisu\textrightarrow pilt), kuna antud mudeli tulemused on teiste omadest paremad. 
 
 	Selleks, et muuta tavaline pilte kunstiteoseks, on kaks erinevat võimalust --- stiili ülekanne või CycleGAN. Stiili ülekanne võtab sisendiks sisupildi ja stiilipildi ning proovib seejärel genereerida pildi, mille sisu on sarnane sisupildiga ja mille stiil on sarnane stiilipildiga \parencite{styletransfer}.
-	Selleks kasutakse varem treenitud pildid klassifitseerija erinevaid ... 
+	Selleks kasutatakse varem treenitud pildid klassifitseerija erinevaid kihte, et mõõta kahe pildi vahelist sisu ja stiili sarnasust. 
 
-	CycleGAN võimaldab treenida see-eest GANi, mis teisendab sisendpildi ühest domeenist teise. Näiteks mustvalge pilt värviliseks või maastiku pilt maaliks \parencite{cyclegan}. Stiili ülekande puudujäägiks on tema võime ainult teisendada ühe pildi stiil teisele pildid, samas kui CycleGAN suudab teisendada terve piltide kollektsiooni stiili soovitud pildile. Zhu jt on ka leidnud, et Gatys jt meetodil ei õnnestu tihti luua fotorealistlikke pilte \parencite{cyclegan}.
+	CycleGAN võimaldab treenida see-eest GANi, mis teisendab sisendpildi ühest domeenist teise. Näiteks mustvalge pilt värviliseks, sebra hobuseks või antud juhul pildi kunstiteoseks \parencite{cyclegan}. Treenimise käigus kasutadakse põhimõtted, et kui muuta mustvalge pilt värviliseks, siis saadud värvilise pildi teisendamisel mustvalgeks, peaks jõudma tagasi algse musta pildini.
 
-	Kunsti in proovitud genereerida ka teiste meetotidega nagu ArtGAN\parencite{artgan}, GANGough ja CAN\parencite{can}. Need mudelid kasutavad valdavalt ühte tingivat GANi ($ F(\boldsymbol{z}|\boldsymbol{\theta}) $), mis võimaldab genereerida erinevas stiilis ja sisuga teoseid. Sellise viisi puhul saab muuta loodavat sisu muutes vektorit $ \boldsymbol{\theta} $, kuid see muudab ainult loodava teose stiili ning ei võimalda täpselt määrata teose sisu. 
+	Kui võrrelda CycleGANi ja stiili ülekannet, siis stiil ülekande puudujäägiks on tema võime ainult teisendada ühe pildi stiil teisele pildid, samas kui CycleGAN suudab teisendada terve piltide kollektsiooni stiili soovitud pildile. Zhu jt on ka leidnud, et Gatys jt meetodil ei õnnestu tihti luua fotorealistlikke pilte \parencite{cyclegan}. Kasutan oma mudelis CycleGANi komponendina, mis muudab pildi soovitud stiiliga teoseks (pilt\textrightarrow kunst), kuna antud mudel suudab kanda üle terve kollektsiooni stiili.
 
-	Antud töö autori viisiga on teoreetilselt võimalik kontrollida teose sisu ja stiili ning mille puhul on samast sisendist genereeritud teosed erinevad. Kuna puuduvad andmed kunstiteoste ja nende kirjelduste vahel, ei saa genereerida kunsti, mille sisu saab kirjeldusega määrata, ainult ühe GANiga. Autori mudel koosneb 2 GANist, täpsemalt omavahel aheldatud AttnGANist ja CycleGAnist, mida edaspidi nimetan text2art-ganiks.
+	Leidub varasemaid tööid, kus on kasutatud GANi, et genereerida kunsti, näiteks ArtGAN\parencite{artgan}, GANGough ja CAN\parencite{can}. Need mudelid kasutavad valdavalt ühte tingivat GANi ($ F(\boldsymbol{z}|\boldsymbol{\theta}) $, $ \boldsymbol{z} $ on müravektor ja $ \boldsymbol{\theta} $ on stiilivektor), mis võimaldab genereerida erinevas stiilis ja sisuga teoseid. Sellise viisi puhul saab muuta loodavat sisu muutes vektorit $ \boldsymbol{\theta} $, mis muudab peamiselt loodava teose stiili ja seega loodavat sisu, aga ei võimalda täpselt määrata loodava teose sisu. 
+
+	Antud töö autori viisiga on teoreetilselt võimalik kontrollida teose sisu ja stiili ning mille puhul on ka samast sisendist genereeritud teosed erinevad. Kuna puuduvad andmed kunstiteoste ja nende kirjelduste vahel, ei saa genereerida kunsti, mille sisu saab kirjeldusega määrata, ainult ühe GANiga. Seega koosneb autori mudel 2 GANist --- AttnGANist (sisu\textrightarrow pilt) ja CycleGANist (pilt\textrightarrow kunst). %, mida edaspidi nimetan text2art-ganiks.
 
 
 	%  \section{Mudel}
@@ -99,11 +110,11 @@
 	Seda saab rakendada treenides teisendusi G ja F samaaegselt ning lisades tsüklilise järjepidevus kao, mis motiveerib et $ F(G(x)) \approx x $ ja $ G(F(y)) \approx y $. Kombineerides selle kao koos vastandliku kaoga domeenides $ X $ ja $ Y $, annab täis eesmärgi mitte paaris piltite teisenduseks.
 
 	\subsection{AttnGAN}
-	AttnGAN on GAN, mis kasutab tähelepanu mehanisim, et genereerida pilte tekstist.
+	AttnGAN on GAN, mis kasutab tähelepanu mehhanismi et genereerida pilte tekstist.
 	
 	Tähelepanu mehanism
 	
-	AttnGAN koosneb tegelikkuses 3 GANist, mis on üksteisega jadamisi ühendatud. Iga GAN genereerib järjest suuremaid pilte --- esimene genereerib 64x64, teine 128x128 ja kolmas 256x256. Antud struktuur võimaldab eespool olevatel GANidel genereerida üldis kujusid ja värve ning hilisematel GANidel juba täpsemaid detaile.
+	AttnGAN koosneb tegelikkuses 3 GANist, mis on üksteisega jadamisi ühendatud. Iga GAN genereerib järjest suuremaid pilte --- esimene genereerib 64x64, teine 128x128 ja kolmas 256x256. Antud struktuur võimaldab eespool olevatel GANidel genereerida ligikaudseid kujusid ja värve ning hilisematel GANidel juba täpsemaid detaile.
 	AttnGANil on ka teksti kodeerija, mis eraldab(extracts) sisendtekstist sõna- ja lausetunnused. AttnGAN kasutab lausetunnustest moodustatud vektoreid ja müravektorit sisendiks, et genereerida esialgne pilt. Edaspidi kasutab
 	
 	Et parandada tulemusi
