@@ -106,13 +106,35 @@
 %%% Bibliography related stuff
 %% Change the the look of the bibliography and citation
 % Maybe consider using uniquelist=false
-\RequirePackage[backend=biber, citestyle=authoryear,maxbibnames=99]{biblatex}
+\RequirePackage[backend=biber, style=authoryear, maxbibnames=99, dashed=false]{biblatex}
 \DefineBibliographyStrings{estonian}{andothers={jt}} % Replace et al with jt.
 \renewcommand*{\nameyeardelim}{\addcomma\space} % Add a comma between author and year
 
+\DeclareFieldFormat*{title}{#1} % No qoutation marks
+
+\DefineBibliographyExtras{estonian}{%
+	\renewbibmacro*{in:}{%
+		\setunit{\addperiod\space\textendash\space}}}
+
+\DefineBibliographyExtras{estonian}{%
+	\renewbibmacro*{url}{%
+		\printfield{url}}}	
+
+\DefineBibliographyStrings{estonian}{
+  editor           = {ed\adddot},
+  editors          = {ed\adddot},
+  byeditor         = {ed\adddot},
+  page             = {p\adddot},
+  pages            = {pp\adddot},
+}
+
+% Remove indentation
+\setlength{\bibhang}{0pt}
+\setlength{\bibitemsep}{2\itemsep}
+
 % Removes the numbers before entries
-\DeclareFieldFormat{labelnumberwidth}{} % Doesn't print anything in the label
-\setlength{\biblabelsep}{0pt} % Eliminates the spacing before the entries
+%\DeclareFieldFormat{labelnumberwidth}{} % Doesn't print anything in the label
+%\setlength{\biblabelsep}{0pt} % Eliminates the spacing before the entries
 
 % Title formatting
 \RequirePackage{titlesec}
