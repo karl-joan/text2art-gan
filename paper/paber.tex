@@ -10,7 +10,7 @@
 
 % General info
 \title{Kunsti genereerimine teksti põhjal}
-\authors{Karl-Joan Alesma, III MF}
+\author{Karl-Joan Alesma, III MF}
 \instructor{õp Malle Eglit}
 \date{2019}
 
@@ -25,6 +25,7 @@
 
 \usepackage{xpatch}
 
+% Remove parenthesis around year
 \xpatchbibmacro{date+extradate}{%
   \printtext[parens]%
 }{%
@@ -132,13 +133,15 @@
 	kus $ D_y $ on $ G $ diskriminaator, mis proovib eristada $ G(\boldsymbol{x}) $ ja $ \boldsymbol{y} $, $ D_x $ on  $ F $ diskriminaator, mis proovib eristada $ F(\boldsymbol{y}) $ ja $ \boldsymbol{x} $, ning $ \lambda $ on hüperparameeter, mis määrab, kui oluline on $ \loss_{cyc} $ täiseesmärgi juures.
 
 	\subsection{AttnGAN}
-	AttnGAN on GAN, mis kasutab tähelepanu mehhanismi et genereerida pilte tekstist.
+
+	AttnGAN on mudel, mis suudab genereerida pilti sisendteksti põhjal. Kui anda mudelile sisendiks pildi kirjeldus "see lind on punane, tal on valged tiivad ning ta nokk on pikk", siis mudel suudab antud sisendi põhjal luua pildi, mis vastab teksti kirjeldusele.
 	
-	Tähelepanu mehanism
-	
-	AttnGAN koosneb tegelikkuses 3 GANist, mis on üksteisega jadamisi ühendatud. Iga GAN genereerib järjest suuremaid pilte --- esimene genereerib 64x64, teine 128x128 ja kolmas 256x256. Antud struktuur võimaldab eespool olevatel GANidel genereerida ligikaudseid kujusid ja värve ning hilisematel GANidel juba täpsemaid detaile.
-	AttnGANil on ka teksti kodeerija, mis eraldab(extracts) sisendtekstist sõna- ja lausetunnused. AttnGAN kasutab lausetunnustest moodustatud vektoreid ja müravektorit sisendiks, et genereerida esialgne pilt. Edaspidi kasutab
-	
+	Mudeli sisemuse on 3 GAN, mis on üksteisega jadamisi ühendatud. Iga GAN genereerib järjest suuremaid pilte --- esimene genereerib 64x64, teine 128x128 ja kolmas 256x256. Antud struktuur võimaldab eespool olevatel GANidel genereerida ligikaudseid kujusid ja värve ning hilisematel GANidel juba täpsemaid detaile. Teoorias on võimalik lisada veel GANe üksteise otsa, mis võimaldaks genereerida kõrgema resolutsiooniga pilte, aga selle tulemuse suureneks treenimiseks kuluv aeg (on vaja teha rohkem arvutusi) ning võib juhtuda, et mudel variseb kokku.
+
+	AttnGANis on lisaks teksti kodeerija, mis eraldab sisendtekstist sõna- ja lausetunnused. Eraldatud lausetunnuse vektor ning müravektor antakse sisendiks esimesel GANile, mis genereerib esiaglse pildi. Esimese ja teise GANi vahel on tähelepanu mehanism, mis kasutab genereeritud pildi ning eraldatud sõnatunnuseid, et leida sõna-konteksti vektor, mis määrab ära kui oluline mingi sõna teatud regiooni kujundamisel on (lihtsamalt öeldes pööratakse tähelepanu erinevatele osedele). Esialgne pilt ning sõna-konteksti vektor kombineeridakse ning antakse seejärel sisendiks teisele GANile, mis genereerib järgmise pildi. Analoogne mehanism on ka teise ja kolmanda GANi vahel.
+
+	Treenimise jaoks kasutakse peale klassikalise GANi funktsiooni ka teist funktsiooni, mis määrab ära kui sarnased on omavahel sisendtekst ning genereeitud pilt. Selleks funktsiooniks või mudeliks on sügav tähelepanu multimodaalne sarnasus mudel ehk lühemalt DAMSM \ingk{Deep Attentional Multimodal Similarity Model}
+
 	Et parandada tulemusi
 
 	\subsection{Mudel}
