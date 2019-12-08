@@ -19,7 +19,7 @@
 \DeclareMathOperator{\loss}{\mathcal{L}}
 \DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
 
-%\DeclareNameAlias{sortname}{last-first}
+\DeclareNameAlias{sortname}{family-given}
 \addbibresource{viited.bib}
 %\DeclareNameAlias{sortname}{family-given}
 
@@ -79,13 +79,15 @@
 
 	Kui võrrelda CycleGANi ja stiili ülekannet, siis stiil ülekande puudujäägiks on tema võime ainult teisendada ühe pildi stiil teisele pildid, samas kui CycleGAN suudab teisendada terve piltide kollektsiooni stiili soovitud pildile. Zhu jt on ka leidnud, et Gatys jt meetodil ei õnnestu tihti luua fotorealistlikke pilte \parencite{cyclegan}. Kasutan oma mudelis CycleGANi komponendina, mis muudab pildi soovitud stiiliga teoseks (pilt\textrightarrow kunst), kuna antud mudel suudab kanda üle terve kollektsiooni stiili ning luua realistlikkemaid pilte.
 
-	Leidub varasemaid tööid, kus on kasutatud GANi, et genereerida kunsti, näiteks ArtGAN\parencite{artgan}, GANGough ja CAN\parencite{can}. Need mudelid kasutavad valdavalt ühte tingivat GANi ($ F(\boldsymbol{z}|\boldsymbol{\theta}) $, $ \boldsymbol{z} $ on müravektor ja $ \boldsymbol{\theta} $ on stiilivektor), mis võimaldab genereerida erinevas stiilis ja sisuga teoseid. Sellise viisi puhul saab muuta loodavat sisu muutes vektorit $ \boldsymbol{\theta} $, mis muudab peamiselt loodava teose stiili ja seega loodavat sisu, aga ei võimalda täpselt määrata loodava teose sisu. 
+	Leidub varasemaid töid, kus on kasutatud GANi, et genereerida kunsti, näiteks ArtGAN\parencite{artgan}, GANGough\parencite{gangough} ja CAN\parencite{can}. Need mudelid kasutavad valdavalt ühte tingivat GANi ($ F(\boldsymbol{z}|\boldsymbol{\theta}) $, $ \boldsymbol{z} $ on müravektor ja $ \boldsymbol{\theta} $ on stiilivektor), mis võimaldab genereerida erinevas stiilis ja sisuga teoseid. Sellise viisi puhul saab muuta loodavat sisu muutes vektorit $ \boldsymbol{\theta} $, mis muudab peamiselt loodava teose stiili ja seega loodavat sisu, aga ei võimalda täpselt määrata loodava teose sisu. 
 
 	Antud töö autori viisiga on teoreetilselt võimalik kontrollida teose sisu ja stiili ning mille puhul on ka samast sisendist genereeritud teosed erinevad. Kuna puuduvad andmed kunstiteoste ja nende kirjelduste vahel, ei saa genereerida kunsti, mille sisu saab kirjeldusega määrata, ainult ühe GANiga. Seega koosneb autori mudel 2 GANist --- AttnGANist (sisu\textrightarrow pilt) ja CycleGANist (pilt\textrightarrow kunst). %, mida edaspidi nimetan text2art-ganiks.
 
 
 	%  \section{Mudel}
 	\section{Tehnilised detailid}
+	Eelmises osas anti põgus ülevaade erinevadest mudelidest. Selles osas kirjeldatakse põhjalikumalt, kuidas töötab GAN, AttnGAN ja CycleGAN.
+
 	\subsection{GAN}
 	Generatiivne adversatiivne võrk ehk GAN \ingk{generative adversarial network} on sügavõppe mudel, mis koosneb kahest neruonvõrgust --- üks on diskrimineerija \ingk{discriminator} ja teine on generaator \ingk{generator}.  Generaatori ülesandeks on luua sisu, mis on sarnane kasutusel olevate andmete distributsiooniga. Diskrimineerija ülesandeks on määrata, kas talle näidatud sisu on võetud päris andmete hulgast või on loodud generaatori poolt.
 	
@@ -100,6 +102,20 @@
 	\end{equation}
 
 	kus $ \boldsymbol{z} $ on müravektor, mis on võetud distributsioonist $ p_{\boldsymbol{z}} $ (nt. ühtlane- või normaaljaotus), $ \boldsymbol{x} $ on päris pilt, mis on võetud distributsioonist $ p_{andmed} $, $ G $ on generaator funktsioon ja $ D $ on diskrimineerija funktsioon. Praktikas võib juhtuda, et võrrandis nr 1 ei teki piisavalt tugevaid gradiente, et treenida $ G $-d. Selle asemel, et minimeerida $ \log (1 - D(G(\boldsymbol{z}))) $, saame panna $ G $ maskimeerima $ \log D(G(\boldsymbol{z})) $, mis tekkitab tugevamaid gradiente. Treenides $ G $ ja $ D $ vaheldumisi, treenitakse GANi looma pilte, mis sarnanevad andmete distributsiooniga. \parencite{gan}
+
+	
+	\subsection{AttnGAN}
+
+	AttnGAN on mudel, mis suudab genereerida pilti sisendteksti põhjal. Kui anda mudelile sisendiks pildi kirjeldus "see lind on punane, tal on valged tiivad ning ta nokk on pikk", siis mudel suudab antud sisendi põhjal luua pildi, mis vastab teksti kirjeldusele.
+	
+	Mudeli sisemuse on 3 GAN, mis on üksteisega jadamisi ühendatud. Iga GAN genereerib järjest suuremaid pilte --- esimene genereerib 64x64, teine 128x128 ja kolmas 256x256. Antud struktuur võimaldab eespool olevatel GANidel genereerida ligikaudseid kujusid ja värve ning hilisematel GANidel juba täpsemaid detaile. Teoorias on võimalik lisada veel GANe üksteise otsa, mis võimaldaks genereerida kõrgema resolutsiooniga pilte, aga selle tulemuse suureneks treenimiseks kuluv aeg (on vaja teha rohkem arvutusi) ning võib juhtuda, et mudel variseb lihtsamini kokku.
+
+	AttnGANis on lisaks teksti kodeerija, mis eraldab sisendtekstist sõna- ja lausetunnused. Eraldatud lausetunnusvektor ning müravektor antakse sisendiks esimesel GANile, mis genereerib esiaglse pildi. Esimese ja teise GANi vahel on tähelepanumehanism, mis kasutab genereeritud pilti ning eraldatud sõnatunnuseid, et leida sõna-konteksti vektor, mis määrab ära kui oluline mingi sõna teatud regiooni kujundamisel on (lihtsamalt öeldes pööratakse tähelepanu erinevatele osedele). Esialgne pilt ning sõna-konteksti vektor kombineeridakse ning antakse seejärel sisendiks teisele GANile, mis genereerib järgmise pildi. Analoogne mehanism on ka teise ja kolmanda GANi vahel.
+
+	Treenimise jaoks kasutakse peale klassikalise GANi funktsiooni ka mudelit, mille nimi on sügav tähelepanu multimodaalne sarnasus mudel ehk lühemalt DAMSM \ingk{Deep Attentional Multimodal Similarity Model}. Antud mudel leiab, kui sarnased on omavahel sisendtekst ning genereeritud pilt. Kuna selle mehanismi tööpõhimõtte on keeruline, siis on saab sellega lähemalt tutvuda Xu jt töös.
+
+	Mudeli täis eesmärk on
+
 
 	\subsection{CycleGAN}
 	\begin{figure}
@@ -132,23 +148,11 @@
 
 	kus $ D_y $ on $ G $ diskriminaator, mis proovib eristada $ G(\boldsymbol{x}) $ ja $ \boldsymbol{y} $, $ D_x $ on  $ F $ diskriminaator, mis proovib eristada $ F(\boldsymbol{y}) $ ja $ \boldsymbol{x} $, ning $ \lambda $ on hüperparameeter, mis määrab, kui oluline on $ \loss_{cyc} $ täiseesmärgi juures.
 
-	\subsection{AttnGAN}
-
-	AttnGAN on mudel, mis suudab genereerida pilti sisendteksti põhjal. Kui anda mudelile sisendiks pildi kirjeldus "see lind on punane, tal on valged tiivad ning ta nokk on pikk", siis mudel suudab antud sisendi põhjal luua pildi, mis vastab teksti kirjeldusele.
-	
-	Mudeli sisemuse on 3 GAN, mis on üksteisega jadamisi ühendatud. Iga GAN genereerib järjest suuremaid pilte --- esimene genereerib 64x64, teine 128x128 ja kolmas 256x256. Antud struktuur võimaldab eespool olevatel GANidel genereerida ligikaudseid kujusid ja värve ning hilisematel GANidel juba täpsemaid detaile. Teoorias on võimalik lisada veel GANe üksteise otsa, mis võimaldaks genereerida kõrgema resolutsiooniga pilte, aga selle tulemuse suureneks treenimiseks kuluv aeg (on vaja teha rohkem arvutusi) ning võib juhtuda, et mudel variseb kokku.
-
-	AttnGANis on lisaks teksti kodeerija, mis eraldab sisendtekstist sõna- ja lausetunnused. Eraldatud lausetunnuse vektor ning müravektor antakse sisendiks esimesel GANile, mis genereerib esiaglse pildi. Esimese ja teise GANi vahel on tähelepanu mehanism, mis kasutab genereeritud pildi ning eraldatud sõnatunnuseid, et leida sõna-konteksti vektor, mis määrab ära kui oluline mingi sõna teatud regiooni kujundamisel on (lihtsamalt öeldes pööratakse tähelepanu erinevatele osedele). Esialgne pilt ning sõna-konteksti vektor kombineeridakse ning antakse seejärel sisendiks teisele GANile, mis genereerib järgmise pildi. Analoogne mehanism on ka teise ja kolmanda GANi vahel.
-
-	Treenimise jaoks kasutakse peale klassikalise GANi funktsiooni ka teist funktsiooni, mis määrab ära kui sarnased on omavahel sisendtekst ning genereeitud pilt. Selleks funktsiooniks või mudeliks on sügav tähelepanu multimodaalne sarnasus mudel ehk lühemalt DAMSM \ingk{Deep Attentional Multimodal Similarity Model}
-
-	Et parandada tulemusi
-
 	\subsection{Mudel}
-	Kasutades AttnGANi ja CycleGANi, on võimalik muuta tekst kunstiks --- sisendiks võetakse tekst, mis kirjeldab pildi sisu, ning lisaks number, mis ütleb, mis stiilis pilti genereerida. Tekst antakse sisendiks AttnGANile, mis muudab selle pildiks, ning seejärel valitakse stiilile vastav CycleGAN, mis muudab ennem loodud pildi kunstiteoseks.
-
+	Selle töö poolt välja pakkutud mudel koosneb kahest komponendist --- AttnGANist, mis muudab sisenteksti pildiks, ning CycleGANist, mis muudab AttnGANi poolt loodud pildi kunstipäraseks. Lisaks sisendtekstile antakse mudelile ka number, mis määrb ära missuguse stiili teisenduse CycleGAN teeb.
 
 	\section{Eksperimendid}
+	\subsection{Andmekogud}
 
 	\unsection{Kokkuvõte}
 	\unsection{Summary}

@@ -106,11 +106,13 @@
 %%% Bibliography related stuff
 %% Change the the look of the bibliography and citation
 % Maybe consider using uniquelist=false
-\RequirePackage[backend=biber, style=authoryear, maxbibnames=99, dashed=false]{biblatex}
+\RequirePackage[backend=biber, style=authoryear, maxbibnames=99, dashed=false, giveninits=true]{biblatex}
 \DefineBibliographyStrings{estonian}{andothers={jt}} % Replace et al with jt.
 \renewcommand*{\nameyeardelim}{\addcomma\space} % Add a comma between author and year
 
 \DeclareFieldFormat*{title}{#1} % No qoutation marks
+
+\DeclareNameAlias{sortname}{family-given}
 
 \DefineBibliographyExtras{estonian}{%
 	\renewbibmacro*{in:}{%
