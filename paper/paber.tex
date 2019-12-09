@@ -152,9 +152,37 @@
 	Selle töö poolt välja pakkutud mudel koosneb kahest komponendist --- AttnGANist, mis muudab sisenteksti pildiks, ning CycleGANist, mis muudab AttnGANi poolt loodud pildi kunstipäraseks. Lisaks sisendtekstile antakse mudelile ka number, mis määrb ära missuguse stiili teisenduse CycleGAN teeb.
 
 	\section{Eksperimendid}
+	Selles peatükkis hinnatakse välja pakutud mudeli edukust realistliku kunsti geneerimisel ning selle sisu kooskõla sisendtekstiga.
+
 	\subsection{Andmekogud}
+	AttnGAN treenimiseks kasutati CUB\parencite{cub} ja COCO\parencite{srgan} andmekogusid. CUB on andmekogum lindudest, kus on $\approx$ 10 000 pilti, kus iga pildi kohta on 10 erinevat kirjeldust. COCO on laiahaardelisem andmekogum, kus on pilte loomadest, sõidukitest, toidust ning mitmetest muudest objektidest. Andmekogus on $\approx$ 80 000 pilti, kus iga pildi kohta on 5 erinevat kirjeldust.
+
+	CycleGANi treenimiseks kasutati Wikiart'i andmekogumit\parencite{wikiart}. Tegu on andmekoguga, kus on $\approx$ 80 000 erinevat kunstiteost, millele on juurde lisatud stiil, žanr, autor jne. Selle asemel, et andmeid uuesti kokku korjata, kasutas autor Tan jt poolt varasemalt kokku korjatud Wikiart andmekogumit\parencite{artgan}. Treenimiseks kasutati kategooriaid abstraktne ekspressionism ja impressionism.
+
+	\subsection{CUB}
+	Tulemustest on näha, et genereeritud pildid näevad lindude moodi välja ning samas säilitavad ka kunstistiilile iseloomulikud jooned.
+
+	\subsection{COCO}
+	Mudelil oli raskusi sellest andmekogumist pilte genereerida. Kuna kogus on pilte mitmetest erilaadi objektitest, on CycleGANil raskusi stiili ülekandmisega.
+
+	Võib tähelda veel, et AttnGAN poolt genereeritud pildid ei ole nii realistlikud kui CUB andmekogumi puhul. Selle tõttu on erinev pildijaotuses, mida kasutati CycleGANi treenimiseks, pildijaotusest, millele CycleGAN kannab stiili üle. Pildijaotus lõhe vähendamiseks kasutati COCO testimis andmekogu 5000 erinevat kirjeldust, et genereerida 5000 uut pilti. Kasut
+
+	Katsetasin veel lambda väärtuse muutmisega võrrandis ...
+
+	Notes: \\
+	Lisa pildijaotuse erinevuse kohta pilt
 
 	\unsection{Kokkuvõte}
+	Uurimistöö eesmärk oli luu mudel, mis oleks ise võimeline genereerima kunsti. 
+
+	Probleemid
+
+	Püstitatud hüpotees leidis kinnitust.
+
+	Treenimiseks kulus palju aega.
+
+	Autor õppis töö käigus palju uut
+
 	\unsection{Summary}
 
 	% The bibliography
