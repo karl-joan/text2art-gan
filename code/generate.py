@@ -21,6 +21,5 @@ if args.style == "impressionism" and args.dataset == "coco":
     raise Exception("impressionism style is currently only available for birds dataset")
 
 savepath = attngan(args.caption, args.dataset, args.number, args.cpu)
-#savepath = "../results/2019-10-17_19-46-20"
 
 cyclegan(savepath, args.style, args.dataset, args.cpu)
