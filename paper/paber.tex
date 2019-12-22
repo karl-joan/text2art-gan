@@ -50,17 +50,17 @@
 	\newcommand*{\ingk}[1]{(\textit{ing. k. #1})}
 
 	\unsection{Sissejuhatus}
-	Sügavõppe on distsipliin, mis on eksisteerinud juba alatest 1940 aastatest (küll aga teise nime all), kuid on alles hiljuti kasvanud populaarsuses. Kiiret arengut ja edasi minekut on peamiselt põhjustanud kaks asja: arvuti ressursside kasv ning järjest suurenev andmete hulk. Need kaks asja on võimaldanud treenida sügavamaid, keerulisemaid ning täpsemaid mudeleid. \parencite{deeplearningbook}	 
+	Sügavõppe \ingk{Deep Learning} on meetodite kogu, mis võimaldab õppetada arvutile, kuidas lahendada erinevaid probleeme. Antud disipliin on eksisteerinud juba alatest 1940 aastatest (küll aga teise nime all), kuid on alles hiljuti kasvanud populaarsuses. Kiiret arengut ja edasi minekut on peamiselt põhjustanud kaks asja: arvuti ressursside kasv ning järjest suurenev andmete hulk. Need kaks asja on võimaldanud treenida sügavamaid, keerulisemaid ning täpsemaid mudeleid. \parencite{deeplearningbook}	 
 
 	Üks uus mudel, mis on kiire kasvuga tekkinud, on GAN ehk generatiivne adverstiivne võrk. Antud võrku on võimalik treenida jäljendama erinevaid andme distributsioone. Kasutades treenimise käigus õpitud representatsioone, suudab too võrk genereerida uut materjali, mis on sarnane treenimisel kasutatud andmetega. \parencite{gan}
 
 	Uurimistöö eesmärk on luua mudel kasutades GANe, mis on ise võimeline genereerima kunsti teksti põhjal. Andes mudelile sisendiks kirjelduse, milline peab olema loodava kunstiteose sisu ja mis stiilis, genereerib mudel teose, mida tegelikkuses ei eksisteerigi. Lisaks saab autor selle protsessi käigus kinnitada ja laiendada oma teadmisi sügavõppest.
 
-	Kuna puuduvad andmekogud, kus oleksid seotud kunstiteosed ja nende kirjeldused, ei ole võimalik treenida ühte GANi, mis suudaks teisendada sisu kirjelduse kunstiteoseks. Selleks kasutab autor kahte GANi --- esimene GAN teisendab sisu kirjelduse vastavaks pildiks (sisu\textrightarrow pilt), mis antakse järgmisele GANile, mis muudab loodud pildi kunstiteoseks soovitus stiilis (pilt\textrightarrow kunst).
+	Kuna puuduvad digitaalsed andmekogud, kus oleksid olemas teoste kirjeldused (nt "Pildil on mees, kes raiub puid, ning tema selja taga on karu"), ei ole võimalik treenida ühte GANi, mis suudaks teisendada sisu kirjelduse kunstiteoseks. Selleks kasutab autor kahte GANi --- esimene GAN teisendab sisu kirjelduse vastavaks pildiks (sisu\textrightarrow pilt), mis antakse järgmisele GANile, mis muudab loodud pildi kunstiteoseks soovitus stiilis (pilt\textrightarrow kunst).
 
 	Hüpotees on, et mudel, mis on treenitud genereerima ainult ühte kindlat objekti sisaldavaid teoseid (ehk mudel suudab luua teoseid, kus on näiteks ainult linnud), loob realistlikumaid teoseid kui mudel, mis on treenitud genereerima mitmeid erinevaid objekte sisaldavaid teoseid (ehk mudel suudab luua teoseid, kus on näiteks majad, metsad või muu selline).
 
-	Töö alguses annab autor ülevaate varasematest töödest selles valdkonnas ning tutvustab arenguid sügavõppes, mis on vajalikud töö mõistmiseks. See järel tutvustatakse erinevaid mudeleid, millele järgneb eksperimentaalne osa, kus analüüsitakse ning hinnatakse erinevate mudelite sooritust. 
+	Töö alguses annab autor ülevaate varasematest töödest selles valdkonnas ning tutvustab loogikat, mille põhjal on mudel kokku pandud. Seejärel tutvustatakse erinevaid mudeleid, millele järgneb eksperimentaalne osa, kus analüüsitakse ning hinnatakse erinevate mudelite sooritust. 
 	
 	\section{Varasemad tööd}
 
@@ -114,9 +114,6 @@
 
 	Treenimise jaoks kasutakse peale klassikalise GANi funktsiooni ka mudelit, mille nimi on sügav tähelepanu multimodaalne sarnasus mudel ehk lühemalt DAMSM \ingk{Deep Attentional Multimodal Similarity Model}. Antud mudel leiab, kui sarnased on omavahel sisendtekst ning genereeritud pilt. Kuna selle mehanismi tööpõhimõtte on keeruline, siis on saab sellega lähemalt tutvuda Xu jt töös.
 
-	Mudeli täis eesmärk on
-
-
 	\subsection{CycleGAN}
 	\begin{figure}
 		\centering
@@ -149,7 +146,15 @@
 	kus $ D_y $ on $ G $ diskriminaator, mis proovib eristada $ G(\boldsymbol{x}) $ ja $ \boldsymbol{y} $, $ D_x $ on  $ F $ diskriminaator, mis proovib eristada $ F(\boldsymbol{y}) $ ja $ \boldsymbol{x} $, ning $ \lambda $ on hüperparameeter, mis määrab, kui oluline on $ \loss_{cyc} $ täiseesmärgi juures.
 
 	\subsection{Mudel}
-	Selle töö poolt välja pakkutud mudel koosneb kahest komponendist --- AttnGANist, mis muudab sisenteksti pildiks, ning CycleGANist, mis muudab AttnGANi poolt loodud pildi kunstipäraseks. Lisaks sisendtekstile antakse mudelile ka number, mis määrb ära missuguse stiili teisenduse CycleGAN teeb.
+	Selle töö poolt välja pakkutud mudel koosneb kahest komponendist --- AttnGANist, mis muudab sisendteksti pildiks, ning CycleGANist, mis muudab AttnGANi poolt loodud pildi kunstipäraseks. Lisaks sisendtekstile, määratakse ära, missuguse stiili CycleGAN pildi teisendab.
+
+	AttnGAN ja CycleGAN mudelite jaoks kasutati vundamendina nende tööde autorite poolt kirjutatud koodi, et hoida kokku aega ning vältida vigade tekket koodis, ning millel seejärel tehti vajalikke täiendusi ja muudatusi, et sobituda kokku töö eesmärgiga.
+
+	Et hoida kokku aega ning arvutiressursse, kasutas autor AttnGANi jaoks varem treenitud mudeleid, kuna AttnGAN ümbertreenimine ei oleks kudagi parandanud väljapakkudud mudeli sooritust.
+
+	CycleGANi puhul tuli iga stiili jaoks ning parameetri muutmise korral treenida uus mudel. Kokku treeniti \_\_\_\_\_ mudelit, kus igat ühte treeniti ligikaudu 40 tundid RTX 2080 graafikakaardiga. Kahjuks oli aega treenida CycleGAN tegema \_\_\_\_\_ erinevat stiiliteisendust, aga tulevikus on plaanis veel lisada teisigi stiiliteisendusi.
+
+	Töö kood ning treenitud mudelid, mida on võimalik ka oma arvutis jooksutada, on kättesaadavad gitlabis.
 
 	\section{Eksperimendid}
 	Selles peatükkis hinnatakse välja pakutud mudeli edukust realistliku kunsti geneerimisel ning selle sisu kooskõla sisendtekstiga.
@@ -157,7 +162,7 @@
 	\subsection{Andmekogud}
 	AttnGAN treenimiseks kasutati CUB\parencite{cub} ja COCO\parencite{srgan} andmekogusid. CUB on andmekogum lindudest, kus on $\approx$ 10 000 pilti, kus iga pildi kohta on 10 erinevat kirjeldust. COCO on laiahaardelisem andmekogum, kus on pilte loomadest, sõidukitest, toidust ning mitmetest muudest objektidest. Andmekogus on $\approx$ 80 000 pilti, kus iga pildi kohta on 5 erinevat kirjeldust.
 
-	CycleGANi treenimiseks kasutati Wikiart'i andmekogumit\parencite{wikiart}. Tegu on andmekoguga, kus on $\approx$ 80 000 erinevat kunstiteost, millele on juurde lisatud stiil, žanr, autor jne. Selle asemel, et andmeid uuesti kokku korjata, kasutas autor Tan jt poolt varasemalt kokku korjatud Wikiart andmekogumit\parencite{artgan}. Treenimiseks kasutati kategooriaid abstraktne ekspressionism ja impressionism.
+	CycleGANi treenimiseks kasutati Wikiart'i andmekogumit\parencite{wikiart}. Tegu on andmekoguga, kus on $\approx$ 80 000 erinevat kunstiteost, millele on juurde lisatud stiil, žanr, autor jne. Selle asemel, et andmeid uuesti kokku korjata, kasutas autor Tan jt poolt varasemalt kokku korjatud Wikiart andmekogumit\parencite{artgan}. Treenimiseks kasutati kategooriaid abstraktne ekspressionism, \_\_\_\_\_\_\_\_ ja impressionism.
 
 	\subsection{CUB}
 	Tulemustest on näha, et genereeritud pildid näevad lindude moodi välja ning samas säilitavad ka kunstistiilile iseloomulikud jooned.
