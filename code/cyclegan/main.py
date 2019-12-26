@@ -34,7 +34,7 @@ def cyclegan(savepath, style, dataset, use_cpu=False):
     elif style == "birds2abs_exp_idt":
         opt.name = style
     elif style == "birds2imp_idt":
-        opt.name == style
+        opt.name = style
 
     #print_options(opt)
     BaseOptions().print_options(opt)
