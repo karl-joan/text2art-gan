@@ -65,13 +65,18 @@ def generate(caption, wordtoix, ixtoword, text_encoder, netG, dataset, savepath,
 
     # Make a save directory and change the current direcoty to it
     mydir = savepath
-    save_time = datetime.today().strftime("%H%M%S")
-    try:
-        os.makedirs(mydir)
+    save_time = datetime.today().strftime("%H%M%S%f")[:-4]
+
+    if os.path.isdir(mydir):
+        print("Save directory already exists")
         prefix = mydir
-    except:
-        prefix = ""
-        print("Failed to create a save directory")
+    else:
+        try:
+            os.makedirs(mydir)
+            prefix = mydir
+        except:
+            prefix = ""
+            print("Failed to create a save directory")
 
     for j in range(batch_size):
         print(f"Generating image number {j+1}")
