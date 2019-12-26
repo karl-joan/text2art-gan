@@ -5,7 +5,6 @@ from .options.config import BaseOptions
 from .data import create_dataset
 from .util.util import save_images
 
-
 def cyclegan(savepath, style, dataset, use_cpu=False):
     opt = BaseOptions().parse() # Get options
     opt.dataroot = savepath
@@ -36,13 +35,11 @@ def cyclegan(savepath, style, dataset, use_cpu=False):
     elif style == "birds2imp_idt":
         opt.name = style
 
-    #print_options(opt)
-    BaseOptions().print_options(opt)
+    #BaseOptions().print_options(opt)
 
     dataset = create_dataset(opt)  # create a dataset given opt.dataset_mode and other options
     model = create_model(opt)      # create a model given opt.model and other options
     model.setup(opt)               # regular setup: load and print networks; create schedulers
-
     # test with eval mode. This only affects layers like batchnorm and dropout.
     if opt.eval:
         model.eval()
@@ -55,8 +52,6 @@ def cyclegan(savepath, style, dataset, use_cpu=False):
         model.test()           # run inference
         visuals = model.get_current_visuals()  # get image results
         img_path = model.get_image_paths()     # get image paths
-        print(img_path)
 
-        if i % 5 == 0:  # save images to an HTML file
-            print('processing (%04d)-th image... %s' % (i, img_path))
+        print(f"Applying style to image number {i+1}")
         save_images(visuals, img_path, aspect_ratio=opt.aspect_ratio, width=opt.display_winsize)

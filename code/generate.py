@@ -21,6 +21,11 @@ if args.style == "abs2_for_coco" and args.dataset == "birds":
     raise Exception("abs2_for_coco is only for coco dataset")
 
 savepath = os.path.join("../results/", datetime.today().strftime("%Y-%m-%d_%H-%M-%S/"))
-attngan(args.caption, args.dataset, args.number, savepath, args.cpu)
 
+print("----------------- Generating images -----------------")
+attngan(args.caption, args.dataset, args.number, savepath, args.cpu)
+print("------------------------ End ------------------------\n")
+
+print("----------------- Applying style -----------------")
 cyclegan(savepath, args.style, args.dataset, args.cpu)
+print("---------------------- End ----------------------")

@@ -74,6 +74,8 @@ def generate(caption, wordtoix, ixtoword, text_encoder, netG, dataset, savepath,
         print("Failed to create a save directory")
 
     for j in range(batch_size):
+        print(f"Generating image number {j+1}")
+
         for k in range(len(fake_imgs)):
             im = fake_imgs[k][j].data.cpu().numpy()
             im = (im + 1.0) * 127.5
@@ -133,12 +135,3 @@ def attngan(caption, dataset, number, savepath, use_cpu=False):
 
     # Generate images
     generate(caption, wordtoix, ixtoword, text_encoder, netG, dataset, savepath, number)
-
-    return savepath
-
-
-if __name__ == "__main__":
-    caption = "the bird has a yellow crown and a black eyering that is round"
-    attngan(caption, "birds")
-    #caption = "a fruit stand display with bananas and kiwi"
-    #attngan(caption, "coco")

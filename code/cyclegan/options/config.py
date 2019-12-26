@@ -6,9 +6,6 @@ import torch
 import cyclegan.models as models
 import cyclegan.data as data
 
-print(__name__)
-
-
 class BaseOptions():
     """This class defines options used during both training and test time.
 
