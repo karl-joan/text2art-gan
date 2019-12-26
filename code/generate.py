@@ -1,4 +1,7 @@
 import argparse
+import os
+from datetime import datetime
+
 from attngan import attngan
 from cyclegan import cyclegan
 
@@ -17,6 +20,7 @@ args = parse_args()
 if args.style == "abs2_for_coco" and args.dataset == "birds":
     raise Exception("abs2_for_coco is only for coco dataset")
 
-savepath = attngan(args.caption, args.dataset, args.number, args.cpu)
+savepath = os.path.join("../results/", datetime.today().strftime("%Y-%m-%d_%H-%M-%S/"))
+attngan(args.caption, args.dataset, args.number, savepath, args.cpu)
 
 cyclegan(savepath, args.style, args.dataset, args.cpu)

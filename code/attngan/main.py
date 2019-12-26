@@ -31,7 +31,7 @@ def vectorize_caption(wordtoix, caption, copies=2):
 
     return captions.astype(int), cap_lens.astype(int)
 
-def generate(caption, wordtoix, ixtoword, text_encoder, netG, dataset, copies=2):
+def generate(caption, wordtoix, ixtoword, text_encoder, netG, dataset, savepath, copies=2):
 
     # Load word vector
     captions, cap_lens  = vectorize_caption(wordtoix, caption, copies)
@@ -64,7 +64,8 @@ def generate(caption, wordtoix, ixtoword, text_encoder, netG, dataset, copies=2)
     cap_lens_np = cap_lens.cpu().data.numpy()
 
     # Make a save directory and change the current direcoty to it
-    mydir = os.path.join("../results/", datetime.today().strftime("%Y-%m-%d_%H-%M-%S/"))
+    mydir = savepath
+    save_time = datetime.today().strftime("%H%M%S")
     try:
         os.makedirs(mydir)
         prefix = mydir
@@ -80,14 +81,12 @@ def generate(caption, wordtoix, ixtoword, text_encoder, netG, dataset, copies=2)
             im = np.transpose(im, (1, 2, 0))
             im = Image.fromarray(im)
 
-            name = prefix + f"{j}{dataset}_g{k}.png"
+            name = prefix + save_time + f"_{j}{dataset}_g{k}.png"
             if k != len(fake_imgs) - 1:
                 im = im.resize((256, 256), Image.BILINEAR)
                 im.save(name)
             else:
                 im.save(name)
-
-    return mydir
 
 def word_index():
     # Load word to index dictionary
@@ -116,7 +115,7 @@ def models(word_len):
     netG.eval()
     return text_encoder, netG
 
-def attngan(caption, dataset, number, use_cpu=False):
+def attngan(caption, dataset, number, savepath, use_cpu=False):
     # Choose the model
     if dataset == "birds":
         cfg_from_file("attngan/cfg/eval_bird.yml")
@@ -133,7 +132,7 @@ def attngan(caption, dataset, number, use_cpu=False):
     text_encoder, netG = models(len(wordtoix))
 
     # Generate images
-    savepath = generate(caption, wordtoix, ixtoword, text_encoder, netG, dataset, number)
+    generate(caption, wordtoix, ixtoword, text_encoder, netG, dataset, savepath, number)
 
     return savepath
 
