@@ -24,9 +24,17 @@ def cyclegan(savepath, style, dataset, use_cpu=False):
         if dataset == "birds":
             opt.name = "birds2imp"
         else:
-            pass
+            opt.name = "coco2imp"
     elif style == "abs2_for_coco":
         opt.name = "coco2abs_exp2"
+    elif style == "gen_coco2abs_exp":
+        opt.name = style
+    elif style == "gen_coco2imp":
+        opt.name = style
+    elif style == "birds2abs_exp_idt":
+        opt.name = style
+    elif style == "birds2imp_idt":
+        opt.name == style
 
     #print_options(opt)
     BaseOptions().print_options(opt)
