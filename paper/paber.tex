@@ -96,11 +96,9 @@
 	Ilustavalt võib mõelda generaatorist kui võltsjate meeskonnast, kes proovivad luua võltsraha ja kasutada seda ilma jäljeta. Diskrimineerija aga käitub kui politsei, proovides tuvastada kas tegu on võltsinguga. Alguses on võltsjatel võltsingud kehvad ning politseil on raskusi tuvastusega, aga aja jooksul muutuvad osapooled paremaks omavahelise võistluse tõttu, kuni hetkeni mil võltsingud pole enam eristatavad päris valuutast.
 
 	Treenimis protsetuuri saab võtta kokku järgimse funktsiooniga:
-
 	\begin{equation}
 		\operatorname*{min}_G \operatorname*{max}_D \loss_{GAN}(D,G) = \EX_{\boldsymbol{x}\sim p_{andmed}(\boldsymbol{x})}[\log D(\boldsymbol{x})] + \EX_{\boldsymbol{z}\sim p_{\boldsymbol{z}}(\boldsymbol{z})}[\log(1-D(G(\boldsymbol{z})))]
 	\end{equation}
-
 	kus $ \boldsymbol{z} $ on müravektor, mis on võetud distributsioonist $ p_{\boldsymbol{z}} $ (nt. ühtlane- või normaaljaotus), $ \boldsymbol{x} $ on päris pilt, mis on võetud distributsioonist $ p_{andmed} $, $ G $ on generaator funktsioon ja $ D $ on diskrimineerija funktsioon. Praktikas võib juhtuda, et võrrandis nr 1 ei teki piisavalt tugevaid gradiente, et treenida $ G $-d. Selle asemel, et minimeerida $ \log (1 - D(G(\boldsymbol{z}))) $, saame panna $ G $ maskimeerima $ \log D(G(\boldsymbol{z})) $, mis tekkitab tugevamaid gradiente. Treenides $ G $ ja $ D $ vaheldumisi, treenitakse GANi looma pilte, mis sarnanevad andmete distributsiooniga. \parencite{gan}
 
 	
@@ -112,7 +110,7 @@
 
 	AttnGANis on lisaks teksti kodeerija, mis eraldab sisendtekstist sõna- ja lausetunnused. Eraldatud lausetunnusvektor ning müravektor antakse sisendiks esimesel GANile, mis genereerib esiaglse pildi. Esimese ja teise GANi vahel on tähelepanumehanism, mis kasutab genereeritud pilti ning eraldatud sõnatunnuseid, et leida sõna-konteksti vektor, mis määrab ära kui oluline mingi sõna teatud regiooni kujundamisel on (lihtsamalt öeldes pööratakse tähelepanu erinevatele osedele). Esialgne pilt ning sõna-konteksti vektor kombineeridakse ning antakse seejärel sisendiks teisele GANile, mis genereerib järgmise pildi. Analoogne mehanism on ka teise ja kolmanda GANi vahel.
 
-	Treenimise jaoks kasutakse peale klassikalise GANi funktsiooni ka mudelit, mille nimi on sügav tähelepanu multimodaalne sarnasus mudel ehk lühemalt DAMSM \ingk{Deep Attentional Multimodal Similarity Model}. Antud mudel leiab, kui sarnased on omavahel sisendtekst ning genereeritud pilt. Kuna selle mehanismi tööpõhimõtte on keeruline, siis on saab sellega lähemalt tutvuda Xu jt töös.
+	Treenimise jaoks kasutakse peale klassikalise GANi funktsiooni ka mudelit, mille nimi on sügav tähelepanu multimodaalne sarnasus mudel ehk lühemalt DAMSM \ingk{Deep Attentional Multimodal Similarity Model}. Antud mudel leiab, kui sarnased on omavahel sisendtekst ning genereeritud pilt. Kuna selle mehanismi tööpõhimõtte on keeruline, siis on saab sellega lähemalt tutvuda Xu jt töös. \parencite{attngan}
 
 	\subsection{CycleGAN}
 	\begin{figure}
@@ -125,25 +123,28 @@
 
 	CycleGAN on GAN, mis lahendab pildi pildiks teisendamise probleemi, kus soovitakse õppida seos sisendpildi ning väljundpildi vahele, näiteks teisendades mustvalgepilt värviliseks pildiks või teisendades õhufoto kaardiks. Varasemad meetodid on ainult töödanud olukordades, kus on olemas pildipaarid. Nende kogumine on aga kallis ning keeruline, mille tõttu on valmis andmekogumid pildipaaridest väikesed. CycleGANiga on võimalik õppida seos sisend- ning väljundpildi vahel isegi olukordades, kus puudub andmekogum pildipaaridest. 
 
-	Teisendamise edukaks toimiseks peab siiski olema kahe pildi domeeni vahel mingisugune seos või struktuur. Kui proovida teisendada kassi pilte klaveri piltideks, siis on küsitav, mis on seos, mida GAN proovib õppida. Sellisel juhul ei suuda CycleGAN tihti ära õppida seost kahe pildi hulga vahel.
-
 	Kui on antud sisend pildikogum $ X $ ja väljund pildikogum $ Y $, siis eesmärk on leida selling seos $ G: X \rightarrow Y $, et genereetitud pilt $ \hat{y} = G(x), x \in X $ oleks eristamatu pildist $ y \in Y $. Selleks kasutatakse vastast(diskrimineerijat) $ D $, mis on treenitud eristama $ y $ $ \hat{y} $-st. 
 
-	Sellise lähenemisega kerkivad esile teatud probleemid --- antud seos ei kindlusta, et $ x $ ja $ y $ oleksid paari seatud tähendusrikkal viisil, kuna on olemas lõpmatult palju seoseid $ G $, mis loovad sama jaotuse üle $ \hat{y} $. Peale selle on raske optimeerida ainuüksi klassikalise GANi eesmärk funktsiooni, kuna see võib viia mudeli kokku varisemiseni, kus kõik sisendipildi langevad kokku ühe väljundpildiga ning optimatsioon ei suuda parandada tulemust.
+	Sellise lähenemisega kerkivad esile teatud probleemid --- antud seos ei kindlusta, et $ x $ ja $ y $ oleksid paari seatud tähendusrikkal viisil, kuna on olemas lõpmatult palju seoseid $ G $, mis loovad sama jaotuse üle $ \hat{y} $. Peale selle töö autorid, et on raske optimeerida kasutades ainuüksi klassikalise GANi eesmärk funktsiooni, kuna see võib viia mudeli kokku varisemiseni, kus kõik sisendipildi langevad kokku ühe väljundpildiga ning optimatsioon ei suuda parandada tulemust.
 
 	Probleeme aitab lahendada põhimõtte, et teisendus peab olema tsükliliselt järjepidev. Teisisõnu, kui tõlkida lause eesti keelest inglise keelde ning seejärel tagasi, siis peaks jõudma tagasi algse lauseni. Selle rakendamiseks on vaja kahte teisendust --- olgu esimene teisendus $ G: X \rightarrow Y $ ja teine teisendus $F: Y \rightarrow X $, siis peaksid $ G $ ja $ F $ olema üksteise pöördfunktsioonid. Et seos oleks tsükliliselt järjepidev, lisandub klassikalise GANi eesmärgile, mis treenib $ G $ ja $ F $, eesmärk, mis motiveerib tsüklilist järjepidevust $ F(G(x)) \approx x $ ja $ G(F(y)) \approx y $.
-
 	\begin{equation}
 		\loss_{cyc}(G,F) = \EX_{\boldsymbol{x}\sim p_{andmed}(\boldsymbol{x})}[\norm{F(G(\boldsymbol{x})) - \boldsymbol{x}}_1] + \EX_{\boldsymbol{y}\sim p_{andmed}(\boldsymbol{y})}[\norm{G(F(\boldsymbol{y})) - \boldsymbol{y}}_1]
 	\end{equation}
 
-	Seega täiseesmärk on:
-
+	Töö autorid leidsid ka, et kui teisendada maastikumaale fototeks, siis muutsid generaatorid $ G $ ja $ F $ tihti pildi tooni. Selleks toodi	juurde identiteet seos, mis hoiab generaatoreid pilte muutmast, kui pilt juba näev välja nagu pilt, mida proovitaksegi saada.
 	\begin{equation}
-		\loss(G, F, D_x, D_y) = \loss_{GAN}(G, D_y, X, Y) + \loss_{GAN}(F, D_x, Y, X) + \lambda \loss_{cyc}(G, F)
+		\loss_{idt}(G,F) = \EX_{\boldsymbol{y}\sim p_{andmed}(\boldsymbol{y})}[\norm{G(\boldsymbol{y}) - \boldsymbol{y}}_1] + \EX_{\boldsymbol{x}\sim p_{andmed}(\boldsymbol{x})}[\norm{F(\boldsymbol{x}) - \boldsymbol{x}}_1]
 	\end{equation}
 
-	kus $ D_y $ on $ G $ diskriminaator, mis proovib eristada $ G(\boldsymbol{x}) $ ja $ \boldsymbol{y} $, $ D_x $ on  $ F $ diskriminaator, mis proovib eristada $ F(\boldsymbol{y}) $ ja $ \boldsymbol{x} $, ning $ \lambda $ on hüperparameeter, mis määrab, kui oluline on $ \loss_{cyc} $ täiseesmärgi juures.
+	Seega täiseesmärk on:
+	\begin{equation}
+		\begin{aligned}
+			\loss(G, F, D_x, D_y) &= \loss_{GAN}(G, D_y, X, Y) + \loss_{GAN}(F, D_x, Y, X) \\
+								  &+ \lambda_{cyc} \loss_{cyc}(G, F) + \lambda_{idt} \loss_{idt}(G, F)
+		\end{aligned}
+	\end{equation}
+	kus $ D_y $ on $ G $ diskriminaator, mis proovib eristada $ G(\boldsymbol{x}) $ ja $ \boldsymbol{y} $, $ D_x $ on  $ F $ diskriminaator, mis proovib eristada $ F(\boldsymbol{y}) $ ja $ \boldsymbol{x} $, ning $ \lambda_{cyc} $ ja $ \lambda_{idt} $ on hüperparameetrid, mis vastavalt määravad, kui oluline on $ \loss_{cyc} $ ja $ \loss_{idt} $ täiseesmärgi juures. \parencite{cyclegan}
 
 	\subsection{Mudel}
 	Selle töö poolt välja pakkutud mudel koosneb kahest komponendist --- AttnGANist, mis muudab sisendteksti pildiks, ning CycleGANist, mis muudab AttnGANi poolt loodud pildi kunstipäraseks. Lisaks sisendtekstile, määratakse ära, missuguse stiili CycleGAN pildi teisendab.
@@ -152,7 +153,7 @@
 
 	Et hoida kokku aega ning arvutiressursse, kasutas autor AttnGANi jaoks varem treenitud mudeleid, kuna AttnGAN ümbertreenimine ei oleks kudagi parandanud väljapakkudud mudeli sooritust.
 
-	CycleGANi puhul tuli iga stiili jaoks ning parameetri muutmise korral treenida uus mudel. Kokku treeniti \_\_\_\_\_ mudelit, kus igat ühte treeniti ligikaudu 40 tundid RTX 2080 graafikakaardiga. Kahjuks jõudis autor treenida CycleGAN tegema \_\_\_\_\_ erinevat stiiliteisendust, aga tulevikus on plaan lisada veel teisigi stiiliteisendusi.
+	CycleGANi puhul tuli iga stiili jaoks ning parameetri muutmise korral treenida uus mudel. Kokku treeniti 10  mudelit, kus igat ühte treeniti ligikaudu 40 tundid RTX 2080 graafikakaardiga. Kahjuks jõudis autor treenida CycleGAN tegema ainult kahte erinevat stiiliteisendust, aga tulevikus on plaan lisada veel teisigi stiiliteisendusi. Treenimise käigus olid võrrandi number 4 parameetrite väärtused $ \lambda_{cyc} = 10 $ ja $ \lambda_{idt} = 0.5 $.
 
 	Töö kood ning treenitud mudelid, mida on võimalik ka oma arvutis jooksutada, on kättesaadavad gitlabis.
 
@@ -162,9 +163,16 @@
 	\subsection{Andmekogud}
 	AttnGAN treenimiseks kasutati CUB\parencite{cub} ja COCO\parencite{srgan} andmekogusid. CUB on andmekogum lindudest, kus on $\approx$ 10 000 pilti, kus iga pildi kohta on 10 erinevat kirjeldust. COCO on laiahaardelisem andmekogum, kus on pilte loomadest, sõidukitest, toidust ning mitmetest muudest objektidest. Andmekogus on $\approx$ 80 000 pilti, kus iga pildi kohta on 5 erinevat kirjeldust.
 
-	CycleGANi treenimiseks kasutati Wikiart'i andmekogumit\parencite{wikiart}. Tegu on andmekoguga, kus on $\approx$ 80 000 erinevat kunstiteost, millele on juurde lisatud stiil, žanr, autor jne. Selle asemel, et andmeid uuesti kokku korjata, kasutas autor Tan jt poolt varasemalt kokku korjatud Wikiart andmekogumit\parencite{artgan}. Treenimiseks kasutati kategooriaid abstraktne ekspressionism, \_\_\_\_\_\_\_\_ ja impressionism.
+	CycleGANi treenimiseks kasutati Wikiart'i andmekogumit\parencite{wikiart}. Tegu on andmekoguga, kus on $\approx$ 80 000 erinevat kunstiteost, millele on juurde lisatud stiil, žanr, autor jne. Selle asemel, et andmeid uuesti kokku korjata, kasutas autor Tan jt poolt varasemalt kokku korjatud Wikiart andmekogumit\parencite{artgan}. Treenimiseks kasutati kategooriaid abstraktne ekspressionism ja impressionism.
 
 	\subsection{CUB}
+	Tulemustest on näha, et AttnGANil õnnestub üsna hästi luua realistlikke linnu kujutisi, mis vastavad ka teksti kirjelduse, kuid on see-eest ka linde, millel on erinevaid moonutusi, nagu kaks pead või pole pead ega jalgu. Abstraktse ekspressionismi puhul
+
+	Autor katsetas ka $ \lambda_{idt} $ väärtuse muutmisega võrrandis 4 nii et $ \lambda_{idt} = 5 $.
+
+	Tulevikus võiks proovida veel teisigi lambda väärtusi, mis on 0.5 ja 5 vahel.
+
+
 	Tulemustest on näha, et genereeritud pildid näevad lindude moodi välja ning samas säilitavad ka kunstistiilile iseloomulikud jooned.
 
 	\subsection{COCO}
