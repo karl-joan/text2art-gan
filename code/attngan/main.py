@@ -4,6 +4,7 @@ import time
 from datetime import datetime
 
 from PIL import Image
+from pprint import pprint
 import numpy as np
 import pickle
 
@@ -122,7 +123,7 @@ def models(word_len):
     netG.eval()
     return text_encoder, netG
 
-def attngan(caption, dataset, number, savepath, use_cpu=False):
+def attngan(caption, dataset, number, savepath, use_cpu=False, verbose=False):
     # Choose the model
     if dataset == "birds":
         cfg_from_file("attngan/cfg/eval_bird.yml")
@@ -132,11 +133,30 @@ def attngan(caption, dataset, number, savepath, use_cpu=False):
     if use_cpu == True:
         cfg.CUDA = False
 
+    if verbose == True:
+        print("--------------------- Options -------------------")
+        pprint(cfg)
+        print(f"Saving to the directory {savepath}")
+        print("--------------------------------------------------")
+
     # Load word dictionaries
     wordtoix, ixtoword = word_index()
 
     # Lead models
     text_encoder, netG = models(len(wordtoix))
+
+    if verbose == True:
+        print('-------------- Networks initialized --------------')
+        num_params = 0
+        for param in text_encoder.parameters():
+            num_params += param.numel()
+        print('[Network text encoder] Total number of parameters : %.3f M' % (num_params / 1e6))
+        
+        num_params = 0
+        for param in netG.parameters():
+            num_params += param.numel()
+        print('[Network netG] Total number of parameters : %.3f M' % (num_params / 1e6))
+        print('-------------------------------------------------')
 
     # Generate images
     generate(caption, wordtoix, ixtoword, text_encoder, netG, dataset, savepath, number)

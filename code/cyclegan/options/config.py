@@ -101,14 +101,15 @@ class BaseOptions():
         It will print both current options and default values(if different).
         """
         message = ''
-        message += '----------------- Options ---------------\n'
+        message += '--------------------- Options -------------------\n'
         for k, v in sorted(vars(opt).items()):
             comment = ''
             message += '{:>25}: {:<30}{}\n'.format(str(k), str(v), comment)
-        message += '----------------- End -------------------'
+        message += '--------------------------------------------------'
+        #message += '\n'
         print(message)
 
-    def parse(self):
+    def parse(self, verbose):
         """Parse our options, create checkpoints directory suffix, and set up gpu device."""
         opt = self.gather_options()
         #opt.isTrain = self.isTrain   # train or test
@@ -118,7 +119,8 @@ class BaseOptions():
             suffix = ('_' + opt.suffix.format(**vars(opt))) if opt.suffix != '' else ''
             opt.name = opt.name + suffix
 
-        #self.print_options(opt)
+        if verbose == True:
+            self.print_options(opt)
 
         self.opt = opt
         return self.opt

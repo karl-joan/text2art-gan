@@ -5,8 +5,9 @@ from .options.config import BaseOptions
 from .data import create_dataset
 from .util.util import save_images
 
-def cyclegan(savepath, style, dataset, use_cpu=False):
-    opt = BaseOptions().parse() # Get options
+def cyclegan(savepath, style, dataset, use_cpu=False, verbose=False):
+    # TODO: Don't print after you have set custom ops
+    opt = BaseOptions().parse(verbose) # Get options
     opt.dataroot = savepath
     opt.results_dir = savepath
     if use_cpu:
@@ -37,9 +38,9 @@ def cyclegan(savepath, style, dataset, use_cpu=False):
 
     #BaseOptions().print_options(opt)
 
-    dataset = create_dataset(opt)  # create a dataset given opt.dataset_mode and other options
-    model = create_model(opt)      # create a model given opt.model and other options
-    model.setup(opt)               # regular setup: load and print networks; create schedulers
+    dataset = create_dataset(opt, verbose)  # create a dataset given opt.dataset_mode and other options
+    model = create_model(opt, verbose)      # create a model given opt.model and other options
+    model.setup(opt, verbose)               # regular setup: load and print networks; create schedulers
     # test with eval mode. This only affects layers like batchnorm and dropout.
     if opt.eval:
         model.eval()

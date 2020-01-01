@@ -12,6 +12,7 @@ def parse_args():
     parser.add_argument("-d", "--dataset", dest="dataset", help="dataset to generate from (default birds)", choices=["birds", "coco"], default="birds", type=str)
     parser.add_argument("-n", "--number", dest="number", help="the number of artworks to generate (default 2)", default=2, type=int)
     parser.add_argument("-c", "--cpu", dest="cpu", help="use cpu (default false)", action="store_true")
+    parser.add_argument("-v", "--verbose", dest="verb", help="print more details", action="store_true")
     args = parser.parse_args()
     return args
 
@@ -22,10 +23,10 @@ if args.style == "abs2_for_coco" and args.dataset == "birds":
 
 savepath = os.path.join("../results/", datetime.today().strftime("%Y-%m-%d_%H-%M-%S/"))
 
-print("----------------- Generating images -----------------")
-attngan(args.caption, args.dataset, args.number, savepath, args.cpu)
-print("------------------------ End ------------------------\n")
+print("--------------- Generating images ---------------")
+attngan(args.caption, args.dataset, args.number, savepath, args.cpu, args.verb)
+print("---------------------- End ----------------------\n")
 
 print("----------------- Applying style -----------------")
-cyclegan(savepath, args.style, args.dataset, args.cpu)
+cyclegan(savepath, args.style, args.dataset, args.cpu, args.verb)
 print("---------------------- End ----------------------")
