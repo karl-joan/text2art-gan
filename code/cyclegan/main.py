@@ -6,7 +6,6 @@ from .data import create_dataset
 from .util.util import save_images
 
 def cyclegan(savepath, style, dataset, use_cpu=False, verbose=False):
-    # TODO: Don't print after you have set custom ops
     opt = BaseOptions().parse(verbose) # Get options
     opt.dataroot = savepath
     opt.results_dir = savepath
@@ -36,7 +35,8 @@ def cyclegan(savepath, style, dataset, use_cpu=False, verbose=False):
     elif style == "birds2imp_idt":
         opt.name = style
 
-    #BaseOptions().print_options(opt)
+    if verbose == True:
+        BaseOptions().print_options(opt)
 
     dataset = create_dataset(opt, verbose)  # create a dataset given opt.dataset_mode and other options
     model = create_model(opt, verbose)      # create a model given opt.model and other options
