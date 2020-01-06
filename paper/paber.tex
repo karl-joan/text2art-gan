@@ -50,9 +50,9 @@
 	\newcommand*{\ingk}[1]{(\textit{ing. k. #1})}
 
 	\unsection{Sissejuhatus}
-	Sügavõppe \ingk{Deep Learning} on meetodite kogu, mis võimaldab õppetada arvutile, kuidas lahendada erinevaid probleeme. Antud disipliin on eksisteerinud juba alatest 1940 aastatest (küll aga teise nime all), kuid on alles hiljuti kasvanud populaarsuses. Kiiret arengut ja edasi minekut on peamiselt põhjustanud kaks asja: arvuti ressursside kasv ning järjest suurenev andmete hulk. Need kaks asja on võimaldanud treenida sügavamaid, keerulisemaid ning täpsemaid mudeleid. \parencite{deeplearningbook}	 
+	Sügavõpe \ingk{Deep Learning} on meetodite kogu, mis võimaldab õppetada arvutile, kuidas lahendada erinevaid probleeme. Antud disipliin on eksisteerinud juba alatest 1940 aastatest (küll aga teise nime all), kuid on alles hiljuti saanud populaarseks. Kiiret arengut ja edasiminekut on peamiselt põhjustanud arvuti ressursside kasv ning järjest suurenev andmete hulk. Need kaks asja on võimaldanud treenida sügavamaid, keerulisemaid ning täpsemaid mudeleid. \parencite{deeplearningbook}	 
 
-	Üks uus mudel, mis on kiire kasvuga tekkinud, on GAN ehk generatiivne adverstiivne võrk. Antud võrku on võimalik treenida jäljendama erinevaid andme distributsioone. Kasutades treenimise käigus õpitud representatsioone, suudab too võrk genereerida uut materjali, mis on sarnane treenimisel kasutatud andmetega. \parencite{gan}
+	Üks uus mudel, mis on sügavõppe kiire arengu jooksul tekkinud, on GAN ehk generatiivne adverstiivne võrk. Antud võrku on võimalik treenida jäljendama erinevaid andme distributsioone. Kasutades treenimise käigus õpitud representatsioone, suudab see võrk genereerida uut materjali, mis on sarnane treenimisel kasutatud andmetega. \parencite{gan}
 
 	Uurimistöö eesmärk on luua mudel kasutades GANe, mis on ise võimeline genereerima kunsti teksti põhjal. Andes mudelile sisendiks kirjelduse, milline peab olema loodava kunstiteose sisu ja mis stiilis, genereerib mudel teose, mida tegelikkuses ei eksisteerigi. Lisaks saab autor selle protsessi käigus kinnitada ja laiendada oma teadmisi sügavõppest.
 
@@ -151,7 +151,7 @@
 
 	AttnGAN ja CycleGAN mudelite jaoks kasutati vundamendina nende tööde autorite poolt kirjutatud koodi, et hoida kokku aega ning vältida vigade tekket koodis, ning millel seejärel tehti vajalikke täiendusi ja muudatusi, et sobituda kokku töö eesmärgiga.
 
-	Et hoida kokku aega ning arvutiressursse, kasutas autor AttnGANi jaoks varem treenitud mudeleid, kuna AttnGAN ümbertreenimine ei oleks kudagi parandanud väljapakkudud mudeli sooritust.
+	Et hoida kokku aega ning arvutiressursse, kasutas autor AttnGANi jaoks varem treenitud mudeleid, kuna AttnGAN ümbertreenimine ei oleks kuidagi parandanud väljapakutud mudeli sooritust.
 
 	CycleGANi puhul tuli iga stiili jaoks ning parameetri muutmise korral treenida uus mudel. Kokku treeniti 10  mudelit, kus igat ühte treeniti ligikaudu 40 tundid RTX 2080 graafikakaardiga. Kahjuks jõudis autor treenida CycleGAN tegema ainult kahte erinevat stiiliteisendust, aga tulevikus on plaan lisada veel teisigi stiiliteisendusi. Treenimise käigus olid võrrandi number 4 parameetrite väärtused $ \lambda_{cyc} = 10 $ ja $ \lambda_{idt} = 0.5 $.
 
@@ -161,26 +161,28 @@
 	Selles peatükkis hinnatakse välja pakutud mudeli edukust realistliku kunsti geneerimisel ning selle sisu kooskõla sisendtekstiga.
 
 	\subsection{Andmekogud}
-	AttnGAN treenimiseks kasutati CUB\parencite{cub} ja COCO\parencite{srgan} andmekogusid. CUB on andmekogum lindudest, kus on $\approx$ 10 000 pilti, kus iga pildi kohta on 10 erinevat kirjeldust. COCO on laiahaardelisem andmekogum, kus on pilte loomadest, sõidukitest, toidust ning mitmetest muudest objektidest. Andmekogus on $\approx$ 80 000 pilti, kus iga pildi kohta on 5 erinevat kirjeldust.
+	AttnGAN treenimiseks kasutati CUB \parencite{cub} ja COCO \parencite{srgan} andmekogusid. CUB on andmekogum lindudest, kus on $\approx$ 10 000 pilti, kus iga pildi kohta on 10 erinevat kirjeldust. COCO on laiahaardelisem andmekogum, kus on pilte loomadest, sõidukitest, toidust ning mitmetest muudest objektidest. Andmekogus on $\approx$ 80 000 pilti, kus iga pildi kohta on 5 erinevat kirjeldust.
 
-	CycleGANi treenimiseks kasutati Wikiart'i andmekogumit\parencite{wikiart}. Tegu on andmekoguga, kus on $\approx$ 80 000 erinevat kunstiteost, millele on juurde lisatud stiil, žanr, autor jne. Selle asemel, et andmeid uuesti kokku korjata, kasutas autor Tan jt poolt varasemalt kokku korjatud Wikiart andmekogumit\parencite{artgan}. Treenimiseks kasutati kategooriaid abstraktne ekspressionism ja impressionism.
+	CycleGANi treenimiseks kasutati Wikiart'i andmekogumit \parencite{wikiart}. Tegu on andmekoguga, kus on $\approx$ 80 000 erinevat kunstiteost, millele on juurde lisatud stiil, žanr, autor jne. Selle asemel, et andmeid uuesti kokku korjata, kasutas autor Tan jt poolt varasemalt kokku korjatud Wikiart andmekogumit \parencite{artgan}. Treenimiseks kasutati kategooriaid abstraktne ekspressionism ja impressionism.
 
 	\subsection{CUB}
-	Tulemustest on näha, et AttnGANil õnnestub üsna hästi luua realistlikke linnu kujutisi, mis vastavad ka teksti kirjelduse, kuid on see-eest ka linde, millel on erinevaid moonutusi, nagu kaks pead või pole pead ega jalgu. Abstraktse ekspressionismi puhul
+	Tulemustest on näha, et AttnGANil õnnestub üsna hästi luua realistlikke linnu kujutisi, mis vastavad ka teksti kirjelduse, kuid on see-eest ka linde, millel on erinevaid moonutusi, nagu kaks pead või pole pead ega jalgu. CycleGANil õnnestub rakendada stiili genereeritud pildile vahelduva eduga --- leidub pilte, mis näevad kunstiteoste moodi välja, aga leidub ka pilte, kus pole stiili rakendatud või stiili on hoopis rakendatud liiga jõuliselt, mille tõttu mõjub pilt häirivana.
 
-	Autor katsetas ka $ \lambda_{idt} $ väärtuse muutmisega võrrandis 4 nii et $ \lambda_{idt} = 5 $.
+	Autor katsetas ka $ \lambda_{idt} $ väärtuse muutmisega võrrandis 4 nii et $ \lambda_{idt} = 5 $. Valdavalt olid selle mudeli poolt loodud teosed pehmemate toonidega ning tekstuur oli ka sujuvam. Abstraktse stiili puhul oli näha rohkem eredamaid toone.
 
-	Tulevikus võiks proovida veel teisigi lambda väärtusi, mis on 0.5 ja 5 vahel.
+	Tulevikus tasub proovida veel teisigi lambda väärtusi, mis on 0.5 ja 5 vahel või neist hoopis suuremad.
 
 
 	Tulemustest on näha, et genereeritud pildid näevad lindude moodi välja ning samas säilitavad ka kunstistiilile iseloomulikud jooned.
 
 	\subsection{COCO}
-	Mudelil oli raskusi sellest andmekogumist pilte genereerida. Kuna kogus on pilte mitmetest erilaadi objektitest, on CycleGANil raskusi stiili ülekandmisega.
+	Sellel mudelil on raskusi kunstiteoste genereerimisega. Kuna andmekogu sisaldab pilte mitmetest erilaadi objektitest, on AttnGANil raskusi realistlikke piltide genereerimisega (pildid meenutavad teose kirjeldust, aga ei ole väga detailsed) ning CycleGANil raskusi stiili ülekandmisega (valdavalt muudab CycleGAN natuke värvi ning tekstuuri). Mudeli tulemust võiks parandada pikem treenimine.
 
-	Võib tähelda veel, et AttnGAN poolt genereeritud pildid ei ole nii realistlikud kui CUB andmekogumi puhul. Selle tõttu on erinev pildijaotuses, mida kasutati CycleGANi treenimiseks, pildijaotusest, millele CycleGAN kannab stiili üle. Pildijaotus lõhe vähendamiseks kasutati COCO testimis andmekogu 5000 erinevat kirjeldust, et genereerida 5000 uut pilti. Kasut
+	Kuna AttnGANi poolt genereeritud pildid, ei ole väga realistlikud, on selle tõttu erinev pildijaotus, mida kasutati CycleGANi treenimiseks (treenimisele kasutati päris pilte AttnGAN genereeritud piltide asemel, lootuses, et AttnGAN poolt genereeritud pildid on realistlikud ning et CycleGAN suudab üldistada neile), pildijaotusest, millele CycleGAN kannab stiili üle. Pildijaotus lõhe vähendamiseks kasutati COCO testimis andmekogu 5000 erinevat kirjeldust, et genereerida 5000 uut pilti, mida kasutati seejärel CycleGANi treenimiseks.
 
-	Katsetasin veel lambda väärtuse muutmisega võrrandis ...
+	Selle meetodi tulemusel paranes stiiliülekande edukus vähesel määral kui võrrelda loodud pilte esialgse tulemusega. Mõlema meetodi edukus võib ka varieeruda juhuse tõttu.
+
+	Kuna genereeritud piltidel treenimine parandas mudeli edukust, hindas autor mudeli sooritus ka kui $ \lambda_{idt} = 5 $. Selle väärtuse muutmine ei paistnud märgadavalt muutvat genereeritud pilte välimust.
 
 	Notes: \\
 	Lisa pildijaotuse erinevuse kohta pilt
