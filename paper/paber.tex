@@ -51,10 +51,10 @@
 	%\end{description}
 
 	\newcommand*{\seefig}[1]{(\hyperref[fig:#1]{vt~joonis~\ref{fig:#1}})}
-	\newcommand*{\ingk}[1]{(\textit{ing. k. #1})}
+	\newcommand*{\inglk}[1]{(\textit{ingl. k. #1})}
 
 	\unsection{Sissejuhatus}
-	Sügavõpe \ingk{Deep Learning} on meetodite kogu, mis võimaldab õpetada arvutile, kuidas lahendada erinevaid probleeme. Antud distsipliin on eksisteerinud juba alatest 1940. aastatest (küll aga teise nime all), kuid on alles hiljuti saanud populaarseks. Kiiret arengut ja edasiminekut on peamiselt põhjustanud arvutiressursside kasv ning järjest suurenev andmete hulk. Need kaks asja on võimaldanud treenida sügavamaid, keerulisemaid ning täpsemaid mudeleid. \parencite{deeplearningbook}	 
+	Sügavõpe \inglk{Deep Learning} on meetodite kogu, mis võimaldab õpetada arvutile, kuidas lahendada erinevaid probleeme. Antud distsipliin on eksisteerinud juba alatest 1940. aastatest (küll aga teise nime all), kuid on alles hiljuti saanud populaarseks. Kiiret arengut ja edasiminekut on peamiselt põhjustanud arvutiressursside kasv ning järjest suurenev andmete hulk. Need kaks asja on võimaldanud treenida sügavamaid, keerulisemaid ning täpsemaid mudeleid. \parencite{deeplearningbook}	 
 
 	Üks uus mudel, mis on sügavõppe kiire arengu jooksul tekkinud, on GAN ehk generatiivne adverstiivne võrk. Antud võrku on võimalik treenida jäljendama erinevaid andme distributsioone. Kasutades treenimise käigus õpitud representatsioone, suudab see võrk genereerida uut materjali, mis on sarnane treenimisel kasutatud andmetega. \parencite{gan}
 
@@ -70,7 +70,7 @@
 
 	Uue materjali genereerimine on keeruline probleem. Kogu sügavõppes ajaloo vältelt on diskrimineerivad mudelid saavutanud paremaid tulemusi kui generatiivsed mudelid. Hiljuti on aga see muutunud GANide tekkega \parencite{gan}. GANid on saavutanud märkimisväärseid tulemusi pildi \parencite{biggan} ja video generatsioonis \parencite{dvdgan} ning saanud hakkama ka pildi resolutsiooni suurendamise ehk super resolutsiooniga \parencite{srgan}. GANide edu põhjuseks on kahe närvivõrgu omavaheline võistlus, mille tulemusel genereeritud materjali kvaliteet paraneb ideaalis seni, kuni on eristamatu päris materjalist, mida GAN püüab järele aimata. GANi tööpõhimõtet tutvustatakse järgmises peatükis.
 
-	Pildi genereerimine tekstist on huvitav probleem, mille arengus on hoogu andnud GANide kasutusele võtt. Reed jt kasutasid sisendist sõltuvat GANi \ingk{conditional GAN}, millele anti sisendiks tekstist närvivõrguga eraldatud sisu, et genereerida 64x64 suurusega pilte \parencite{reed}. Nende järgmine töö kasutas peale tekstisisendi ka objekti asukohta, mis parandas loodud piltide kvaliteeti \parencite{reed2}. 
+	Pildi genereerimine tekstist on huvitav probleem, mille arengus on hoogu andnud GANide kasutusele võtt. Reed jt kasutasid sisendist sõltuvat GANi \inglk{conditional GAN}, millele anti sisendiks tekstist närvivõrguga eraldatud sisu, et genereerida 64x64 suurusega pilte \parencite{reed}. Nende järgmine töö kasutas peale tekstisisendi ka objekti asukohta, mis parandas loodud piltide kvaliteeti \parencite{reed2}. 
 
 	Zhang jt kasutasid kahte GANi, et genereerida parema resolutsiooniga pilte. Esimene GAN genereerib ligikaudse visandi, millele teine GAN lisab detaile ning suurendab resolutsiooni \parencite{stackgan}. Antud lähenemine on lihtsam kui pildi genereerimine ühe GANiga. Nende järgmine töö kasutas kolme GANi, mis olid üksteise otsa pandud, et genereerida järjest suurema resolutsiooniga pilte. \parencite{stackgan2}.
 
@@ -93,9 +93,9 @@
 	Eelmises osas anti põgus ülevaade erinevadest mudelitest. Selles osas kirjeldatakse põhjalikumalt, kuidas töötab GAN, AttnGAN ja CycleGAN.
 
 	\subsection{GAN}
-	Generatiivne adversatiivne võrk ehk GAN \ingk{generative adversarial network} on sügavõppe mudel, mis koosneb kahest neuronvõrgust --- üks on diskrimineerija \ingk{discriminator} ja teine on generaator \ingk{generator}.  Generaatori ülesandeks on luua sisu, mis on sarnane kasutuselolevate andmete distributsiooniga. Diskrimineerija ülesandeks on määrata, kas talle näidatud sisu on võetud päris andmete hulgast või on loodud generaatori poolt.
+	Generatiivne adversatiivne võrk ehk GAN \inglk{generative adversarial network} on sügavõppe mudel, mis koosneb kahest neuronvõrgust --- üks on diskrimineerija \inglk{discriminator} ja teine on generaator \inglk{generator}.  Generaatori ülesandeks on luua sisu, mis on sarnane kasutuselolevate andmete distributsiooniga. Diskrimineerija ülesandeks on määrata, kas talle näidatud sisu on võetud päris andmete hulgast või on loodud generaatori poolt.
 	
-	Generaatoril ja diskrimineerijal on vastastikused ülesanded --- diskrimineerija proovib minimeerida viga, mis tehakse sisu klassifitseerimise käigus (kas on võetud päris andmete hulgast või loodud generaatori poolt), ja generaator proovib maksimeerida viga, mida diskrimineerija teeb klassifikatsiooni käigus. Kokkuvõtvalt need kaks võrku mängivad omavahel minimaksmängu \ingk{minimax}, mida võib võrrelda vägikaika veoga. Lõpuks jõutakse Nash tasakaalu \ingk{Nash equilibrium}, kus osalejatel ei ole enam midagi saada oma strateegia muutmisega \parencite{gametheory}. Ideaalis on sel juhul diskriminaatori poolt väljastatud tõenäosus sõltumata sisendist $ 1/2 $.
+	Generaatoril ja diskrimineerijal on vastastikused ülesanded --- diskrimineerija proovib minimeerida viga, mis tehakse sisu klassifitseerimise käigus (kas on võetud päris andmete hulgast või loodud generaatori poolt), ja generaator proovib maksimeerida viga, mida diskrimineerija teeb klassifikatsiooni käigus. Kokkuvõtvalt need kaks võrku mängivad omavahel minimaksmängu \inglk{minimax}, mida võib võrrelda vägikaika veoga. Lõpuks jõutakse Nash tasakaalu \inglk{Nash equilibrium}, kus osalejatel ei ole enam midagi saada oma strateegia muutmisega \parencite{gametheory}. Ideaalis on sel juhul diskriminaatori poolt väljastatud tõenäosus sõltumata sisendist $ 1/2 $.
 
 	Ilustavalt võib mõelda generaatorist kui võltsijate meeskonnast, kes proovivad luua võltsraha ja kasutada seda ilma jäljeta. Diskrimineerija aga käitub kui politsei, proovides tuvastada kas tegu on võltsinguga. Alguses on võltsijatel võltsingud kehvad ning politseil on raskusi tuvastusega, aga aja jooksul muutuvad osapooled paremaks omavahelise võistluse tõttu, kuni hetkeni, mil võltsingud pole enam eristatavad päris valuutast.
 
@@ -119,7 +119,7 @@
 
 	AttnGANis on tekstikodeerija, mis eraldab sisendtekstist sõna- ja lausetunnused. Eraldatud lausetunnusvektor ning müravektor antakse sisendiks esimesele GANile, mis genereerib esimese pildi. Esimese ja teise GANi vahel on tähelepanumehhanism, mis kasutab just genereeritud pilti ning eraldatud sõnatunnuseid, et leida sõna-konteksti vektor, mis määrab ära kui oluline mingi sõna teatud regiooni kujundamisel on (lihtsamalt öeldes pööratakse iga sõna puhul tähelepanu neile pildi osadele, mida see sõna kirjeldab). Esialgne pilt ning sõna-konteksti vektor kombineeritakse ning antakse seejärel sisendiks teisele GANile, mis genereerib järgmise pildi. Analoogne mehhanism on ka teise ja kolmanda GANi vahel.
 
-	Treenimise jaoks kasutatakse peale klassikalise GANi funktsiooni ka mudelit, mille nimi on sügava tähelepanu multimodaalne sarnasus mudel ehk lühemalt DAMSM \ingk{Deep Attentional Multimodal Similarity Model}. Antud mudel leiab, kui sarnased on omavahel sisendtekst ning genereeritud pilt. Kuna selle mehhanismi tööpõhimõte on keeruline, siis on saab sellega lähemalt tutvuda Xu jt töös. \parencite{attngan}
+	Treenimise jaoks kasutatakse peale klassikalise GANi funktsiooni ka mudelit, mille nimi on sügava tähelepanu multimodaalne sarnasus mudel ehk lühemalt DAMSM \inglk{Deep Attentional Multimodal Similarity Model}. Antud mudel leiab, kui sarnased on omavahel sisendtekst ning genereeritud pilt. Kuna selle mehhanismi tööpõhimõte on keeruline, siis on saab sellega lähemalt tutvuda Xu jt töös. \parencite{attngan}
 
 	\subsection{CycleGAN}
 	\begin{figure}
