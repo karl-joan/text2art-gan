@@ -107,10 +107,13 @@
 %% Change the the look of the bibliography and citation
 % Maybe consider using uniquelist=false
 \RequirePackage[backend=biber, style=authoryear, maxbibnames=99, dashed=false, giveninits=true, terseinits=true]{biblatex}
-\DefineBibliographyStrings{estonian}{andothers={jt}} % Replace et al with jt.
+\DefineBibliographyStrings{estonian}{andothers={jt}}
 \renewcommand*{\nameyeardelim}{\addcomma\space} % Add a comma between author and year
+\renewrobustcmd*{\bibinitdelim}{\space}
 
 \DeclareFieldFormat*{title}{#1} % No qoutation marks
+\DeclareFieldFormat{url}{\url{#1}}
+\DeclareFieldFormat{urldate}{(#1)}
 
 \DeclareNameAlias{sortname}{family-given}
 
