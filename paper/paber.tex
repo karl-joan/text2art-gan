@@ -60,7 +60,7 @@
 
 	Uurimistöö eesmärk on luua mudel, kasutades GANe, mis on võimeline genereerima kunsti teksti põhjal. Andes mudelile sisendiks kirjelduse, milline peab olema loodava kunstiteose sisu ja mis stiilis, genereerib mudel teose, mida tegelikkuses ei eksisteerigi. Lisaks saab autor selle protsessi käigus kinnitada ja laiendada oma teadmisi sügavõppest.
 
-	Kuna puuduvad digitaalsed andmekogud, kus oleksid olemas teoste kirjeldused (nt "Pildil on mees, kes raiub puid, ning tema selja taga on karu."), ei ole võimalik treenida ühte GANi, mis suudaks teisendada sisu kirjelduse kunstiteoseks. Selleks kasutab autor kahte GANi --- esimene GAN teisendab sisu kirjelduse vastavaks pildiks (sisu\textrightarrow pilt), mis antakse järgmisele GANile, mis muudab loodud pildi kunstiteoseks soovitus stiilis (pilt\textrightarrow kunst).
+	Kuna puuduvad digitaalsed andmekogud, kus oleksid olemas teoste kirjeldused (nt \enquote{Pildil on mees, kes raiub puid, ning tema selja taga on karu.}), ei ole võimalik treenida ühte GANi, mis suudaks teisendada sisu kirjelduse kunstiteoseks. Selleks kasutab autor kahte GANi --- esimene GAN teisendab sisu kirjelduse vastavaks pildiks (sisu\textrightarrow pilt), mis antakse järgmisele GANile, mis muudab loodud pildi kunstiteoseks soovitus stiilis (pilt\textrightarrow kunst).
 
 	Hüpotees on, et mudel, mis on treenitud genereerima ainult ühte kindlat objekti sisaldavaid teoseid (ehk mudel suudab luua teoseid, kus on näiteks ainult linnud), loob realistlikumaid teoseid kui mudel, mis on treenitud genereerima mitmeid erinevaid objekte sisaldavaid teoseid (ehk mudel suudab luua teoseid, kus on näiteks majad, metsad või muu selline).
 
@@ -107,7 +107,7 @@
 
 	\subsection{AttnGAN}
 
-	AttnGAN on mudel, mis suudab genereerida pilti sisendiks antud teksti põhjal. Kui anda mudelile sisendiks pildi kirjeldus "sellel väikesel linnul on punane pea ja kõhualune, valged tiivad ning lühike nokk", siis mudel suudab antud sisendi põhjal luua kirjeldusele vastava pildi (vt joonis \ref{fig:attngan}).
+	AttnGAN on mudel, mis suudab genereerida pilti sisendiks antud teksti põhjal. Kui anda mudelile sisendiks pildi kirjeldus \enquote{sellel väikesel linnul on punane pea ja kõhualune, valged tiivad ning lühike nokk}, siis mudel suudab antud sisendi põhjal luua kirjeldusele vastava pildi (vt joonis \ref{fig:attngan}).
 	
 	\begin{wrapfigure}{l}{0.55\textwidth}
 		\includegraphics[width=0.53\textwidth]{images/attngan.png}
