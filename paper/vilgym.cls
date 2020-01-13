@@ -106,7 +106,7 @@
 %%% Bibliography related stuff
 %% Change the the look of the bibliography and citation
 % Maybe consider using uniquelist=false
-\RequirePackage[backend=biber, style=authoryear, maxbibnames=99, dashed=false, giveninits=true]{biblatex}
+\RequirePackage[backend=biber, style=authoryear, maxbibnames=99, dashed=false, giveninits=true, terseinits=true]{biblatex}
 \DefineBibliographyStrings{estonian}{andothers={jt}} % Replace et al with jt.
 \renewcommand*{\nameyeardelim}{\addcomma\space} % Add a comma between author and year
 
@@ -121,6 +121,8 @@
 \DefineBibliographyExtras{estonian}{%
 	\renewbibmacro*{url}{%
 		\printfield{url}}}	
+
+\renewrobustcmd*{\bibinitdelim}{\,}
 
 \DefineBibliographyStrings{estonian}{
   editor           = {ed\adddot},
