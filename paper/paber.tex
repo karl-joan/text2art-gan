@@ -139,17 +139,17 @@
 
 	Probleeme aitab lahendada põhimõte, et teisendus peab olema tsükliliselt järjepidev. Teisisõnu, kui tõlkida lause eesti keelest inglise keelde ning seejärel tagasi, siis peaks jõudma tagasi algse lauseni. Selle rakendamiseks on vaja kahte teisendust --- olgu esimene teisendus $ G\colon X \rightarrow Y $ ja teine teisendus $ F\colon Y \rightarrow X $, siis peaksid $ G $ ja $ F $ olema üksteise pöördfunktsioonid. Et seos oleks tsükliliselt järjepidev, lisandub klassikalise GANi eesmärgile eesmärk, mis motiveerib tsüklilist järjepidevust ($ F(G(x)) \approx x $ ja $ G(F(y)) \approx y $).
 	\begin{equation}
-		\loss_{cyc}(G,F) = \EX_{\boldsymbol{x}\sim p_{andmed}(\boldsymbol{x})}[\norm{F(G(\boldsymbol{x})) - \boldsymbol{x}}_1] + \EX_{\boldsymbol{y}\sim p_{andmed}(\boldsymbol{y})}[\norm{G(F(\boldsymbol{y})) - \boldsymbol{y}}_1]
+		\loss_{cyc}(G,F) = \EX_{x\sim p_{andmed}(x)}[\norm{F(G(x)) - x}_1] + \EX_{y\sim p_{andmed}(y)}[\norm{G(F(y)) - y}_1]
 	\end{equation}
 
 	Töö autorid leidsid ka, et kui teisendada maastikumaale fotodeks, siis muutsid generaatorid $ G $ ja $ F $ tihti pildi tooni. Selleks toodi	juurde identiteet seos, mis hoiab generaatoreid pilte muutmast, kui pilt juba näeb välja nagu pilt, mida proovitakse saada.
 	\begin{equation}
-		\loss_{idt}(G,F) = \EX_{\boldsymbol{y}\sim p_{andmed}(\boldsymbol{y})}[\norm{G(\boldsymbol{y}) - \boldsymbol{y}}_1] + \EX_{\boldsymbol{x}\sim p_{andmed}(\boldsymbol{x})}[\norm{F(\boldsymbol{x}) - \boldsymbol{x}}_1]
+		\loss_{idt}(G,F) = \EX_{y\sim p_{andmed}(y)}[\norm{G(y) - y}_1] + \EX_{x\sim p_{andmed}(x)}[\norm{F(x) - x}_1]
 	\end{equation}
 
 	CycleGANi puhul on erinev ka GANi põhieesmärk:
 	\begin{equation}
-		\loss_{GAN}(G,D_Y, X, Y) = \EX_{\boldsymbol{y}\sim p_{andmed}(\boldsymbol{y})}[\log D_Y(\boldsymbol{y})] + \EX_{\boldsymbol{x}\sim p_{andmed}(\boldsymbol{x})}[\log(1-D_Y(G(\boldsymbol{x})))]
+		\loss_{GAN}(G,D_Y, X, Y) = \EX_{y\sim p_{andmed}(y)}[\log D_Y(y)] + \EX_{x\sim p_{andmed}(x)}[\log(1-D_Y(G(x)))]
 	\end{equation}
 	
 	Seega täiseesmärk on:
@@ -159,7 +159,7 @@
 								  &+ \lambda_{cyc} \loss_{cyc}(G, F) + \lambda_{idt} \loss_{idt}(G, F)
 		\end{aligned}
 	\end{equation}
-	kus $ D_y $ on $ G $ diskriminaator, mis proovib eristada $ G(\boldsymbol{x}) $ ja $ \boldsymbol{y} $, $ D_x $ on  $ F $ diskriminaator, mis proovib eristada $ F(\boldsymbol{y}) $ ja $ \boldsymbol{x} $, ning $ \lambda_{cyc} $ ja $ \lambda_{idt} $ on hüperparameetrid, mis vastavalt määravad, kui oluline on $ \loss_{cyc} $ ja $ \loss_{idt} $ täiseesmärgi juures. \parencite{cyclegan}
+	kus $ D_y $ on $ G $ diskriminaator, mis proovib eristada $ G(x) $ ja $ y $, $ D_x $ on  $ F $ diskriminaator, mis proovib eristada $ F(y) $ ja $ x $, ning $ \lambda_{cyc} $ ja $ \lambda_{idt} $ on hüperparameetrid, mis vastavalt määravad, kui oluline on $ \loss_{cyc} $ ja $ \loss_{idt} $ täiseesmärgi juures. \parencite{cyclegan}
 
 	\subsection{Mudel}
 	Selle töö poolt väljapakutud mudel koosneb kahest komponendist --- AttnGANist, mis muudab sisendteksti pildiks, ning CycleGANist, mis muudab AttnGANi poolt loodud pildi kunstipäraseks. Lisaks sisendtekstile, määratakse ära, millisesse stiili CycleGAN pildi teisendab.
