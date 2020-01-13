@@ -95,7 +95,7 @@
 	\subsection{GAN}
 	Generatiivne adversatiivne võrk ehk GAN \inglk{generative adversarial network} on sügavõppe mudel, mis koosneb kahest neuronvõrgust --- üks on diskrimineerija \inglk{discriminator} ja teine on generaator \inglk{generator}.  Generaatori ülesandeks on luua sisu, mis on sarnane kasutuselolevate andmete jaotusega. Diskrimineerija ülesandeks on määrata, kas talle näidatud sisu on võetud päris andmete hulgast või on loodud generaatori poolt.
 	
-	Generaatoril ja diskrimineerijal on vastastikused ülesanded --- diskrimineerija proovib minimeerida viga, mis tehakse sisu klassifitseerimise käigus (kas on võetud päris andmete hulgast või loodud generaatori poolt), ja generaator proovib maksimeerida viga, mida diskrimineerija teeb klassifikatsiooni käigus. Kokkuvõtvalt need kaks võrku mängivad omavahel minimaksmängu \inglk{minimax}, mida võib võrrelda vägikaika veoga. Lõpuks jõutakse Nashi tasakaalu \inglk{Nash equilibrium}, kus osalejatel ei ole enam midagi võita oma strateegia muutmisega \parencite{gametheory}. Ideaalis on sel juhul diskriminaatori poolt väljastatud tõenäosus sõltumata sisendist $ 1/2 $.
+	Generaatoril ja diskrimineerijal on vastastikused ülesanded --- diskrimineerija proovib minimeerida viga, mis tehakse sisu klassifitseerimise käigus (kas on võetud päris andmete hulgast või loodud generaatori poolt), ja generaator proovib maksimeerida viga, mida diskrimineerija teeb klassifikatsiooni käigus. Kokkuvõtvalt mängivad need kaks võrku omavahel minimaksmängu \inglk{minimax}, mida võib võrrelda vägikaikaveoga. Lõpuks jõutakse Nashi tasakaalu \inglk{Nash equilibrium}, kus osalejatel ei ole enam midagi võita oma strateegia muutmisega \parencite{gametheory}. Ideaalis on sel juhul diskriminaatori poolt väljastatud tõenäosus sõltumata sisendist $ 1/2 $.
 
 	Ilustavalt võib mõelda generaatorist kui võltsijate meeskonnast, kes proovivad luua võltsraha ja kasutada seda ilma jäljeta. Diskrimineerija aga käitub kui politsei, proovides tuvastada kas tegu on võltsinguga. Alguses on võltsijatel võltsingud kehvad ning politseil on raskusi tuvastusega, aga aja jooksul muutuvad osapooled paremaks omavahelise võistluse tõttu, kuni hetkeni, mil võltsingud pole enam eristatavad päris valuutast.
 
@@ -185,7 +185,7 @@
 	\end{figure}
 
 	\subsection{CUB}
-	Tulemustest on näha, et AttnGANil õnnestub üsna hästi luua realistlikke linnu kujutisi, mis vastavad ka teksti kirjeldusele, kuid on see-eest ka linde, millel on erinevaid moonutusi, nagu kaks pead või pole pead ega jalgu. CycleGANil õnnestub rakendada stiili genereeritud pildile üsna edukalt \seefig{cub} --- leidub pilte, mis näevad kunstiteoste moodi välja, aga leidub ka pilte, kus pole stiili rakendatud või stiili on hoopis rakendatud liiga jõuliselt, mille tõttu mõjub pilt häirivana.
+	Tulemustest on näha, et AttnGANil õnnestub üsna hästi luua realistlikke lindude kujutisi, mis vastavad ka teksti kirjeldusele, kuid on see-eest ka linde, millel on erinevaid moonutusi, nagu kaks pead või pole pead ega jalgu. CycleGANil õnnestub rakendada stiili genereeritud pildile üsna edukalt \seefig{cub} --- leidub pilte, mis näevad kunstiteoste moodi välja, aga leidub ka pilte, kus pole stiili rakendatud või stiili on hoopis rakendatud liiga jõuliselt, mille tõttu mõjub pilt häirivana.
 
 	Autor katsetas ka $ \lambda_{idt} $ väärtuse muutmisega võrrandis \ref{eq:cyclegan} nii et $ \lambda_{idt} = 5 $. Valdavalt olid selle mudeli poolt loodud teosed pehmemate toonidega ning tekstuur oli ka sujuvam. Abstraktse stiili puhul oli näha rohkem eredamaid toone.
 
@@ -204,7 +204,7 @@
 
 	Kuna AttnGANi poolt genereeritud pildid ei ole väga realistlikud, on selle tõttu erinev pildijaotus, mida kasutati \mbox{CycleGANi} treenimiseks (treenimisele kasutati päris pilte AttnGAN genereeritud piltide asemel, lootuses, et AttnGAN poolt genereeritud pildid on realistlikud ning et CycleGAN suudab üldistada neile), pildijaotusest, millele CycleGAN kannab stiili üle \seefig{dist}. Pildijaotuse lõhe vähendamiseks kasutati COCO testimisandmekogu 5000 erinevat kirjeldust, et genereerida 5000 uut pilti, mida kasutati seejärel CycleGANi treenimiseks.
 
-	On näha, et selle meetodi tulemusel paranes stiiliülekande edukus pisut. Loodud pildid pole nii udused ning on näha rohkem tooni muutuseid ja detaile. Mõlema meetodi edukus võib ka varieeruda juhuse tõttu.
+	On näha, et selle meetodi tulemusel paranes stiiliülekande edukus pisut. Loodud pildid pole nii udused ning on näha rohkem toonimuutusi ja detaile. Mõlema meetodi edukus võib ka varieeruda juhuse tõttu.
 
 	\begin{figure}[ht]
 		\includegraphics[width=0.9\linewidth]{images/coco.png}
