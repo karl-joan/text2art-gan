@@ -122,12 +122,18 @@
 	\renewbibmacro*{url}{%
 		\printfield{url}}}	
 
-\renewrobustcmd*{\bibinitdelim}{\,}
+% Add a space between initials
+\renewrobustcmd*{\bibinitdelim}{\space}
+% Add a hyphen where necessary
+\renewrobustcmd*{\bibinithyphendelim}{-}
+
+% Remove the dot at the end of bibliography
+\renewcommand*{\finentrypunct}{}
 
 \DefineBibliographyStrings{estonian}{
-  editor           = {ed\adddot},
-  editors          = {ed\adddot},
-  byeditor         = {ed\adddot},
+  editor           = {Ed\adddot},
+  editors          = {Ed\adddot},
+  byeditor         = {Ed\adddot},
   page             = {p\adddot},
   pages            = {pp\adddot},
 }
