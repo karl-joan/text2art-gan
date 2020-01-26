@@ -1,4 +1,5 @@
-"""This package contains modules related to objective functions, optimizations, and network architectures.
+"""
+This package contains modules related to objective functions, optimizations, and network architectures.
 
 To add a custom model class called 'dummy', you need to add a file called 'dummy_model.py' and define a subclass DummyModel inherited from BaseModel.
 You need to implement the following five functions:
@@ -22,7 +23,8 @@ import importlib
 from .base_model import BaseModel
 
 def find_model_using_name(model_name):
-    """Import the module "models/[model_name]_model.py".
+    """
+    Import the module "models/[model_name]_model.py".
 
     In the file, the class called DatasetNameModel() will
     be instantiated. It has to be a subclass of BaseModel,
@@ -32,6 +34,7 @@ def find_model_using_name(model_name):
     modellib = importlib.import_module(model_filename)
     model = None
     target_model_name = model_name.replace('_', '') + 'model'
+
     for name, cls in modellib.__dict__.items():
         if name.lower() == target_model_name.lower() \
            and issubclass(cls, BaseModel):
@@ -45,13 +48,14 @@ def find_model_using_name(model_name):
 
 
 def get_option_setter(model_name):
-    """Return the static method <modify_commandline_options> of the model class."""
+    # Return the static method <modify_commandline_options> of the model class.
     model_class = find_model_using_name(model_name)
     return model_class.modify_commandline_options
 
 
 def create_model(opt, verbose):
-    """Create a model given the option.
+    """
+    Create a model given the option.
 
     This function warps the class CustomDatasetDataLoader.
     This is the main interface between this package and 'train.py'/'test.py'

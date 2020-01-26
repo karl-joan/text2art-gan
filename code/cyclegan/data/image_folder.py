@@ -1,14 +1,15 @@
-"""A modified image folder class
+"""
+A modified image folder class
 
 We modify the official PyTorch image folder (https://github.com/pytorch/vision/blob/master/torchvision/datasets/folder.py)
 so that this class can load images from both current directory and its subdirectories.
 """
 
+import os
+import os.path
 import torch.utils.data as data
 
 from PIL import Image
-import os
-import os.path
 
 IMG_EXTENSIONS = [
     '.jpg', '.JPG', '.jpeg', '.JPEG',

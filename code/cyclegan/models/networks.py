@@ -1,7 +1,8 @@
+import functools
 import torch
 import torch.nn as nn
+
 from torch.nn import init
-import functools
 from torch.optim import lr_scheduler
 
 
@@ -16,7 +17,8 @@ class Identity(nn.Module):
 
 
 def get_norm_layer(norm_type='instance'):
-    """Return a normalization layer
+    """
+    Return a normalization layer
 
     Parameters:
         norm_type (str) -- the name of the normalization layer: batch | instance | none
@@ -36,7 +38,8 @@ def get_norm_layer(norm_type='instance'):
 
 
 def get_scheduler(optimizer, opt):
-    """Return a learning rate scheduler
+    """
+    Return a learning rate scheduler
 
     Parameters:
         optimizer          -- the optimizer of the network
@@ -65,7 +68,8 @@ def get_scheduler(optimizer, opt):
 
 
 def init_weights(net, init_type='normal', init_gain=0.02):
-    """Initialize network weights.
+    """
+    Initialize network weights.
 
     Parameters:
         net (network)   -- network to be initialized
@@ -95,11 +99,12 @@ def init_weights(net, init_type='normal', init_gain=0.02):
             init.constant_(m.bias.data, 0.0)
 
     #print('initialize network with %s' % init_type)
-    net.apply(init_func)  # apply the initialization function <init_func>
+    net.apply(init_func)  # Apply the initialization function <init_func>
 
 
 def init_net(net, init_type='normal', init_gain=0.02, gpu_ids=[]):
-    """Initialize a network: 1. register CPU/GPU device (with multi-GPU support); 2. initialize the network weights
+    """
+    Initialize a network: 1. register CPU/GPU device (with multi-GPU support); 2. initialize the network weights
     Parameters:
         net (network)      -- the network to be initialized
         init_type (str)    -- the name of an initialization method: normal | xavier | kaiming | orthogonal
@@ -117,7 +122,8 @@ def init_net(net, init_type='normal', init_gain=0.02, gpu_ids=[]):
 
 
 def define_G(input_nc, output_nc, ngf, netG, norm='batch', use_dropout=False, init_type='normal', init_gain=0.02, gpu_ids=[]):
-    """Create a generator
+    """
+    Create a generator
 
     Parameters:
         input_nc (int) -- the number of channels in input images
@@ -160,7 +166,8 @@ def define_G(input_nc, output_nc, ngf, netG, norm='batch', use_dropout=False, in
 
 
 def define_D(input_nc, ndf, netD, n_layers_D=3, norm='batch', init_type='normal', init_gain=0.02, gpu_ids=[]):
-    """Create a discriminator
+    """
+    Create a discriminator
 
     Parameters:
         input_nc (int)     -- the number of channels in input images
@@ -192,11 +199,11 @@ def define_D(input_nc, ndf, netD, n_layers_D=3, norm='batch', init_type='normal'
     net = None
     norm_layer = get_norm_layer(norm_type=norm)
 
-    if netD == 'basic':  # default PatchGAN classifier
+    if netD == 'basic':  # Default PatchGAN classifier
         net = NLayerDiscriminator(input_nc, ndf, n_layers=3, norm_layer=norm_layer)
-    elif netD == 'n_layers':  # more options
+    elif netD == 'n_layers':  # More options
         net = NLayerDiscriminator(input_nc, ndf, n_layers_D, norm_layer=norm_layer)
-    elif netD == 'pixel':     # classify if each pixel is real or fake
+    elif netD == 'pixel':     # Classify if each pixel is real or fake
         net = PixelDiscriminator(input_nc, ndf, norm_layer=norm_layer)
     else:
         raise NotImplementedError('Discriminator model name [%s] is not recognized' % netD)
@@ -207,14 +214,16 @@ def define_D(input_nc, ndf, netD, n_layers_D=3, norm='batch', init_type='normal'
 # Classes
 ##############################################################################
 class GANLoss(nn.Module):
-    """Define different GAN objectives.
+    """
+    Define different GAN objectives.
 
     The GANLoss class abstracts away the need to create the target label tensor
     that has the same size as the input.
     """
 
     def __init__(self, gan_mode, target_real_label=1.0, target_fake_label=0.0):
-        """ Initialize the GANLoss class.
+        """
+        Initialize the GANLoss class.
 
         Parameters:
             gan_mode (str) - - the type of GAN objective. It currently supports vanilla, lsgan, and wgangp.
@@ -238,7 +247,8 @@ class GANLoss(nn.Module):
             raise NotImplementedError('gan mode %s not implemented' % gan_mode)
 
     def get_target_tensor(self, prediction, target_is_real):
-        """Create label tensors with the same size as the input.
+        """
+        Create label tensors with the same size as the input.
 
         Parameters:
             prediction (tensor) - - tpyically the prediction from a discriminator
@@ -255,7 +265,8 @@ class GANLoss(nn.Module):
         return target_tensor.expand_as(prediction)
 
     def __call__(self, prediction, target_is_real):
-        """Calculate loss given Discriminator's output and grount truth labels.
+        """
+        Calculate loss given Discriminator's output and grount truth labels.
 
         Parameters:
             prediction (tensor) - - tpyically the prediction output from a discriminator
@@ -276,7 +287,8 @@ class GANLoss(nn.Module):
 
 
 def cal_gradient_penalty(netD, real_data, fake_data, device, type='mixed', constant=1.0, lambda_gp=10.0):
-    """Calculate the gradient penalty loss, used in WGAN-GP paper https://arxiv.org/abs/1704.00028
+    """
+    Calculate the gradient penalty loss, used in WGAN-GP paper https://arxiv.org/abs/1704.00028
 
     Arguments:
         netD (network)              -- discriminator network
@@ -290,7 +302,7 @@ def cal_gradient_penalty(netD, real_data, fake_data, device, type='mixed', const
     Returns the gradient penalty loss
     """
     if lambda_gp > 0.0:
-        if type == 'real':   # either use real images, fake images, or a linear interpolation of two.
+        if type == 'real':   # Either use real images, fake images, or a linear interpolation of two.
             interpolatesv = real_data
         elif type == 'fake':
             interpolatesv = fake_data
@@ -305,21 +317,23 @@ def cal_gradient_penalty(netD, real_data, fake_data, device, type='mixed', const
         gradients = torch.autograd.grad(outputs=disc_interpolates, inputs=interpolatesv,
                                         grad_outputs=torch.ones(disc_interpolates.size()).to(device),
                                         create_graph=True, retain_graph=True, only_inputs=True)
-        gradients = gradients[0].view(real_data.size(0), -1)  # flat the data
-        gradient_penalty = (((gradients + 1e-16).norm(2, dim=1) - constant) ** 2).mean() * lambda_gp        # added eps
+        gradients = gradients[0].view(real_data.size(0), -1)  # Flat the data
+        gradient_penalty = (((gradients + 1e-16).norm(2, dim=1) - constant) ** 2).mean() * lambda_gp # Added eps
         return gradient_penalty, gradients
     else:
         return 0.0, None
 
 
 class ResnetGenerator(nn.Module):
-    """Resnet-based generator that consists of Resnet blocks between a few downsampling/upsampling operations.
+    """
+    Resnet-based generator that consists of Resnet blocks between a few downsampling/upsampling operations.
 
     We adapt Torch code and idea from Justin Johnson's neural style transfer project(https://github.com/jcjohnson/fast-neural-style)
     """
 
     def __init__(self, input_nc, output_nc, ngf=64, norm_layer=nn.BatchNorm2d, use_dropout=False, n_blocks=6, padding_type='reflect'):
-        """Construct a Resnet-based generator
+        """
+        Construct a Resnet-based generator
 
         Parameters:
             input_nc (int)      -- the number of channels in input images
@@ -343,18 +357,17 @@ class ResnetGenerator(nn.Module):
                  nn.ReLU(True)]
 
         n_downsampling = 2
-        for i in range(n_downsampling):  # add downsampling layers
+        for i in range(n_downsampling):  # Add downsampling layers
             mult = 2 ** i
             model += [nn.Conv2d(ngf * mult, ngf * mult * 2, kernel_size=3, stride=2, padding=1, bias=use_bias),
                       norm_layer(ngf * mult * 2),
                       nn.ReLU(True)]
 
         mult = 2 ** n_downsampling
-        for i in range(n_blocks):       # add ResNet blocks
-
+        for i in range(n_blocks):       # Add ResNet blocks
             model += [ResnetBlock(ngf * mult, padding_type=padding_type, norm_layer=norm_layer, use_dropout=use_dropout, use_bias=use_bias)]
 
-        for i in range(n_downsampling):  # add upsampling layers
+        for i in range(n_downsampling):  # Add upsampling layers
             mult = 2 ** (n_downsampling - i)
             model += [nn.ConvTranspose2d(ngf * mult, int(ngf * mult / 2),
                                          kernel_size=3, stride=2,
@@ -362,6 +375,7 @@ class ResnetGenerator(nn.Module):
                                          bias=use_bias),
                       norm_layer(int(ngf * mult / 2)),
                       nn.ReLU(True)]
+
         model += [nn.ReflectionPad2d(3)]
         model += [nn.Conv2d(ngf, output_nc, kernel_size=7, padding=0)]
         model += [nn.Tanh()]
@@ -369,15 +383,16 @@ class ResnetGenerator(nn.Module):
         self.model = nn.Sequential(*model)
 
     def forward(self, input):
-        """Standard forward"""
+        # Standard forward
         return self.model(input)
 
 
 class ResnetBlock(nn.Module):
-    """Define a Resnet block"""
+    # Define a Resnet block
 
     def __init__(self, dim, padding_type, norm_layer, use_dropout, use_bias):
-        """Initialize the Resnet block
+        """
+        Initialize the Resnet block
 
         A resnet block is a conv block with skip connections
         We construct a conv block with build_conv_block function,
@@ -388,7 +403,8 @@ class ResnetBlock(nn.Module):
         self.conv_block = self.build_conv_block(dim, padding_type, norm_layer, use_dropout, use_bias)
 
     def build_conv_block(self, dim, padding_type, norm_layer, use_dropout, use_bias):
-        """Construct a convolutional block.
+        """
+        Construct a convolutional block.
 
         Parameters:
             dim (int)           -- the number of channels in the conv layer.
@@ -428,16 +444,17 @@ class ResnetBlock(nn.Module):
         return nn.Sequential(*conv_block)
 
     def forward(self, x):
-        """Forward function (with skip connections)"""
+        # Forward function (with skip connections)
         out = x + self.conv_block(x)  # add skip connections
         return out
 
 
 class UnetGenerator(nn.Module):
-    """Create a Unet-based generator"""
+    # Create a Unet-based generator
 
     def __init__(self, input_nc, output_nc, num_downs, ngf=64, norm_layer=nn.BatchNorm2d, use_dropout=False):
-        """Construct a Unet generator
+        """
+        Construct a Unet generator
         Parameters:
             input_nc (int)  -- the number of channels in input images
             output_nc (int) -- the number of channels in output images
@@ -450,30 +467,32 @@ class UnetGenerator(nn.Module):
         It is a recursive process.
         """
         super(UnetGenerator, self).__init__()
-        # construct unet structure
-        unet_block = UnetSkipConnectionBlock(ngf * 8, ngf * 8, input_nc=None, submodule=None, norm_layer=norm_layer, innermost=True)  # add the innermost layer
+        # Construct unet structure
+        unet_block = UnetSkipConnectionBlock(ngf * 8, ngf * 8, input_nc=None, submodule=None, norm_layer=norm_layer, innermost=True)  # Add the innermost layer
         for i in range(num_downs - 5):          # add intermediate layers with ngf * 8 filters
             unet_block = UnetSkipConnectionBlock(ngf * 8, ngf * 8, input_nc=None, submodule=unet_block, norm_layer=norm_layer, use_dropout=use_dropout)
-        # gradually reduce the number of filters from ngf * 8 to ngf
+        # Gradually reduce the number of filters from ngf * 8 to ngf
         unet_block = UnetSkipConnectionBlock(ngf * 4, ngf * 8, input_nc=None, submodule=unet_block, norm_layer=norm_layer)
         unet_block = UnetSkipConnectionBlock(ngf * 2, ngf * 4, input_nc=None, submodule=unet_block, norm_layer=norm_layer)
         unet_block = UnetSkipConnectionBlock(ngf, ngf * 2, input_nc=None, submodule=unet_block, norm_layer=norm_layer)
         self.model = UnetSkipConnectionBlock(output_nc, ngf, input_nc=input_nc, submodule=unet_block, outermost=True, norm_layer=norm_layer)  # add the outermost layer
 
     def forward(self, input):
-        """Standard forward"""
+        # Standard forward
         return self.model(input)
 
 
 class UnetSkipConnectionBlock(nn.Module):
-    """Defines the Unet submodule with skip connection.
-        X -------------------identity----------------------
-        |-- downsampling -- |submodule| -- upsampling --|
+    """
+    Defines the Unet submodule with skip connection.
+    X -------------------identity----------------------
+    |-- downsampling -- |submodule| -- upsampling --|
     """
 
     def __init__(self, outer_nc, inner_nc, input_nc=None,
                  submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
-        """Construct a Unet submodule with skip connections.
+        """
+        Construct a Unet submodule with skip connections.
 
         Parameters:
             outer_nc (int) -- the number of filters in the outer conv layer
@@ -531,15 +550,16 @@ class UnetSkipConnectionBlock(nn.Module):
     def forward(self, x):
         if self.outermost:
             return self.model(x)
-        else:   # add skip connections
+        else:   # Add skip connections
             return torch.cat([x, self.model(x)], 1)
 
 
 class NLayerDiscriminator(nn.Module):
-    """Defines a PatchGAN discriminator"""
+    # Defines a PatchGAN discriminator
 
     def __init__(self, input_nc, ndf=64, n_layers=3, norm_layer=nn.BatchNorm2d):
-        """Construct a PatchGAN discriminator
+        """
+        Construct a PatchGAN discriminator
 
         Parameters:
             input_nc (int)  -- the number of channels in input images
@@ -548,7 +568,7 @@ class NLayerDiscriminator(nn.Module):
             norm_layer      -- normalization layer
         """
         super(NLayerDiscriminator, self).__init__()
-        if type(norm_layer) == functools.partial:  # no need to use bias as BatchNorm2d has affine parameters
+        if type(norm_layer) == functools.partial:  # No need to use bias as BatchNorm2d has affine parameters
             use_bias = norm_layer.func == nn.InstanceNorm2d
         else:
             use_bias = norm_layer == nn.InstanceNorm2d
@@ -558,7 +578,7 @@ class NLayerDiscriminator(nn.Module):
         sequence = [nn.Conv2d(input_nc, ndf, kernel_size=kw, stride=2, padding=padw), nn.LeakyReLU(0.2, True)]
         nf_mult = 1
         nf_mult_prev = 1
-        for n in range(1, n_layers):  # gradually increase the number of filters
+        for n in range(1, n_layers):  # Gradually increase the number of filters
             nf_mult_prev = nf_mult
             nf_mult = min(2 ** n, 8)
             sequence += [
@@ -575,19 +595,20 @@ class NLayerDiscriminator(nn.Module):
             nn.LeakyReLU(0.2, True)
         ]
 
-        sequence += [nn.Conv2d(ndf * nf_mult, 1, kernel_size=kw, stride=1, padding=padw)]  # output 1 channel prediction map
+        sequence += [nn.Conv2d(ndf * nf_mult, 1, kernel_size=kw, stride=1, padding=padw)]  # Output 1 channel prediction map
         self.model = nn.Sequential(*sequence)
 
     def forward(self, input):
-        """Standard forward."""
+        # Standard forward.
         return self.model(input)
 
 
 class PixelDiscriminator(nn.Module):
-    """Defines a 1x1 PatchGAN discriminator (pixelGAN)"""
+    # Defines a 1x1 PatchGAN discriminator (pixelGAN)
 
     def __init__(self, input_nc, ndf=64, norm_layer=nn.BatchNorm2d):
-        """Construct a 1x1 PatchGAN discriminator
+        """
+        Construct a 1x1 PatchGAN discriminator
 
         Parameters:
             input_nc (int)  -- the number of channels in input images
@@ -595,7 +616,7 @@ class PixelDiscriminator(nn.Module):
             norm_layer      -- normalization layer
         """
         super(PixelDiscriminator, self).__init__()
-        if type(norm_layer) == functools.partial:  # no need to use bias as BatchNorm2d has affine parameters
+        if type(norm_layer) == functools.partial:  # No need to use bias as BatchNorm2d has affine parameters
             use_bias = norm_layer.func == nn.InstanceNorm2d
         else:
             use_bias = norm_layer == nn.InstanceNorm2d
@@ -611,5 +632,5 @@ class PixelDiscriminator(nn.Module):
         self.net = nn.Sequential(*self.net)
 
     def forward(self, input):
-        """Standard forward."""
+        # Standard forward.
         return self.net(input)
