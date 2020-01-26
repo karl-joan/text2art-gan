@@ -5,7 +5,7 @@ from .options.config import BaseOptions
 from .data import create_dataset
 from .util.util import save_images
 
-def cyclegan(savepath, style, dataset, use_cpu=False, verbose=False):
+def cyclegan(savepath, style, dataset, identity=False, use_cpu=False, verbose=False):
     opt = BaseOptions().parse(verbose) # Get options
     opt.dataroot = savepath
     opt.results_dir = savepath
@@ -14,26 +14,22 @@ def cyclegan(savepath, style, dataset, use_cpu=False, verbose=False):
     else:
         torch.cuda.set_device(opt.gpu_ids[0])
 
-    if style == "abstract":
-        if dataset == "birds":
-            opt.name = "birds2abs_exp"
-        else:
-            opt.name = "coco2abs_exp"
+    model_name = ""
+
+    if dataset == "birds":
+        model_name += "birds2"
+    else:
+        model_name += "coco2"
+
+    if style == "abstract_expressionism":
+        model_name += "abs_exp"
     elif style == "impressionism":
-        if dataset == "birds":
-            opt.name = "birds2imp"
-        else:
-            opt.name = "coco2imp"
-    elif style == "abs2_for_coco":
-        opt.name = "coco2abs_exp2"
-    elif style == "gen_coco2abs_exp":
-        opt.name = style
-    elif style == "gen_coco2imp":
-        opt.name = style
-    elif style == "birds2abs_exp_idt":
-        opt.name = style
-    elif style == "birds2imp_idt":
-        opt.name = style
+        model_name += "imp"
+
+    if identity == True:
+        model_name += "_idt"
+
+    opt.name = model_name
 
     if verbose == True:
         BaseOptions().print_options(opt)
