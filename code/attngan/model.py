@@ -1,11 +1,11 @@
 import torch
 import torch.nn as nn
 import torch.nn.parallel
-from torch.autograd import Variable
-from torchvision import models
-import torch.utils.model_zoo as model_zoo
 import torch.nn.functional as F
+import torch.utils.model_zoo as model_zoo
 
+from torchvision import models
+from torch.autograd import Variable
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 
 from .config import cfg

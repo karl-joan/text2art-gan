@@ -1,12 +1,12 @@
+import numpy as np
+import pickle
 import os
 import sys
 import time
-from datetime import datetime
 
+from datetime import datetime
 from PIL import Image
 from pprint import pprint
-import numpy as np
-import pickle
 
 import torch
 import torch.nn as nn
