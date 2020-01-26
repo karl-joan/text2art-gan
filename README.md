@@ -1,7 +1,14 @@
 # text2art-gan
 Project aimed to create a GAN, that is able to generate art just from text descriptions.
 
-<img src="paper/images/lisa1_eng.png" width="900px"/>
+## CUB
+<img src="paper/images/lisa1_eng.png" width="400px"/>
+
+## COCO
+<img src="paper/images/lisa2_eng.png" width="400px"/>
+
+When given a more abstract word, the results can be quite interesting:
+<img src="paper/images/asbtraktne_eng.png" width="900px"/>
 
 ## Set Up
 ### Dependencies
