@@ -2,13 +2,14 @@
 Project aimed to create a GAN, that is able to generate art just from text descriptions.
 
 ## CUB
-<img src="paper/images/lisa1_eng.png" width="600px"/>
+<img src="paper/images/lisa1_eng.png" width="650px"/>
 
 ## COCO
-<img src="paper/images/lisa2_eng.png" width="600px"/>
+<img src="paper/images/lisa2_eng.png" width="650px"/>
 
 When given a more abstract word, the results can be quite interesting:
-<img src="paper/images/abstraktne_eng.png" width="900px"/>
+
+<img src="paper/images/abstraktne_eng.png" width="1000px"/>
 
 ## Set Up
 ### Dependencies
