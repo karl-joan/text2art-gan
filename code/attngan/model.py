@@ -12,7 +12,7 @@ from .config import cfg
 from .GlobalAttention import GlobalAttentionGeneral as ATT_NET
 
 
-# ############## Text2Image Encoder-Decoder #######
+####### Text2Image Encoder-Decoder #######
 class RNN_ENCODER(nn.Module):
     def __init__(self, ntoken, ninput=300, drop_prob=0.5,
                  nhidden=128, nlayers=1, bidirectional=True):
@@ -21,9 +21,9 @@ class RNN_ENCODER(nn.Module):
         self.n_steps = cfg.TEXT.WORDS_NUM
         self.rnn_type = cfg.RNN_TYPE
 
-        self.ntoken = ntoken  # size of the dictionary
-        self.ninput = ninput  # size of each embedding vector
-        self.drop_prob = drop_prob  # probability of an element to be zeroed
+        self.ntoken = ntoken  # Size of the dictionary
+        self.ninput = ninput  # Size of each embedding vector
+        self.drop_prob = drop_prob  # Probability of an element to be zeroed
         self.nlayers = nlayers  # Number of recurrent layers
         self.bidirectional = bidirectional
 
@@ -31,7 +31,8 @@ class RNN_ENCODER(nn.Module):
             self.num_directions = 2
         else:
             self.num_directions = 1
-        # number of features in the hidden state
+
+        # Number of features in the hidden state
         self.nhidden = nhidden // self.num_directions
 
         self.define_module()
@@ -48,8 +49,8 @@ class RNN_ENCODER(nn.Module):
             self.rnn_drop_prob = self.drop_prob
 
         if self.rnn_type == 'LSTM':
-            # dropout: If non-zero, introduces a dropout layer on
-            # the outputs of each RNN layer except the last layer
+            # Dropout: if non-zero, introduces a dropout layer on
+            # The outputs of each RNN layer except the last layer
             self.rnn = nn.LSTM(self.ninput, self.nhidden,
                                self.nlayers, batch_first=True,
                                dropout=self.rnn_drop_prob,
@@ -82,18 +83,18 @@ class RNN_ENCODER(nn.Module):
                                        bsz, self.nhidden).zero_())
 
     def forward(self, captions, cap_lens, hidden, mask=None):
-        # input: torch.LongTensor of size batch x n_steps
-        # --> emb: batch x n_steps x ninput
+        # Input: torch.LongTensor of size batch x n_steps
+        # --> Emb: batch x n_steps x ninput
         emb = self.drop(self.encoder(captions))
         #
         # Returns: a PackedSequence object
         cap_lens = cap_lens.data.tolist()
         emb = pack_padded_sequence(emb, cap_lens, batch_first=True)
-        # #hidden and memory (num_layers * num_directions, batch, hidden_size):
-        # tensor containing the initial hidden state for each element in batch.
-        # #output (batch, seq_len, hidden_size * num_directions)
-        # #or a PackedSequence object:
-        # tensor containing output features (h_t) from the last layer of RNN
+        # Hidden and memory (num_layers * num_directions, batch, hidden_size):
+        # Tensor containing the initial hidden state for each element in batch.
+        # Output (batch, seq_len, hidden_size * num_directions)
+        # or a PackedSequence object:
+        # Tensor containing output features (h_t) from the last layer of RNN
         output, hidden = self.rnn(emb, hidden)
         # PackedSequence object
         # --> (batch, seq_len, hidden_size * num_directions)
@@ -168,9 +169,9 @@ class G_NET(nn.Module):
         return fake_imgs, att_maps, mu, logvar
 
 
-# ############## G networks ###################
+####### G networks #######
 class CA_NET(nn.Module):
-    # some code is modified from vae examples
+    # Some code is modified from vae examples
     # (https://github.com/pytorch/examples/blob/master/vae/main.py)
     def __init__(self):
         super(CA_NET, self).__init__()
@@ -226,18 +227,18 @@ class Interpolate(nn.Module):
         return x
 
 def conv1x1(in_planes, out_planes, bias=False):
-    "1x1 convolution with padding"
+    # 1x1 convolution with padding
     return nn.Conv2d(in_planes, out_planes, kernel_size=1, stride=1,
                      padding=0, bias=bias)
 
 
 def conv3x3(in_planes, out_planes):
-    "3x3 convolution with padding"
+    # 3x3 convolution with padding
     return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=1,
                      padding=1, bias=False)
 
 
-# Upsale the spatial size by a factor of 2
+# Upscale the spatial size by a factor of 2
 def upBlock(in_planes, out_planes):
     block = nn.Sequential(
         Interpolate(scale_factor=2, mode='nearest'),
@@ -280,7 +281,7 @@ class CNN_ENCODER(nn.Module):
         if cfg.TRAIN.FLAG:
             self.nef = nef
         else:
-            self.nef = 256  # define a uniform ranker
+            self.nef = 256  # Define a uniform ranker
 
         model = models.inception_v3()
         url = 'https://download.pytorch.org/models/inception_v3_google-1a9a5a14.pth'
@@ -357,7 +358,7 @@ class CNN_ENCODER(nn.Module):
         x = self.Mixed_6e(x)
         # 17 x 17 x 768
 
-        # image region features
+        # Image region features
         features = x
         # 17 x 17 x 768
 
@@ -374,7 +375,7 @@ class CNN_ENCODER(nn.Module):
         x = x.view(x.size(0), -1)
         # 2048
 
-        # global image features
+        # Global image features
         cnn_code = self.emb_cnn_code(x)
         # 512
         if features is not None:
@@ -394,7 +395,7 @@ class INIT_STAGE_G(nn.Module):
         nz, ngf = self.in_dim, self.gf_dim
         self.fc = nn.Sequential(
             nn.Linear(nz, ngf * 4 * 4 * 2, bias=False),
-            # removing for single instance caption
+            # Removing for single instance caption
             nn.BatchNorm1d(ngf * 4 * 4 * 2),
             GLU())
 
@@ -458,7 +459,7 @@ class NEXT_STAGE_G(nn.Module):
         h_c_code = torch.cat((h_code, c_code), 1)
         out_code = self.residual(h_c_code)
 
-        # state size ngf/2 x 2in_size x 2in_size
+        # State size ngf/2 x 2in_size x 2in_size
         out_code = self.upsample(out_code)
 
         return out_code, att
@@ -521,7 +522,7 @@ class G_DCGAN(nn.Module):
         return [fake_imgs], att_maps, mu, logvar
 
 
-# ############## D networks ##########################
+####### D networks #######
 def Block3x3_leakRelu(in_planes, out_planes):
     block = nn.Sequential(
         conv3x3(in_planes, out_planes),
@@ -531,7 +532,7 @@ def Block3x3_leakRelu(in_planes, out_planes):
     return block
 
 
-# Downsale the spatial size by a factor of 2
+# Downscale the spatial size by a factor of 2
 def downBlock(in_planes, out_planes):
     block = nn.Sequential(
         nn.Conv2d(in_planes, out_planes, 4, 2, 1, bias=False),
@@ -541,7 +542,7 @@ def downBlock(in_planes, out_planes):
     return block
 
 
-# Downsale the spatial size by a factor of 16
+# Downscale the spatial size by a factor of 16
 def encode_image_by_16times(ndf):
     encode_img = nn.Sequential(
         # --> state size. ndf x in_size/2 x in_size/2
@@ -578,12 +579,12 @@ class D_GET_LOGITS(nn.Module):
 
     def forward(self, h_code, c_code=None):
         if self.bcondition and c_code is not None:
-            # conditioning output
+            # Conditioning output
             c_code = c_code.view(-1, self.ef_dim, 1, 1)
             c_code = c_code.repeat(1, 1, 4, 4)
-            # state size (ngf+egf) x 4 x 4
+            # State size (ngf+egf) x 4 x 4
             h_c_code = torch.cat((h_code, c_code), 1)
-            # state size ngf x in_size x in_size
+            # State size ngf x in_size x in_size
             h_c_code = self.jointConv(h_c_code)
         else:
             h_c_code = h_code
