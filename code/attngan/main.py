@@ -44,6 +44,7 @@ def generate(caption, wordtoix, ixtoword, text_encoder, netG, dataset, savepath,
     nz = cfg.GAN.Z_DIM
     with torch.no_grad():
         captions = Variable(torch.from_numpy(captions))
+        captions = captions.type(torch.LongTensor) # Make sure captions are the right dtype
         cap_lens = Variable(torch.from_numpy(cap_lens))
         noise = Variable(torch.FloatTensor(batch_size, nz))
 
@@ -51,6 +52,7 @@ def generate(caption, wordtoix, ixtoword, text_encoder, netG, dataset, savepath,
         captions = captions.cuda()
         cap_lens = cap_lens.cuda()
         noise = noise.cuda()
+
 
     # (1) Extract text embeddings
     hidden = text_encoder.init_hidden(batch_size)
@@ -151,7 +153,7 @@ def attngan(caption, dataset, number, savepath, use_cpu=False, verbose=False):
         for param in text_encoder.parameters():
             num_params += param.numel()
         print('[Network text encoder] Total number of parameters : %.3f M' % (num_params / 1e6))
-        
+
         num_params = 0
         for param in netG.parameters():
             num_params += param.numel()
