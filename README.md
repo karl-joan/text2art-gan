@@ -1,5 +1,5 @@
 # text2art-gan
-Project aimed to create a GAN, that is able to generate art just from text descriptions.
+Project aimed to create a GAN, that is able to generate art just from text descriptions. The project can be accessed from [GitLab](https://gitlab.com/karl-joan/text2art-gan) or [GitHub](https://github.com/karl-joan/text2art-gan).
 
 ## CUB
 <img src="paper/images/lisa1_eng.png" width="650px"/>
