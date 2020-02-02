@@ -160,7 +160,7 @@
 
 	Et hoida kokku aega ning arvutiressursse, kasutas autor AttnGANi jaoks varem treenitud mudeleid, kuna AttnGAN ümbertreenimine ei oleks kuidagi parandanud väljapakutud mudeli sooritust.
 
-	CycleGANi puhul tuli iga stiili jaoks ning parameetri muutmise korral treenida uus mudel. Kokku treeniti 10  mudelit, kus igat ühte treeniti ligikaudu 40 tundi RTX 2080 graafikakaardiga. Kahjuks jõudis autor treenida CycleGAN tegema ainult kahte erinevat stiiliteisendust, aga tulevikus on plaan lisada veel teisigi stiiliteisendusi. Treenimise käigus olid võrrandi number \ref{eq:cyclegan} parameetrite väärtused $ \lambda_{cyc} = 10 $ ja $ \lambda_{idt} = 0.5 $.
+	CycleGANi puhul tuli iga stiili jaoks ning parameetri muutmise korral treenida uus mudel. Kokku treeniti 10  mudelit, kus igat ühte treeniti ligikaudu 40 tundi RTX 2080 graafikakaardiga. Kahjuks jõudis autor treenida CycleGAN tegema ainult kahte erinevat stiiliteisendust, aga tulevikus on plaan lisada veel teisigi stiiliteisendusi. Treenimise käigus olid võrrandi number \ref{eq:cyclegan} parameetrite väärtused samad, mis CycleGANi töös ($ \lambda_{cyc} = 10 $ ja $ \lambda_{idt} = 0.5 $) \parencite{cyclegan}.
 
 	Töö kood ning treenitud mudelid, mida on võimalik ka oma arvutis jooksutada, on kättesaadavad GitLabis \parencite{text2art-gan}.
 
@@ -181,7 +181,7 @@
 	\subsection{CUB}
 	Tulemustest on näha, et AttnGANil õnnestub üsna hästi luua realistlikke lindude kujutisi, mis vastavad ka teksti kirjeldusele, kuid on see-eest ka linde, millel on erinevaid moonutusi, nagu kaks pead või pole pead ega jalgu. CycleGANil õnnestub rakendada stiili genereeritud pildile üsna edukalt \seefig{cub} --- leidub pilte, mis näevad kunstiteoste moodi välja, aga leidub ka pilte, kus pole stiili rakendatud või stiili on hoopis rakendatud liiga jõuliselt, mille tõttu mõjub pilt häirivana.
 
-	Autor katsetas ka $ \lambda_{idt} $ väärtuse muutmisega võrrandis \ref{eq:cyclegan} nii et $ \lambda_{idt} = 5 $. Valdavalt olid selle mudeli poolt loodud teosed pehmemate toonidega ning tekstuur oli ka sujuvam. Abstraktse stiili puhul oli näha rohkem eredamaid toone.
+	Autor katsetas ka $ \lambda_{idt} $ väärtuse muutmisega võrrandis \ref{eq:cyclegan} nii et $ \lambda_{idt} = 5 $. Antud väärtus valiti CycleGANi töö järgi, kus mudel kippus stiiliteisenduse käigus piltide tooni vahetama \parencite{cyclegan}. Valdavalt olid selle mudeli poolt loodud teosed pehmemate toonidega ning tekstuur oli ka sujuvam. Abstraktse stiili puhul oli näha rohkem eredamaid toone.
 
 	Tulevikus tasub proovida veel teisigi lambda väärtusi, mis on 0.5 ja 5 vahel või neist hoopis suuremad.
 
