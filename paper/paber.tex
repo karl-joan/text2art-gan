@@ -42,14 +42,6 @@
 	\maketitle
 	\tableofcontents
 
-	%\unsection{Definitsioonid}
-	%\begin{description}
-	%\let\originalitem\item
-	%\renewcommand*{\item}[1][]{\originalitem[#1]\label{def:#1}}
-
-	%\item{GAN} ing.k. \textit{generative adversarial network}
-	%\end{description}
-
 	\newcommand*{\seefig}[1]{(\hyperref[fig:#1]{vt~joonis~\ref{fig:#1}})}
 	\newcommand*{\inglk}[1]{(\textit{ingl. k. #1})}
 
@@ -62,7 +54,7 @@
 
 	Kuna puuduvad digitaalsed andmekogud, kus oleksid olemas teoste kirjeldused (nt \enquote{Pildil on mees, kes raiub puid, ning tema selja taga on karu.}), ei ole võimalik treenida ühte GANi, mis suudaks teisendada sisu kirjelduse kunstiteoseks. Selleks kasutab autor kahte GANi --- esimene GAN teisendab sisu kirjelduse vastavaks pildiks (sisu\textrightarrow pilt), mis antakse järgmisele GANile, mis muudab loodud pildi kunstiteoseks soovitud stiilis (pilt\textrightarrow kunst).
 
-	Hüpotees on, et mudel, mis on treenitud genereerima ainult ühte kindlat objekti sisaldavaid teoseid (ehk mudel suudab luua teoseid, kus on näiteks ainult linnud), loob realistlikumaid teoseid kui mudel, mis on treenitud genereerima mitmeid erinevaid objekte sisaldavaid teoseid (ehk mudel suudab luua teoseid, kus on näiteks majad, metsad või muu selline).
+	Hüpotees on, et mudel, mis on treenitud genereerima ainult ühte kindlat objekti sisaldavaid teoseid (ehk mudel suudab luua teoseid, kus on näiteks ainult linnud), loob realistlikumaid või kunstipärasemaid teoseid kui mudel, mis on treenitud genereerima mitmeid erinevaid objekte sisaldavaid teoseid (ehk mudel suudab luua teoseid, kus on näiteks majad, metsad või muu selline).
 
 	Töö alguses annab autor ülevaate varasematest töödest selles valdkonnas ning tutvustab loogikat, mille põhjal on mudel kokkupandud. Seejärel vaadeldakse erinevaid mudeleid, millele järgneb eksperimentaalne osa, kus analüüsitakse ning hinnatakse erinevate mudelite sooritust. 
 	
@@ -206,7 +198,7 @@
 
 	Kuna AttnGANi poolt genereeritud pildid ei ole väga realistlikud, on selle tõttu erinev pildijaotus, mida kasutati \mbox{CycleGANi} treenimiseks (treenimisele kasutati päris pilte AttnGAN genereeritud piltide asemel, lootuses, et AttnGAN poolt genereeritud pildid on realistlikud ning et CycleGAN suudab üldistada neile), pildijaotusest, millele CycleGAN kannab stiili üle \seefig{dist}. Pildijaotuse lõhe vähendamiseks kasutati COCO testimisandmekogu 5000 erinevat kirjeldust, et genereerida 5000 uut pilti, mida kasutati seejärel CycleGANi treenimiseks.
 
-	On näha, et selle meetodi tulemusel paranes stiiliülekande edukus pisut. Loodud pildid pole nii udused ning on näha rohkem toonimuutusi ja detaile. Mõlema meetodi edukus võib ka varieeruda juhuse tõttu.
+	On näha, et selle meetodi tulemusel paranes stiiliülekande edukus pisut. Loodud pildid pole nii udused ning on näha rohkem toonimuutusi ja kontrasti. Mõlema meetodi edukus võib ka varieeruda juhuse tõttu.
 
 	\begin{figure}[ht]
 		\includegraphics[width=0.9\linewidth]{images/coco.png}
@@ -216,7 +208,7 @@
 	Kuna genereeritud piltidel treenimine parandas mudeli edukust, hindas autor mudeli sooritust ka kui $ \lambda_{idt} = 5 $. Selle väärtuse muutmisel võis täheldada samasugust mõju, mida oli näha CUB andmekogu puhul. Värvitoonid muutusid pehmemaks ning tekstuur sujuvamaks. 
 	\spacing{1.4}
 
-	Sisendiks ei pea aga andma kirjeldusi, mis kirjeldaksid ainult olukordi. Mudelile võib anda ka sisendiks abstraktsemaid mõisteid, nagu armastus, kurjus ja õnnelikkus \seefig{abstract}. Selle tulemusel võivad tekkida väga huvitavad ja omapärased teosed. Sisendiks saab kasutada aga ainult selliseid sõnu, mida on kasutatud COCO andmekogus olukordade kirjeldamiseks ehk teisisõnu peab mudel olema neid sõnu varem näinud.
+	Sisendiks ei pea aga andma kirjeldusi, mis kirjeldaksid ainult olukordi. Mudelile võib anda ka sisendiks abstraktsemaid mõisteid, nagu armastus, kurjus ja õnnelikkus \seefig{abstract}. Selle tulemusel võivad tekkida väga huvitavad ja kunstipärased teosed. Sisendiks saab kasutada aga ainult selliseid sõnu, mida on kasutatud COCO andmekogus olukordade kirjeldamiseks ehk teisisõnu peab mudel olema neid sõnu varem näinud.
 
 	\begin{figure}[ht]
 		\includegraphics[width=\linewidth]{images/abstraktne.png}
@@ -224,8 +216,8 @@
 		\label{fig:abstract}
 	\end{figure}
 	\unsection{Kokkuvõte}
-	Uurimistöö eesmärgiks oli luua mudel, mis oleks ise võimeline genereerima tekstist kunsti, sai täidetud. Peale selle leidis ka kinnitust hüpotees, et mudelid, mis genereerivad ainult ühte objekti sisaldavaid pilte, loovad realistlikumaid pilte. Seda selle tõttu, et andmekogust, mis sisaldab mitmeid objekte, on programmil raskem järeldusi teha.
-	
+	Uurimistöö eesmärgiks oli luua mudel, mis oleks ise võimeline genereerima tekstist kunsti, sai täidetud. Osaliselt leidis ka kinnitust hüpotees --- mudel, mis on treenitud genereerima ühte objekti sisaldavaid kunstiteoseid, loob nii realistlike kui ka kunstipäraseid teoseid, aga mudel, mis on treenitud laiahaardelisemal andmekogul, ei suuda luua realistlike teoseid, aga see-eest suudab luua kunstipäraseid teoseid. Seda selle tõttu, et andmekogust, mis sisaldab mitmeid objekte, on programmil raskem järeldusi teha.
+
 	Üleüldise mudeli sooritusega võib jääda rahule --- kui genereerida suurem kogus pilte, siis nende hulgas leidub ka pilte, mis näevad välja nagu need oleks kunstniku poolt tehtud pildid. 
 
 	Programm suudab luua ka üsna huvitavaid tulemusi kui anda sisendiks abstraktsemaid mõisteid, nagu viha, rõõm või armastus. Sisendiks saab kasutada aga ainult sõnu, mida on varem kasutatud andmekogus piltide kirjeldamiseks.
@@ -235,8 +227,8 @@
 	Tööprotsessi käigus sai autor paremini aru, kuidas töötab GAN ning mis põhimõtted on võrrandi number ühe taga. Peale selle sai autor kogemust juurde koodi lugemisel ja selle kirjutamisel ning ka erinevate teadustööde läbi töötlemisel.
 
 	\unsection{Summary}
-    The main goal of this research paper was fulfilled --- build a model, that can generate art from text descriptions. In addition to this, the hypothesis, that models that are trained on a dataset, which contain only images of a single object, perform better compared to models trained on a multiobject dataset. This is due to the fact that a dataset which contains multiple objects are harder and more difficult for the model to generalize to.
-    
+    The main goal of this research paper was fulfilled --- build a model, that can generate art from text descriptions. In addition to this, the hypothesis was partially confirmed --- models that are trained on a dataset, which contain only images of a single object, can create realistic and art-like pieces but models trained on a multiobject dataset, fail to create realistic pieces but still manage to create art-like pieces. This is due to the fact that a dataset which contains multiple objects is harder and more difficult for the model to generalize to.   
+
     The overall performance of the model is adequate --- if one were to generate a large collection of pictures then it would most certainly contain images, that look like they were made by an artist.
 
     The model can also generate very interesting results if given more abstract words, for example, hatred, happiness or love. You can only use words for text descriptions that have been used to describe pictures in the datasets.
