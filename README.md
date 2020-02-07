@@ -4,8 +4,12 @@ Project aimed to create a GAN, that is able to generate art just from text descr
 ## CUB
 <img src="paper/images/lisa1_eng.png" width="650px"/>
 
+For each style, the first column is where lambda\_idt = 0.5 and the second column is where lambda\_idt = 5.
+
 ## COCO
 <img src="paper/images/lisa2_eng.png" width="650px"/>
+
+For each style, the first column is where lambda\_idt = 0.5 and the second column is where lambda\_idt = 5.
 
 When given a more abstract word, the results can be quite interesting:
 
