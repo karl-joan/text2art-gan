@@ -109,6 +109,7 @@
 \RequirePackage[backend=biber, style=authoryear, maxbibnames=99, dashed=false, giveninits=true, terseinits=true]{biblatex}
 \DefineBibliographyStrings{estonian}{andothers={jt}}
 \renewcommand*{\nameyeardelim}{\addcomma\space} % Add a comma between author and year
+\renewcommand*{\nonameyeardelim}{\addcomma\space} % Add a comma when there is no author
 \renewrobustcmd*{\bibinitdelim}{\space}
 
 \DeclareFieldFormat*{title}{#1} % No qoutation marks
@@ -132,14 +133,6 @@
 
 % Remove the dot at the end of bibliography
 \renewcommand*{\finentrypunct}{}
-
-\DefineBibliographyStrings{estonian}{
-  editor           = {Ed\adddot},
-  editors          = {Ed\adddot},
-  byeditor         = {Ed\adddot},
-  page             = {p\adddot},
-  pages            = {pp\adddot},
-}
 
 % Remove indentation
 \setlength{\bibhang}{0pt}
