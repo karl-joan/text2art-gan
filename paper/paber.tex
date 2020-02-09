@@ -68,8 +68,7 @@
 
 	Xu jt mudel AttnGAN kasutab samuti 3 GANist koosnevat struktuuri, aga millele on juurde lisatud tähelepanumehhanism \parencite{attngan}. Tähelepanu võimaldab mudelil joonistada erinevaid alamregioone, keskendudes sõnadele, mis on antud piirkonna jaoks kõige olulisemad. Autor kasutab mudelis Xu jt mudelit komponendina, mis muudab sisu kirjelduse pildiks (sisu\textrightarrow pilt), kuna antud mudeli tulemused on teiste omadest paremad. 
 
-	Selleks, et muuta tavaline pilt kunstiteoseks, on kaks erinevat võimalust --- stiili ülekanne või CycleGAN. Stiili ülekanne võtab sisendiks sisupildi ja stiilipildi ning proovib seejärel genereerida pildi, mille sisu on sarnane sisupildiga ja mille stiil on sarnane stiilipildiga \parencite{styletransfer}.
-	Selleks kasutatakse varem treenitud pildidklassifitseerija erinevaid kihte, et mõõta kahe pildi vahelist sisu ja stiili sarnasust. 
+	Selleks, et muuta tavaline pilt kunstiteoseks, on kaks erinevat võimalust --- stiili ülekanne või CycleGAN. Stiili ülekanne võtab sisendiks sisupildi ja stiilipildi ning proovib seejärel genereerida pildi, mille sisu on sarnane sisupildiga ja mille stiil on sarnane stiilipildiga \parencite{styletransfer}. Selleks kasutatakse varem treenitud pildidklassifitseerija erinevaid kihte, et mõõta kahe pildi vahelist sisu ja stiili sarnasust. 
 
 	CycleGAN võimaldab treenida see-eest GANi, mis teisendab sisendpildi ühest hulgast teise. Näiteks mustvalge pildi värviliseks, sebra hobuseks või antud juhul pildi kunstiteoseks. Treenimise käigus kasutatakse põhimõtet, et kui muuta mustvalge pilt värviliseks, siis saadud värvilise pildi teisendamisel mustvalgeks, peaks jõudma tagasi algse musta pildini. \parencite{cyclegan}
 
@@ -79,8 +78,6 @@
 
 	Kasutades antud töö autori ideed, on teoreetiliselt võimalik kontrollida teose sisu ja stiili ning mille puhul on ka samast sisendtekstist genereeritud teosed erinevad. Kuna puuduvad andmed kunstiteoste ja nende kirjelduste vahel, ei saa genereerida kunsti, mille sisu saab kirjeldusega määrata, ainult ühe GANiga. Seega koosneb autori mudel kahest GANist --- AttnGANist (sisu\textrightarrow pilt) ja CycleGANist (pilt\textrightarrow kunst). %, mida edaspidi nimetan text2art-ganiks.
 
-
-	%  \section{Mudel}
 	\section{Tehnilised detailid}
 	Eelmises osas anti põgus ülevaade erinevadest mudelitest. Selles osas kirjeldatakse põhjalikumalt, kuidas töötab GAN, AttnGAN ja CycleGAN.
 
@@ -135,7 +132,7 @@
 	\end{equation}
 
 	Töö autorid leidsid ka, et kui teisendada maastikumaale fotodeks, siis muutsid generaatorid $ G $ ja $ F $ tihti pildi tooni. Selleks toodi	juurde identiteet seos, mis hoiab generaatoreid pilte muutmast, kui pilt juba näeb välja nagu pilt, mida proovitakse saada.
-	\begin{equation}
+	\begin{equation} \label{eq:idt}
 		\loss_{idt}(G,F) = \EX_{y\sim p_{andmed}(y)}[\norm{G(y) - y}_1] + \EX_{x\sim p_{andmed}(x)}[\norm{F(x) - x}_1]
 	\end{equation}
 
@@ -170,7 +167,7 @@
 	\subsection{Andmekogud}
 	AttnGAN treenimiseks kasutati CUB \parencite{cub} ja COCO \parencite{srgan} andmekogusid. CUB on andmekogum lindudest, kus on $\approx$ 10 000 pilti, kus iga pildi kohta on 10 erinevat kirjeldust. COCO on laiahaardelisem andmekogum, kus on pilte loomadest, sõidukitest, toidust ning mitmetest muudest objektidest. Andmekogus on $\approx$ 80 000 pilti, kus iga pildi kohta on 5 erinevat kirjeldust.
 
-	CycleGANi treenimiseks kasutati Wikiart'i andmekogumit \parencite{wikiart}. Tegu on andmekoguga, kus on $\approx$ 80 000 erinevat kunstiteost, millele on juurde lisatud stiil, žanr, autor jne. Selle asemel, et andmeid uuesti kogutud, kasutas autor Tan jt poolt varasemalt kokku korjatud Wikiart andmekogumit \parencite{artgan}. Treenimiseks kasutati kategooriaid abstraktne ekspressionism ja impressionism.
+	CycleGANi treenimiseks kasutati Wikiart'i andmekogumit (\textit{Wikiart}, 09.12.2019). Tegu on andmekoguga, kus on $\approx$ 80 000 erinevat kunstiteost, millele on juurde lisatud stiil, žanr, autor jne. Selle asemel, et andmeid uuesti kogutud, kasutas autor Tan jt poolt varasemalt kokku korjatud Wikiart andmekogumit \parencite{artgan}. Treenimiseks kasutati kategooriaid abstraktne ekspressionism ja impressionism.
 
 	\begin{figure}
 		\includegraphics[width=\linewidth]{images/linnud.jpg}
@@ -183,7 +180,7 @@
 
 	Autor katsetas ka $ \lambda_{idt} $ väärtuse muutmisega võrrandis \ref{eq:cyclegan} nii et $ \lambda_{idt} = 5 $. Antud väärtus valiti CycleGANi töö järgi, kus mudel kippus stiiliteisenduse käigus piltide tooni vahetama \parencite{cyclegan}. Valdavalt olid selle mudeli poolt loodud teosed pehmemate toonidega ning tekstuur oli ka sujuvam. Abstraktse stiili puhul oli näha rohkem eredamaid toone.
 
-	Tulevikus tasub proovida veel teisigi lambda väärtusi, mis on 0.5 ja 5 vahel või neist hoopis suuremad.
+	Tulevikus tasub proovida veel teisigi lambda väärtusi, mis oleksid 0.5 ja 5-st suuremad või väiksemad. 
 
 	\subsection{COCO}
 
@@ -198,7 +195,7 @@
 
 	Kuna AttnGANi poolt genereeritud pildid ei ole väga realistlikud, on selle tõttu erinev pildijaotus, mida kasutati \mbox{CycleGANi} treenimiseks (treenimisele kasutati päris pilte AttnGAN genereeritud piltide asemel, lootuses, et AttnGAN poolt genereeritud pildid on realistlikud ning et CycleGAN suudab üldistada neile), pildijaotusest, millele CycleGAN kannab stiili üle \seefig{dist}. Pildijaotuse lõhe vähendamiseks kasutati COCO testimisandmekogu 5000 erinevat kirjeldust, et genereerida 5000 uut pilti, mida kasutati seejärel CycleGANi treenimiseks.
 
-	On näha, et selle meetodi tulemusel paranes stiiliülekande edukus pisut. Loodud pildid pole nii udused ning on näha rohkem toonimuutusi ja kontrasti. Mõlema meetodi edukus võib ka varieeruda juhuse tõttu.
+	On näha, et selle meetodi tulemusel paranes stiiliülekande edukus pisut. Edukus väljendub selles, et CycleGAN ei jäta enam pilti valdavalt muutmata --- on näha, et uue treenitud CycleGANi puhul on pildil näha rohkem töötlust, toonimuutusi ja kontrasti. Mõlema meetodi edukus võib ka varieeruda juhuse tõttu.
 
 	\begin{figure}[ht]
 		\includegraphics[width=0.9\linewidth]{images/coco.png}
@@ -215,6 +212,25 @@
 		\caption{Genereeritud pildid, millele on antud sisendiks pildi all olev abstraktsem mõiste}
 		\label{fig:abstract}
 	\end{figure}
+
+	\section{Arutelu}
+	Võrreldes varasemate töödega, võimaldab antud töö mudel täpset kontrolli teose sisu üle, mis teiste kunsti genereerimis viiside puhul puudus. Peale selle on iga pilt isegi sama sisendi korral erinev (vt lisas joonis \ref{fig:lisa1} ja \ref{fig:lisa2}).
+	
+	Mudelit võib kasutada, et saada inspiratsiooni uute disainide loomiseks või hoopis inspireerida kunstnikke uute suundade poole. Näiteks on kasvamas tehisintellektikuntsnikke liikumine, kes kasutavad tehisintellekti, et luua omapärast kunsti \parencite{aiartist}. Peale selle võimaldab mudel inimestel, kelle puudub joonistamis oskus, luua ise kunsti, mida pole keegi varen teinud. Samuti on ka väljavaated oksjonil müügiks --- Chrstie's galeriis müüdi aasta 2018 lõpus esimene tehisintellekti poolt genereeritud pilt 432 500\$ eest \parencite{art_sold}.
+	
+	Tulevikus tasuks proovida pilte genereerida suurema resolutsiooniga kui 256x256. Selle tõttu aga suureneks arvutuste arv, mis oleks treenimise käigus vaja teha. Selleks oleks aga vaja võimsamat arvutit kui antud töös kasutusel oli. Peale selle oleks vaja muuta AttnGAN ja CycleGANi arhitektuuri, et see sobituks uue resolutsiooniga kokku.
+	
+	Katsetada tasuks ka teiste hüperparameetrite väärtustega --- võib proovida anda suuremaid või siis hoopis väiksemaid väärtusi, võib-olla isegi negatiivseid, kui antud töös kastusel oli. Kui anda negatiivne väärtus, siis proovib mudel võrrandit number \ref{eq:idt} hoopis maksimeerida mitte minimeerida. Peale selle võib juhtuda, et ekstreemsemate väärtuste puhul ei õnnestu mudelit treenida ning mudel variseb hoopis kokku.
+	
+	Huvitavaid tulemusi võib saada kui treenida AttnGAN teisendama kunstiteose pealkirja kunstiteoseks. Aga sarnaselt võib juhtuda, et mudel variseb kokku, või lihtsalt teisendus ei tule hästi välja.
+	
+	%Kuidas saab seda kasutada
+	%Kellel on uuringust kasu
+	%AI tulevik, kasutused
+	%loovus, uued vaatenurgad
+	%uued materjalid, disain
+	%Müük
+	
 	\unsection{Kokkuvõte}
 	Uurimistöö eesmärgiks oli luua mudel, mis oleks ise võimeline genereerima tekstist kunsti, sai täidetud. Osaliselt leidis ka kinnitust hüpotees --- mudel, mis on treenitud genereerima ühte objekti sisaldavaid kunstiteoseid, loob nii realistlike kui ka kunstipäraseid teoseid, aga mudel, mis on treenitud laiahaardelisemal andmekogul, ei suuda luua realistlike teoseid, aga see-eest suudab luua kunstipäraseid teoseid. Seda selle tõttu, et andmekogust, mis sisaldab mitmeid objekte, on programmil raskem järeldusi teha.
 
