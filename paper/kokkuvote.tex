@@ -1,0 +1,32 @@
+% !TeX program = xelatex
+\documentclass{vilgym}
+
+% Better hyphenation
+\babelhyphenation[estonian]{Attn-GANil}
+\babelhyphenation[estonian]{Cycle-GANil}
+\babelhyphenation[estonian]{Attn-GAN}
+\babelhyphenation[estonian]{Cycle-GAN}
+
+\newcommand*{\inglk}[1]{(\textit{ingl. k. #1})}
+
+\begin{document}
+	\unsection{Kokkuvõte}
+	\pagenumbering{gobble}
+	\spacing{1.3}
+	
+	Sügavõpe \inglk{Deep Learning} on meetodite kogu, mis võimaldab õpetada arvutile, kuidas lahendada erinevaid probleeme. Antud valdkond on eksisteerinud alatest 1940. aastast kuid on alles hiljuti saanud populaarseks. Distsipliini arengu käigus on esile kerkinud mudel, mida on võimalik treenida jäljendama originaalandmeid ja looma selle pealt uut sisu. Selle mudeli nimeks on GAN ehk generatiivne adverstiivne võrk.
+	
+	Uurimistöö eesmärgiks oli välja selgitada, kas on võimalik luua sügavõppe mudel, mis suudab genereerida uudsed kunsti talle sisendiks antud kirjelduste põhjal. Varasemad uurimused on valdavalt piirdunud mudelite uurimisega, mis genereerivad kunsti sõltuvalt juhusest ja stiili soovist. Antud uurimistöö teeb aga eriliseks see, et kunsti genereerimisel lähtutakse sisu kirjeldusest ning stiili soovist, mis võimaldab seada piirid, mille vahele loodud teosed jäävad. Mudeli ehitus komponendina kasutatakse GANi.
+	
+	Antud töö poolt väljapakutud mudel koosnes kahest komponendist --- AttnGANist, mis muudab sisendteksti pildiks, ning CycleGANist, mis muudab AttnGANi poolt loodud pildi kunstipäraseks. Lisaks sisendtekstile, määratakse ära, millisesse stiili CycleGAN pildi teisendab.
+	
+	AttnGANi treenimiseks kasutati kahte erinevat andmekogu. Esimene andmekogu on CUB, mis koosneb erinevatest linnu piltidest, ning teine andmekogu on COCO, kus on pilte loomadest, sõidukitest, toidust ning mitmetest muudest objektidest.
+	
+	CycleGANi treenimiseks kasutati Wikiart anmekogu. Seal valit välja stiilid abstraktne ekspressionism ja impressionism.
+	
+	Mudeli edukuse hindamisel lähtuti põhimõtetest, et loodud teose sisu peab vastama sisendtekstile ning stiili rakendamisel on näha värvitooni ja tekstuuri muutusi.
+	
+	Uurimistöö käigus sai eesmärk täidetud. CUB andmekogu puhul loodud teosed nägid välja nagu kunstiteosed ning olid sisu poolest kooskõlas teksti kirjeldustega. COCO andmekogu puhul õnnestus mudelil edukalt luua kunsti ainult siis, kui sisendiks anti abstraktsem mõiste. Sel juhul ei saa aga hinnata sisu kooskõla sisendtekstiga.
+	
+	Edasistele uurijatele soovitab autor järgmist: proovida piltide genereerimist suurema resolutsiooniga kui 256x256 pikslit, COCO andmekogu tükeldamist ning nendel tükkidel mudelite treenimist, katsetada AttnGAN ja CycleGANi arhitektuuri muutmist, kasutada teisi hüperparameetri väärtusi ja proovida genereerida kunsti hoopis kunstiteoste pealkirjadest, kasutades selleks ainult AttnGANi või mingisugust muud mudelit.
+\end{document}

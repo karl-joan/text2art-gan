@@ -1,0 +1,24 @@
+% !TeX program = xelatex
+\documentclass{vilgym}
+
+\begin{document}
+	\unsection{Summary}
+	\pagenumbering{gobble}
+	\spacing{1.4}
+	
+	Deep learning is a collection of methods that allow to teach computers how to solve a variety of problems. This field has existed from around 1940 but has only recently grown in popularity. During the rapid advancement, a model ,that can be trained to follow a data distribution and generate new content from it, was invented. The model is called generative adversarial network or GAN.
+	
+	The primary goal of this research paper is to find out, whether it is possible to create a deep learning model that can generate art from text descriptions. Previous works have mostly focused on models, that generate art based on randomness and style. This research paper unique because it uses text descriptions for generation, which makes it possible to set bounds in which the generated images will remain. The model will be built on the GAN architecture.
+	
+	The proposed model consists of two components --- AttnGAN, which will convert text descriptions to images, and CycleGAN, which will apply the wished style to the generated image.
+	
+	AttnGAN was trained on two different datasets. The first is the CUB dataset, which contains images of different species of birds. The second dataset is COCO, which contains images of animals, vehicles, food, and other objects.
+	
+	CycleGAN was trained on the Wikiart dataset. Out of all the styles, two were chosen --- abstract expressionism and impressionism.
+	
+	The model's performance was evaluated based on its ability to generate art, that is coherent with the text description, and its ability to transfer style with visible colour and texture change.
+	
+	The main goal of this research paper was fulfilled. For the CUB dataset, the model was able to generate art that matched the text descriptions. On the other hand, for the COCO dataset, the model was able to generate art only when it was given more abstract words. In that case, it is not possible to evaluate the coherence of the text descriptions with the generated art.
+	
+	For future research, the author proposes the following: try to generate images with a resolution larger than 256x256x pixels, slice the COCO dataset and train the model on those slices, change the architecture for AttnGAN and CycleGAN, test other hyperparameter values, and try to generate art from the arts' titles using AttnGAN or some other model.
+\end{document}
